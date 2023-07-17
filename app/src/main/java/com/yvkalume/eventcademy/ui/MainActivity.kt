@@ -1,4 +1,4 @@
-package com.yvkalume.eventcademy
+package com.yvkalume.eventcademy.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
