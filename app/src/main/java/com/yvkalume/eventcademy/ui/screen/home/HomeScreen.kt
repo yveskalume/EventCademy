@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.yvkalume.eventcademy.ui.components.CategoryHeader
 import com.yvkalume.eventcademy.ui.components.EventVerticalItem
 import com.yvkalume.eventcademy.util.ThemePreview
 import kiwi.orbit.compose.ui.controls.Scaffold
@@ -26,9 +27,11 @@ fun HomeScreen(navController: NavController) {
     ) { contentPadding ->
         LazyColumn(
             modifier = Modifier.padding(contentPadding),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(vertical = 16.dp)
         ) {
             items(4) {
+                CategoryHeader(modifier = Modifier.padding(horizontal = 16.dp))
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     contentPadding = PaddingValues(16.dp)
