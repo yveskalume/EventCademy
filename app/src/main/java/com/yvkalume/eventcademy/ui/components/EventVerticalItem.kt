@@ -31,11 +31,12 @@ import kiwi.orbit.compose.ui.controls.Text
 fun EventVerticalItem() {
     SurfaceCard(
         onClick = {}, modifier = Modifier
-            .size(width = 240.dp, height = 280.dp)
+            .size(width = 240.dp, height = 290.dp)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(bottom = 6.dp)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_launcher_background),
@@ -48,7 +49,8 @@ fun EventVerticalItem() {
             Spacer(modifier = Modifier.height(4.dp))
             Column(
                 modifier = Modifier
-                    .fillMaxSize().padding(8.dp),
+                    .fillMaxSize()
+                    .padding(8.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Column(modifier = Modifier.weight(1.3f)) {
