@@ -1,23 +1,26 @@
 package com.yvkalume.eventcademy.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.yvkalume.eventcademy.ui.navigation.Destination
+import com.yvkalume.eventcademy.ui.screen.auth.AuthScreen
 import com.yvkalume.eventcademy.ui.screen.home.HomeScreen
 import com.yvkalume.eventcademy.ui.theme.EventCademyTheme
-import kiwi.orbit.compose.ui.controls.Scaffold
 import kiwi.orbit.compose.ui.controls.Surface
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("MaterialDesignInsteadOrbitDesign")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
@@ -34,8 +37,11 @@ class MainActivity : ComponentActivity() {
                         NavHost(
                             modifier = Modifier.padding(it),
                             navController = navController,
-                            startDestination = Destination.HomeScreen.route
+                            startDestination = Destination.AuthScreen.route
                         ) {
+                            composable(route = Destination.AuthScreen.route) {
+                                AuthScreen(navController = navController)
+                            }
                             composable(route = Destination.HomeScreen.route) {
                                 HomeScreen(navController = navController)
                             }
