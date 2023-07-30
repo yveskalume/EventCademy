@@ -8,16 +8,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.yvkalume.eventcademy.ui.navigation.Destination
-import com.yvkalume.eventcademy.ui.screen.auth.AuthScreen
 import com.yvkalume.eventcademy.ui.screen.home.HomeScreen
 import com.yvkalume.eventcademy.ui.theme.EventCademyTheme
-import kiwi.orbit.compose.ui.controls.Surface
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("MaterialDesignInsteadOrbitDesign")
@@ -37,11 +36,8 @@ class MainActivity : ComponentActivity() {
                         NavHost(
                             modifier = Modifier.padding(it),
                             navController = navController,
-                            startDestination = Destination.AuthScreen.route
+                            startDestination = Destination.HomeScreen.route
                         ) {
-                            composable(route = Destination.AuthScreen.route) {
-                                AuthScreen(navController = navController)
-                            }
                             composable(route = Destination.HomeScreen.route) {
                                 HomeScreen(navController = navController)
                             }

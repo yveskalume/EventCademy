@@ -74,9 +74,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.core.splashscreen)
 
-    implementation(libs.orbit.compose.ui)
-    implementation(libs.orbit.compose.icons)
-
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation)
