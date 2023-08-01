@@ -34,7 +34,7 @@ import com.yvkalume.eventcademy.util.ThemePreview
 
 @Composable
 fun HomeRoute(onEventClick: () -> Unit) {
-    HomeScreen(onEventClick = {})
+    HomeScreen(onEventClick = onEventClick)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

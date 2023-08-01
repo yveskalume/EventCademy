@@ -15,8 +15,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.yvkalume.eventcademy.ui.navigation.Destination
+import com.yvkalume.eventcademy.ui.screen.eventdetail.EventDetailRoute
 import com.yvkalume.eventcademy.ui.screen.home.HomeRoute
 import com.yvkalume.eventcademy.ui.theme.EventCademyTheme
+import com.yvkalume.eventcademy.util.navigate
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("MaterialDesignInsteadOrbitDesign")
@@ -39,7 +41,13 @@ class MainActivity : ComponentActivity() {
                             startDestination = Destination.HomeScreen.route
                         ) {
                             composable(route = Destination.HomeScreen.route) {
-                                HomeRoute(onEventClick = {})
+                                HomeRoute(
+                                    onEventClick = { navController.navigate(Destination.EventDetailScreen) }
+                                )
+                            }
+
+                            composable(route = Destination.EventDetailScreen.route) {
+                                EventDetailRoute(onBackClick = navController::navigateUp)
                             }
                         }
                     }
