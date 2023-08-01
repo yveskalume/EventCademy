@@ -15,7 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.yvkalume.eventcademy.ui.navigation.Destination
-import com.yvkalume.eventcademy.ui.screen.home.HomeScreen
+import com.yvkalume.eventcademy.ui.screen.home.HomeRoute
 import com.yvkalume.eventcademy.ui.theme.EventCademyTheme
 
 class MainActivity : ComponentActivity() {
@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
                             startDestination = Destination.HomeScreen.route
                         ) {
                             composable(route = Destination.HomeScreen.route) {
-                                HomeScreen(navController = navController)
+                                HomeRoute(onEventClick = {})
                             }
                         }
                     }
