@@ -29,7 +29,7 @@ import com.yvkalume.eventcademy.util.ThemePreview
 
 @Composable
 fun FeaturedEventItem(onClick: () -> Unit,modifier: Modifier = Modifier) {
-    Box(modifier = modifier.clickable(onClick = onClick).clip(RoundedCornerShape(16.dp))) {
+    Box(modifier = modifier.clip(RoundedCornerShape(16.dp)).clickable(onClick = onClick)) {
         Image(
             painter = painterResource(id = R.drawable.ic_launcher_background),
             contentDescription = null,
@@ -44,6 +44,7 @@ fun FeaturedEventItem(onClick: () -> Unit,modifier: Modifier = Modifier) {
         Text(
             text = "J-11",
             style = MaterialTheme.typography.titleLarge,
+            color = Color.Black,
             modifier = Modifier
                 .padding(8.dp)
                 .clip(RoundedCornerShape(16.dp))
@@ -76,7 +77,7 @@ fun FeaturedEventItem(onClick: () -> Unit,modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-fun HomeScreenPreview() {
+fun FeaturedEventItemPreview() {
     ThemePreview {
         FeaturedEventItem(onClick = {}, modifier = Modifier.aspectRatio(1.5f))
     }

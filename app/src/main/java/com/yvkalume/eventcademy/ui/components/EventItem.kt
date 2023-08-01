@@ -68,9 +68,14 @@ fun EventItem(onEventClick: () -> Unit, modifier: Modifier = Modifier) {
                         text = "8",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 18.sp
+                        fontSize = 18.sp,
+                        color = Color.Black
                     )
-                    Text(text = "Dec", style = MaterialTheme.typography.bodyLarge)
+                    Text(
+                        text = "Dec",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.Black
+                    )
                 }
             }
         }

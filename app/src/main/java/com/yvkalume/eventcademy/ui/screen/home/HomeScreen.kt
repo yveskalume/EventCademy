@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.yvkalume.eventcademy.R
 import com.yvkalume.eventcademy.ui.components.EventItem
 import com.yvkalume.eventcademy.ui.components.FeaturedEventItem
+import com.yvkalume.eventcademy.ui.components.SectionHeader
 import com.yvkalume.eventcademy.util.ThemePreview
 
 @Composable
@@ -41,7 +43,7 @@ private fun HomeScreen(onEventClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                modifier = Modifier.padding(start = 16.dp, end = 4.dp, top = 8.dp),
                 navigationIcon = {
                     Image(
                         painter = painterResource(id = R.drawable.ic_launcher_background),
@@ -61,7 +63,9 @@ private fun HomeScreen(onEventClick: () -> Unit) {
                     }
                 },
                 actions = {
-                    Icon(imageVector = Icons.Outlined.Settings, contentDescription = null)
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(imageVector = Icons.Outlined.Settings, contentDescription = null)
+                    }
                 }
             )
         }
@@ -74,7 +78,13 @@ private fun HomeScreen(onEventClick: () -> Unit) {
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item(span = { GridItemSpan(2) }) {
+                SectionHeader(title = "À ne pas rater")
+            }
+            item(span = { GridItemSpan(2) }) {
                 FeaturedEventItem(onClick = onEventClick, modifier = Modifier.aspectRatio(1.2f))
+            }
+            item(span = { GridItemSpan(2) }) {
+                SectionHeader(title = "Événements à venir")
             }
             items(10) {
                 EventItem(onEventClick = onEventClick)
