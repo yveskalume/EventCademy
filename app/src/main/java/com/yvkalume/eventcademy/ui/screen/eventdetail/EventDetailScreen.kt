@@ -1,5 +1,6 @@
 package com.yvkalume.eventcademy.ui.screen.eventdetail
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -45,7 +46,7 @@ fun EventDetailRoute(onBackClick: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventDetailScreen(onBackClick: () -> Unit, onBookmarkClick: () -> Unit) {
+private fun EventDetailScreen(onBackClick: () -> Unit, onBookmarkClick: () -> Unit) {
     val scrollState = rememberScrollState()
     BottomSheetScaffold(
         topBar = {
