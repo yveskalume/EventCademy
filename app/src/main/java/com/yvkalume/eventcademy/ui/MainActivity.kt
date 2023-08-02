@@ -31,7 +31,9 @@ import com.yvkalume.eventcademy.ui.screen.eventdetail.EventDetailRoute
 import com.yvkalume.eventcademy.ui.screen.home.HomeRoute
 import com.yvkalume.eventcademy.ui.theme.EventCademyTheme
 import com.yvkalume.eventcademy.util.navigate
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @SuppressLint("MaterialDesignInsteadOrbitDesign")
     override fun onCreate(savedInstanceState: Bundle?) {

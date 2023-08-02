@@ -13,8 +13,8 @@ lifecycle-runtime-ktx = "2.6.1"
 activity-compose = "1.7.2"
 compose-bom = "2023.06.01"
 orbit-compose = "0.31.0"
-compose-destination = "1.9.50"
-hilt = "2.44"
+compose-navigation = "2.6.0"
+hilt = "2.46.1"
 
 [libraries]
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-splashscreen" }
@@ -35,8 +35,8 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
-orbit-compose-ui = { group = "kiwi.orbit.compose", name = "ui", version.ref = "orbit-compose" }
-orbit-compose-icons = { group = "kiwi.orbit.compose", name = "icons", version.ref = "orbit-compose" }
+
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "compose-navigation" }
 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }

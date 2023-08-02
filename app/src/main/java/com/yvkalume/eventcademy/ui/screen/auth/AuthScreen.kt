@@ -49,12 +49,22 @@ import com.yvkalume.eventcademy.util.ThemePreview
 @Composable
 fun AuthRoute(viewModel: AuthViewModel = hiltViewModel(), onConnectSuccess: () -> Unit) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    AuthScreen(uiState = uiState, onConnectWithGoogle = { onConnectSuccess() })
+    AuthScreen(
+        uiState = uiState,
+        onConnectWithGoogle = {
+            viewModel.signInWithCredential(it)
+            onConnectSuccess()
+        },
+        startAuthFlow = { viewModel.startAuthFlow() })
 }
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun AuthScreen(uiState: AuthUiState, onConnectWithGoogle: (credential: AuthCredential) -> Unit) {
+fun AuthScreen(
+    uiState: AuthUiState,
+    onConnectWithGoogle: (credential: AuthCredential) -> Unit,
+    startAuthFlow: () -> Unit
+) {
     val context = LocalContext.current
     val token = stringResource(id = R.string.default_web_client_id)
 
@@ -106,6 +116,7 @@ fun AuthScreen(uiState: AuthUiState, onConnectWithGoogle: (credential: AuthCrede
                     when (it) {
                         AuthUiState.Idle -> ConnectWithGoogleButton(
                             onClick = {
+                                startAuthFlow()
                                 val gso =
                                     GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                                         .requestIdToken(token)
@@ -165,6 +176,6 @@ fun ConnectWithGoogleButton(modifier: Modifier = Modifier, onClick: () -> Unit) 
 @Composable
 fun AuthScreenPreview() {
     ThemePreview {
-        AuthScreen(uiState = AuthUiState.Idle, onConnectWithGoogle = {})
+        AuthScreen(uiState = AuthUiState.Idle, onConnectWithGoogle = {}, startAuthFlow = {})
     }
 }

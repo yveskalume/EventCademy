@@ -75,6 +75,8 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 
+    implementation(libs.navigation.compose)
+
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.core.splashscreen)
 

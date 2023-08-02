@@ -28,4 +28,8 @@ class AuthViewModel @Inject constructor(private val userRepository: UserReposito
             }
         }
     }
+
+    fun startAuthFlow() {
+        _uiState.value = AuthUiState.Loading
+    }
 }
