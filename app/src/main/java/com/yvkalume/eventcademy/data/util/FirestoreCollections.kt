@@ -1,4 +1,4 @@
-package com.yvkalume.eventcademy.data.contants
+package com.yvkalume.eventcademy.data.util
 
 object FirestoreCollections {
     const val USERS = "users"

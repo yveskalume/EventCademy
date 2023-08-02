@@ -11,9 +11,8 @@ data class EventBooking(
     val eventImageUrl: String = "",
     val eventLocation: String = "",
     val userUid: String = "",
-    val firstName: String = "",
-    val lastName: String = "",
+    val userName: String = "",
     val email: String = "",
-    val userProfileUrl: String = "",
+    val userPhotoUrl: String = "",
     val createdAt: String = "",
 )

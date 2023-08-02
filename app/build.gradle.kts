@@ -5,6 +5,7 @@ plugins {
     kotlin("kapt")
     alias(libs.plugins.com.google.devtools.ksp)
     alias(libs.plugins.com.google.dagger.hilt.android)
+    alias(libs.plugins.com.google.gms.google.services)
 //    alias(libs.plugins.com.google.firebase.crashlytics)
 }
 
@@ -58,6 +59,7 @@ dependencies {
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.runtime.compose)
     implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)

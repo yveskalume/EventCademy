@@ -1,8 +1,11 @@
 package com.yvkalume.eventcademy.ui.screen.auth
 
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,22 +18,28 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
@@ -38,14 +47,16 @@ import com.yvkalume.eventcademy.R
 import com.yvkalume.eventcademy.util.ThemePreview
 
 @Composable
-fun AuthRoute(onConnectSuccess: () -> Unit) {
-    AuthScreen(onConnectWithGoogle = { onConnectSuccess() })
+fun AuthRoute(viewModel: AuthViewModel = hiltViewModel(), onConnectSuccess: () -> Unit) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    AuthScreen(uiState = uiState, onConnectWithGoogle = { onConnectSuccess() })
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun AuthScreen(onConnectWithGoogle: (credential: AuthCredential) -> Unit) {
+fun AuthScreen(uiState: AuthUiState, onConnectWithGoogle: (credential: AuthCredential) -> Unit) {
     val context = LocalContext.current
-    val token = ""
+    val token = stringResource(id = R.string.default_web_client_id)
 
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
@@ -55,7 +66,8 @@ fun AuthScreen(onConnectWithGoogle: (credential: AuthCredential) -> Unit) {
                 val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
                 onConnectWithGoogle(credential)
             } catch (e: ApiException) {
-                Log.e("TAG", "Google sign in failed", e)
+                Log.e("AuthScreen", "signInResult:failed", e)
+                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -90,31 +102,61 @@ fun AuthScreen(onConnectWithGoogle: (credential: AuthCredential) -> Unit) {
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center
                 )
-                ExtendedFloatingActionButton(onClick = { /*TODO*/ }, containerColor = Color.White) {
+                AnimatedContent(targetState = uiState, label = "") {
+                    when (it) {
+                        AuthUiState.Idle -> ConnectWithGoogleButton(
+                            onClick = {
+                                val gso =
+                                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                        .requestIdToken(token)
+                                        .requestEmail()
+                                        .build()
+                                val googleSignInClient = GoogleSignIn.getClient(context, gso)
+                                launcher.launch(googleSignInClient.signInIntent)
+                            }
+                        )
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_google),
-                            contentDescription = null,
-                            tint = Color.Unspecified,
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Text(text = "Se connecter avec Google", fontWeight = FontWeight.SemiBold)
-                        // in order to center the content
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_google),
-                            contentDescription = null,
-                            tint = Color.Transparent,
-                            modifier = Modifier.size(24.dp)
-                        )
+                        AuthUiState.Loading -> {
+                            CircularProgressIndicator()
+                        }
+
+                        else -> {}
                     }
                 }
+
             }
+        }
+    }
+}
+
+
+@Composable
+fun ConnectWithGoogleButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    ExtendedFloatingActionButton(
+        onClick = onClick,
+        containerColor = Color.White,
+        modifier = modifier
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_google),
+                contentDescription = null,
+                tint = Color.Unspecified,
+                modifier = Modifier.size(24.dp)
+            )
+            Text(text = "Se connecter avec Google", fontWeight = FontWeight.SemiBold)
+            // in order to center the content
+            Icon(
+                painter = painterResource(id = R.drawable.ic_google),
+                contentDescription = null,
+                tint = Color.Transparent,
+                modifier = Modifier.size(24.dp)
+            )
         }
     }
 }
@@ -123,6 +165,6 @@ fun AuthScreen(onConnectWithGoogle: (credential: AuthCredential) -> Unit) {
 @Composable
 fun AuthScreenPreview() {
     ThemePreview {
-        AuthScreen(onConnectWithGoogle = {})
+        AuthScreen(uiState = AuthUiState.Idle, onConnectWithGoogle = {})
     }
 }
