@@ -43,13 +43,13 @@ private fun HomeScreen(onEventClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.padding(start = 16.dp, end = 4.dp, top = 8.dp),
+                modifier = Modifier.padding(start = 16.dp, end = 4.dp),
                 navigationIcon = {
                     Image(
                         painter = painterResource(id = R.drawable.ic_launcher_background),
                         contentDescription = null,
                         modifier = Modifier
-                            .size(56.dp)
+                            .size(46.dp)
                             .clip(RoundedCornerShape(16.dp))
                     )
                 },

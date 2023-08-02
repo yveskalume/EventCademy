@@ -1,16 +1,20 @@
 package com.yvkalume.eventcademy.ui.screen.eventdetail
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Bookmark
@@ -23,13 +27,12 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -55,11 +58,6 @@ private fun EventDetailScreen(onBackClick: () -> Unit, onBookmarkClick: () -> Un
                 navigationIcon = {
                     IconButton(
                         onClick = onBackClick,
-                        colors = IconButtonDefaults.iconButtonColors(
-                            containerColor = Color.White.copy(
-                                alpha = 0.5f
-                            )
-                        )
                     ) {
                         Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = null)
                     }
@@ -67,11 +65,6 @@ private fun EventDetailScreen(onBackClick: () -> Unit, onBookmarkClick: () -> Un
                 actions = {
                     IconButton(
                         onClick = onBookmarkClick,
-                        colors = IconButtonDefaults.iconButtonColors(
-                            containerColor = Color.White.copy(
-                                alpha = 0.5f
-                            )
-                        )
                     ) {
                         Icon(imageVector = Icons.Outlined.Bookmark, contentDescription = null)
                     }
@@ -114,66 +107,98 @@ private fun EventDetailScreen(onBackClick: () -> Unit, onBookmarkClick: () -> Un
                 contentScale = ContentScale.FillWidth
             )
 
-            Column(
+            EventDescriptionSection(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 128.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                    .wrapContentHeight()
+                    .padding(start = 16.dp, end = 16.dp)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Participants",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Spacer(modifier = Modifier.height(16.dp))
+                items(6) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_launcher_background),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(128.dp))
+        }
+    }
+}
+
+@Composable
+private fun EventDescriptionSection(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "Lorem ipsum",
+            style = MaterialTheme.typography.titleLarge,
+            fontSize = 26.sp,
+            fontWeight = FontWeight.SemiBold
+        )
+        Text(
+            text = "Lorem ipsum",
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Divider()
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
                 Text(
-                    text = "Lorem ipsum",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Text(
-                    text = "Lorem ipsum",
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "Déscription",
+                    text = "Début",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )
-                Text(text = "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.")
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Divider()
-                Spacer(modifier = Modifier.height(4.dp))
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    Column(
-                        modifier = Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        Text(
-                            text = "Début",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        Text(text = "12h00", style = MaterialTheme.typography.bodyLarge)
-                    }
-                    Column(
-                        modifier = Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        Text(
-                            text = "Fin",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        Text(text = "16h00", style = MaterialTheme.typography.bodyLarge)
-                    }
-                }
-                Spacer(modifier = Modifier.height(4.dp))
-                Divider()
-
-                Spacer(modifier = Modifier.height(16.dp))
-
+                Text(text = "12h00", style = MaterialTheme.typography.bodyLarge)
+            }
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = "Fin",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Text(text = "16h00", style = MaterialTheme.typography.bodyLarge)
             }
         }
+        Spacer(modifier = Modifier.height(4.dp))
+        Divider()
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "Déscription",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold
+        )
+        Text(text = "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.")
     }
 }
 
