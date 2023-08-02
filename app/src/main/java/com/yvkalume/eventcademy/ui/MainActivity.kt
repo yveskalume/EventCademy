@@ -18,12 +18,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.yvkalume.eventcademy.ui.navigation.Destination
 import com.yvkalume.eventcademy.ui.navigation.isCurrent
+import com.yvkalume.eventcademy.ui.screen.auth.AuthRoute
 import com.yvkalume.eventcademy.ui.screen.bookmark.BookmarkRoute
 import com.yvkalume.eventcademy.ui.screen.eventdetail.EventDetailRoute
 import com.yvkalume.eventcademy.ui.screen.home.HomeRoute
@@ -48,7 +50,7 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         modifier = Modifier.fillMaxSize(),
                         bottomBar = {
-                            if (!destination.isCurrent(Destination.EventDetailScreen)) {
+                            if (shouldShowBottomNavigation(destination)) {
                                 NavigationBar {
                                     NavigationBarItem(
                                         selected = destination.isCurrent(Destination.HomeScreen),
@@ -84,8 +86,12 @@ class MainActivity : ComponentActivity() {
                         NavHost(
                             modifier = Modifier.padding(it),
                             navController = navController,
-                            startDestination = Destination.HomeScreen.route
+                            startDestination = Destination.AuthScreen.route
                         ) {
+                            composable(route = Destination.AuthScreen.route) {
+                                AuthRoute(onConnectSuccess = { navController.navigate(Destination.HomeScreen) })
+                            }
+
                             composable(route = Destination.HomeScreen.route) {
                                 HomeRoute(
                                     onEventClick = { navController.navigate(Destination.EventDetailScreen) }
@@ -97,7 +103,7 @@ class MainActivity : ComponentActivity() {
                             }
 
                             composable(route = Destination.BookmarkScreen.route) {
-                                BookmarkRoute(onEventClick =  { navController.navigate(Destination.EventDetailScreen) })
+                                BookmarkRoute(onEventClick = { navController.navigate(Destination.EventDetailScreen) })
                             }
                         }
                     }
@@ -105,4 +111,8 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+private fun shouldShowBottomNavigation(destination: NavDestination?): Boolean {
+    return !destination.isCurrent(Destination.AuthScreen) && !destination.isCurrent(Destination.EventDetailScreen)
 }
