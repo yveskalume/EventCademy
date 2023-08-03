@@ -29,9 +29,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yvkalume.eventcademy.R
+import com.yvkalume.eventcademy.data.entity.fakeAdvertisementList
 import com.yvkalume.eventcademy.ui.MainActivity
+import com.yvkalume.eventcademy.ui.components.AdvertisementsItem
 import com.yvkalume.eventcademy.ui.components.EventItem
-import com.yvkalume.eventcademy.ui.components.FeaturedEventItem
 import com.yvkalume.eventcademy.ui.components.SectionHeader
 import com.yvkalume.eventcademy.util.ThemePreview
 
@@ -85,10 +86,10 @@ private fun HomeScreen(onEventClick: () -> Unit) {
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item(span = { GridItemSpan(2) }) {
-                SectionHeader(title = "À ne pas rater")
+                SectionHeader(title = "Annonces")
             }
             item(span = { GridItemSpan(2) }) {
-                FeaturedEventItem(onClick = onEventClick, modifier = Modifier.aspectRatio(1.2f))
+                AdvertisementsItem(items = fakeAdvertisementList,onItemClick = {}, modifier = Modifier.aspectRatio(1.2f))
             }
             item(span = { GridItemSpan(2) }) {
                 SectionHeader(title = "Événements à venir")

@@ -12,10 +12,10 @@ data class Event(
     val endDate: Date? = null,
     val imageUrl: String = "",
     val eventUrl: String = "",
-    val featuredUntil: Date? = null,
     val type: EventType = EventType.HYBRID,
     val userUid: String = "",
     val createdAt: Date? = null,
     val updatedAt: Date? = null,
+    val isPublished: Boolean = false,
 )
 
