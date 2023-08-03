@@ -9,5 +9,5 @@ data class User(
     val photoUrl: String = "",
     val createdAt: Date? = null,
     val updatedAt: Date? = null,
-    val isOrganizer: Boolean = false,
+    val role: UserRole = UserRole.USER,
 )

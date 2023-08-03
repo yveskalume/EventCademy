@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
@@ -122,6 +123,7 @@ private fun HomeScreen(uiState: HomeUiState, currentUser: User?, onEventClick: (
 
                 is HomeUiState.Success -> {
                     HomeScreenContent(
+                        modifier = Modifier.fillMaxSize(),
                         ads = uiState.advertisements,
                         events = uiState.events,
                         onEventClick = onEventClick
@@ -152,7 +154,7 @@ private fun HomeScreenContent(
             item(span = { GridItemSpan(2) }) {
                 SectionHeader(title = "Annonces")
             }
-            item(span = { GridItemSpan(2) }) {
+            item(span = { GridItemSpan(2) }, key = "ads") {
                 AdvertisementsItem(
                     items = fakeAdvertisementList,
                     onItemClick = { advertisement ->
@@ -166,11 +168,13 @@ private fun HomeScreenContent(
                 )
             }
         }
-        item(span = { GridItemSpan(2) }) {
-            SectionHeader(title = "Événements à venir")
-        }
-        items(10) {
-            EventItem(onEventClick = { onEventClick("") })
+        if (events.isNotEmpty()) {
+            item(span = { GridItemSpan(2) }) {
+                SectionHeader(title = "Événements à venir")
+            }
+            items(items = events, key = { it.uid }) { event ->
+                EventItem(event = event, onClick = { onEventClick(event.uid) })
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.yvkalume.eventcademy.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,18 +20,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.yvkalume.eventcademy.R
+import coil.compose.SubcomposeAsyncImage
+import com.yvkalume.eventcademy.data.entity.Event
+import com.yvkalume.eventcademy.data.util.dayOfMonth
+import com.yvkalume.eventcademy.data.util.monthName
 import com.yvkalume.eventcademy.util.ThemePreview
+import com.yvkalume.eventcademy.util.capitalize
 
 @Composable
-fun EventItem(onEventClick: () -> Unit, modifier: Modifier = Modifier) {
+fun EventItem(event: Event, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier.clickable(onClick = onEventClick),
+        modifier = modifier.clickable(onClick = onClick),
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         Box(
@@ -41,8 +44,8 @@ fun EventItem(onEventClick: () -> Unit, modifier: Modifier = Modifier) {
                 .aspectRatio(0.8f)
                 .clip(RoundedCornerShape(16.dp))
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
+            SubcomposeAsyncImage(
+                model = event.imageUrl,
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
@@ -65,22 +68,30 @@ fun EventItem(onEventClick: () -> Unit, modifier: Modifier = Modifier) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "8",
+                        text = event.startDate?.dayOfMonth.toString(),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 18.sp,
                         color = Color.Black
                     )
                     Text(
-                        text = "Dec",
+                        text = event.startDate?.monthName.toString()
+                            .capitalize().substring(0..2),
                         style = MaterialTheme.typography.bodyLarge,
-                        color = Color.Black
+                        color = Color.Black,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
         }
-        Text(text = "Lorem ipsum", style = MaterialTheme.typography.titleMedium)
-        Text(text = "Lorem ipsum", style = MaterialTheme.typography.bodyMedium)
+        Text(text = event.name, style = MaterialTheme.typography.titleMedium)
+        Text(
+            text = event.description,
+            style = MaterialTheme.typography.bodyMedium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
 
@@ -88,6 +99,10 @@ fun EventItem(onEventClick: () -> Unit, modifier: Modifier = Modifier) {
 @Composable
 fun EventHorizontalItemPreview() {
     ThemePreview {
-        EventItem(onEventClick = {}, modifier = Modifier.width(200.dp))
+        EventItem(
+            event = Event(name = "Lorem ipsum", description = "Lorem ipsum"),
+            onClick = {},
+            modifier = Modifier.width(200.dp)
+        )
     }
 }
