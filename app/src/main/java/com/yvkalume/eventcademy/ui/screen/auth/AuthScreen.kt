@@ -2,6 +2,7 @@ package com.yvkalume.eventcademy.ui.screen.auth
 
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -23,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +45,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
 import com.yvkalume.eventcademy.R
+import com.yvkalume.eventcademy.ui.MainActivity
 import com.yvkalume.eventcademy.util.ThemePreview
 
 @Composable
@@ -66,6 +69,11 @@ fun AuthScreen(
 ) {
     val context = LocalContext.current
     val token = stringResource(id = R.string.default_web_client_id)
+
+   
+    BackHandler {
+        (context as? MainActivity)?.finish()
+    }
 
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {

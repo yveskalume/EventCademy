@@ -1,6 +1,5 @@
 package com.yvkalume.eventcademy.ui.screen.home
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,7 +25,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,23 +50,34 @@ import com.yvkalume.eventcademy.ui.components.SectionHeader
 import com.yvkalume.eventcademy.util.ThemePreview
 
 @Composable
-fun HomeRoute(viewModel: HomeViewModel = hiltViewModel(), onEventClick: (String) -> Unit) {
+fun HomeRoute(
+    viewModel: HomeViewModel = hiltViewModel(),
+    onEventClick: (String) -> Unit,
+    onSettingClick: () -> Unit
+) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val currentUser by viewModel.currentUser.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
-    LaunchedEffect(uiState) {
-        Log.d("HomeRoute", "uiState: $uiState")
-    }
     BackHandler {
         (context as? MainActivity)?.finish()
     }
-    HomeScreen(uiState = uiState, currentUser = currentUser, onEventClick = onEventClick)
+    HomeScreen(
+        uiState = uiState,
+        currentUser = currentUser,
+        onEventClick = onEventClick,
+        onSettingClick = onSettingClick
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun HomeScreen(uiState: HomeUiState, currentUser: User?, onEventClick: (String) -> Unit) {
+private fun HomeScreen(
+    uiState: HomeUiState,
+    currentUser: User?,
+    onEventClick: (String) -> Unit,
+    onSettingClick: () -> Unit
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -101,7 +110,7 @@ private fun HomeScreen(uiState: HomeUiState, currentUser: User?, onEventClick: (
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = onSettingClick) {
                         Icon(imageVector = Icons.Outlined.Settings, contentDescription = null)
                     }
                 }
@@ -184,6 +193,10 @@ private fun HomeScreenContent(
 @Composable
 fun HomeScreenPreview() {
     ThemePreview {
-        HomeScreen(uiState = HomeUiState.Loading, currentUser = null, onEventClick = {})
+        HomeScreen(
+            uiState = HomeUiState.Loading,
+            currentUser = null,
+            onEventClick = {},
+            onSettingClick = {})
     }
 }

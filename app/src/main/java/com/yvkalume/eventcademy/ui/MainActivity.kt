@@ -1,6 +1,5 @@
 package com.yvkalume.eventcademy.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -17,6 +16,10 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavDestination
@@ -31,6 +34,7 @@ import com.yvkalume.eventcademy.ui.screen.auth.AuthRoute
 import com.yvkalume.eventcademy.ui.screen.bookmark.BookmarkRoute
 import com.yvkalume.eventcademy.ui.screen.eventdetail.EventDetailRoute
 import com.yvkalume.eventcademy.ui.screen.home.HomeRoute
+import com.yvkalume.eventcademy.ui.screen.setting.SettingRoute
 import com.yvkalume.eventcademy.ui.theme.EventCademyTheme
 import com.yvkalume.eventcademy.util.navigate
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,6 +45,7 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var auth: FirebaseAuth
+
 
     private fun getStartDestination(): String {
         Log.e("MainActivity", "getStartDestination: ${auth.currentUser}")
@@ -55,7 +60,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         setContent {
-            EventCademyTheme {
+
+            var isDarkTheme by remember { mutableStateOf(false) }
+
+            EventCademyTheme(darkTheme = isDarkTheme) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -100,8 +108,6 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     ) {
-
-                        // FIXME: Starting destination
                         NavHost(
                             modifier = Modifier.padding(it),
                             navController = navController,
@@ -113,7 +119,8 @@ class MainActivity : ComponentActivity() {
 
                             composable(route = Destination.HomeScreen.route) {
                                 HomeRoute(
-                                    onEventClick = { navController.navigate(Destination.EventDetailScreen) }
+                                    onEventClick = { navController.navigate(Destination.EventDetailScreen) },
+                                    onSettingClick = { navController.navigate(Destination.SettingsScreen) }
                                 )
                             }
 
@@ -123,6 +130,17 @@ class MainActivity : ComponentActivity() {
 
                             composable(route = Destination.BookmarkScreen.route) {
                                 BookmarkRoute(onEventClick = { navController.navigate(Destination.EventDetailScreen) })
+                            }
+                            composable(route = Destination.SettingsScreen.route) {
+                                SettingRoute(
+                                    onBackClick = { navController.navigateUp() },
+                                    onLogoutClick = {
+                                        auth.signOut()
+                                        navController.navigate(Destination.AuthScreen)
+                                    },
+                                    darkMode = isDarkTheme,
+                                    onDarkModeChange = { darkMode -> isDarkTheme = darkMode }
+                                )
                             }
                         }
                     }
