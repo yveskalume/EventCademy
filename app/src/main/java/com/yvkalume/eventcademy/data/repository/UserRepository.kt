@@ -4,6 +4,7 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.yvkalume.eventcademy.data.entity.User
 import com.yvkalume.eventcademy.data.util.FirestoreCollections
 import com.yvkalume.eventcademy.data.util.toDomainUser
 import kotlinx.coroutines.tasks.await
@@ -28,5 +29,11 @@ class UserRepository @Inject constructor(
         if (user != null) {
             firestore.collection(FirestoreCollections.USERS).document(user.uid).set(user).await()
         }
+    }
+
+    suspend fun getCurrentUser() : User {
+        val uid = firebaseAuth.uid
+        val task = firestore.document("${FirestoreCollections.USERS}/$uid").get()
+        return task.await().toObject(User::class.java)!!
     }
 }

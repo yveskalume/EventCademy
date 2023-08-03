@@ -10,5 +10,5 @@ sealed interface HomeUiState {
         val events: List<Event>,
         val advertisements: List<Advertisement>
     ) : HomeUiState
-    data class Error(val message: String) : HomeUiState
+    data class Error(val throwable: Throwable) : HomeUiState
 }

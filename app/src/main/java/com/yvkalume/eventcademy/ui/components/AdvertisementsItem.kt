@@ -1,12 +1,10 @@
 package com.yvkalume.eventcademy.ui.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,12 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.yvkalume.eventcademy.R
+import coil.compose.SubcomposeAsyncImage
 import com.yvkalume.eventcademy.data.entity.Advertisement
 import com.yvkalume.eventcademy.data.entity.fakeAdvertisementList
 import com.yvkalume.eventcademy.util.ThemePreview
@@ -40,7 +38,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun AdvertisementsItem(
     items: List<Advertisement>,
-    onItemClick: () -> Unit,
+    onItemClick: (Advertisement) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState()
@@ -64,14 +62,15 @@ fun AdvertisementsItem(
         state = pagerState,
         modifier = Modifier.fillMaxWidth(),
         pageSpacing = 8.dp
-    ) { page ->
+    ) { index ->
+        val adItem = items[index]
         Box(
             modifier = modifier
                 .clip(RoundedCornerShape(16.dp))
-                .clickable(onClick = onItemClick)
+                .clickable(onClick = { onItemClick(adItem) })
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
+            SubcomposeAsyncImage(
+                model = adItem.imageUrl,
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
@@ -87,7 +86,7 @@ fun AdvertisementsItem(
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "Lorem ipsum",
+                    text = adItem.title,
                     style = MaterialTheme.typography.titleLarge,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -95,11 +94,13 @@ fun AdvertisementsItem(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Le 21/07/2021 a 11h00",
+                    text = adItem.description,
                     style = MaterialTheme.typography.bodyLarge,
                     fontSize = 18.sp,
                     color = Color.White,
-                    fontWeight = FontWeight.W400
+                    fontWeight = FontWeight.W400,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }
