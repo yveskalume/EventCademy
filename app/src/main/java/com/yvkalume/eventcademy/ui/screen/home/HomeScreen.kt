@@ -1,5 +1,6 @@
 package com.yvkalume.eventcademy.ui.screen.home
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,10 +24,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yvkalume.eventcademy.R
+import com.yvkalume.eventcademy.ui.MainActivity
 import com.yvkalume.eventcademy.ui.components.EventItem
 import com.yvkalume.eventcademy.ui.components.FeaturedEventItem
 import com.yvkalume.eventcademy.ui.components.SectionHeader
@@ -34,6 +37,10 @@ import com.yvkalume.eventcademy.util.ThemePreview
 
 @Composable
 fun HomeRoute(onEventClick: () -> Unit) {
+    val context = LocalContext.current
+    BackHandler {
+        (context as? MainActivity)?.finish()
+    }
     HomeScreen(onEventClick = onEventClick)
 }
 

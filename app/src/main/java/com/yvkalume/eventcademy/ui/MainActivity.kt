@@ -2,6 +2,7 @@ package com.yvkalume.eventcademy.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.yvkalume.eventcademy.ui.navigation.Destination
 import com.yvkalume.eventcademy.ui.navigation.isCurrent
 import com.yvkalume.eventcademy.ui.screen.auth.AuthRoute
@@ -32,10 +34,23 @@ import com.yvkalume.eventcademy.ui.screen.home.HomeRoute
 import com.yvkalume.eventcademy.ui.theme.EventCademyTheme
 import com.yvkalume.eventcademy.util.navigate
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @SuppressLint("MaterialDesignInsteadOrbitDesign")
+
+    @Inject
+    lateinit var auth: FirebaseAuth
+
+    private fun getStartDestination(): String {
+        Log.e("MainActivity", "getStartDestination: ${auth.currentUser}")
+        return if (auth.currentUser == null) {
+            Destination.AuthScreen.route
+        } else {
+            Destination.HomeScreen.route
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
@@ -85,10 +100,12 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     ) {
+
+                        // FIXME: Starting destination
                         NavHost(
                             modifier = Modifier.padding(it),
                             navController = navController,
-                            startDestination = Destination.AuthScreen.route
+                            startDestination = getStartDestination()
                         ) {
                             composable(route = Destination.AuthScreen.route) {
                                 AuthRoute(onConnectSuccess = { navController.navigate(Destination.HomeScreen) })
