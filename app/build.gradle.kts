@@ -99,4 +99,9 @@ dependencies {
 
     implementation(libs.androidx.datastore.preferences)
 
+    implementation(libs.app.update)
+    implementation(libs.app.update.ktx)
+
+
+
 }

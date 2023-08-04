@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -27,6 +29,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.auth.FirebaseAuth
 import com.yvkalume.eventcademy.ui.navigation.Destination
 import com.yvkalume.eventcademy.ui.navigation.isCurrent
@@ -56,9 +62,17 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private val appUpdateManager by lazy { AppUpdateManagerFactory.create(this) }
+    private val activityUpdateResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result: ActivityResult ->
+            {
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
+        checkForUpdates()
 
         val dataStoreUtil = DataStoreUtil(applicationContext)
 
@@ -191,6 +205,44 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        appUpdateManager
+            .appUpdateInfo
+            .addOnSuccessListener { appUpdateInfo ->
+                if (appUpdateInfo.updateAvailability()
+                    == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
+                ) {
+                    appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        activityUpdateResultLauncher,
+                        AppUpdateOptions.newBuilder(IMMEDIATE).build()
+                    )
+                }
+            }
+    }
+
+    fun checkForUpdates() {
+
+
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(IMMEDIATE)
+            ) {
+
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    activityUpdateResultLauncher,
+                    AppUpdateOptions.newBuilder(IMMEDIATE).build()
+                )
+
             }
         }
     }
