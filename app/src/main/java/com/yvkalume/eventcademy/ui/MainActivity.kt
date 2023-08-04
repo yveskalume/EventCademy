@@ -2,11 +2,8 @@ package com.yvkalume.eventcademy.ui
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -54,7 +51,6 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var auth: FirebaseAuth
     private fun getStartDestination(): String {
-        Log.e("MainActivity", "getStartDestination: ${auth.currentUser}")
         return if (auth.currentUser == null) {
             Destination.AuthScreen.route
         } else {
@@ -110,7 +106,11 @@ class MainActivity : ComponentActivity() {
                                 NavigationBar {
                                     NavigationBarItem(
                                         selected = destination.isCurrent(Destination.HomeScreen),
-                                        onClick = { navController.navigate(Destination.HomeScreen) },
+                                        onClick = {
+                                            if (!destination.isCurrent(Destination.HomeScreen)) {
+                                                navController.navigate(Destination.HomeScreen)
+                                            }
+                                        },
                                         label = {
                                             Text(text = "Accueil")
                                         },
@@ -124,7 +124,11 @@ class MainActivity : ComponentActivity() {
 
                                     NavigationBarItem(
                                         selected = destination.isCurrent(Destination.BookmarkScreen),
-                                        onClick = { navController.navigate(Destination.BookmarkScreen) },
+                                        onClick = {
+                                            if (!destination.isCurrent(Destination.BookmarkScreen)) {
+                                                navController.navigate(Destination.BookmarkScreen)
+                                            }
+                                        },
                                         label = {
                                             Text(text = "Vos événements")
                                         },
