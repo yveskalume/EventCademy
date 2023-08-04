@@ -9,7 +9,11 @@ import com.yvkalume.eventcademy.ui.navigation.Destination.HomeScreen
 sealed class Destination(val route: String) {
     object AuthScreen : Destination("auth")
     object HomeScreen : Destination("home")
-    object EventDetailScreen : Destination("event-detail")
+    object EventDetailScreen : Destination("event-detail/{eventUid}") {
+        fun createRoute(eventUid: String): String {
+            return "event-detail/$eventUid"
+        }
+    }
     object BookmarkScreen : Destination("bookmark")
     object SettingsScreen : Destination("settings")
 }

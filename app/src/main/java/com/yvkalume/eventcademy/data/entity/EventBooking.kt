@@ -3,7 +3,7 @@ package com.yvkalume.eventcademy.data.entity
 import java.util.Date
 
 data class EventBooking(
-    // the uid of the event is the userUid_eventUid
+    // the uid of the event is the userUid-eventUid
     val uid: String = "",
     val eventUid: String = "",
     val eventName: String = "",

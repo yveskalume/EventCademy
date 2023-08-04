@@ -24,8 +24,11 @@ val Date.monthName: String
 val Date.readableDate: String
     get() = SimpleDateFormat("dd MMM yyyy", Locale.FRENCH).format(this)
 
+val Date.readableDateWithDayName: String
+    get() = SimpleDateFormat("EEEE, dd MMM yyyy", Locale.FRENCH).format(this)
+
 val Date.DateAndTime: String
     get() = SimpleDateFormat("dd MMM yyyy HH:mm", Locale.FRENCH).format(this)
 
-val Date.time: String
+val Date.hoursAndMins: String
     get() = SimpleDateFormat("HH:mm", Locale.FRENCH).format(this)

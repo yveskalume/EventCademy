@@ -119,13 +119,23 @@ class MainActivity : ComponentActivity() {
 
                             composable(route = Destination.HomeScreen.route) {
                                 HomeRoute(
-                                    onEventClick = { navController.navigate(Destination.EventDetailScreen) },
+                                    onEventClick = { eventUid ->
+                                        navController.navigate(
+                                            Destination.EventDetailScreen.createRoute(
+                                                eventUid = eventUid
+                                            )
+                                        )
+                                    },
                                     onSettingClick = { navController.navigate(Destination.SettingsScreen) }
                                 )
                             }
 
-                            composable(route = Destination.EventDetailScreen.route) {
-                                EventDetailRoute(onBackClick = navController::navigateUp)
+                            composable(route = Destination.EventDetailScreen.route) { backStackEntry ->
+                                val eventUid = backStackEntry.arguments?.getString("eventUid")
+                                EventDetailRoute(
+                                    eventUid = eventUid,
+                                    onBackClick = navController::navigateUp
+                                )
                             }
 
                             composable(route = Destination.BookmarkScreen.route) {
