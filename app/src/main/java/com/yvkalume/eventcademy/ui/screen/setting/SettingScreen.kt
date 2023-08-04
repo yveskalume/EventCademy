@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.ContactSupport
 import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.Logout
 import androidx.compose.material3.Card
@@ -23,22 +24,29 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.yvkalume.eventcademy.util.ThemePreview
 
 @Composable
 fun SettingRoute(
+    viewModel: SettingViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
     onLogoutClick: () -> Unit,
     darkMode: Boolean,
     onDarkModeChange: (Boolean) -> Unit
 ) {
+    val uriHandler = LocalUriHandler.current
     SettingScreen(
         onBackClick = onBackClick,
         onLogoutClick = onLogoutClick,
         darkMode = darkMode,
-        onDarkModeChange = onDarkModeChange
+        onDarkModeChange = onDarkModeChange,
+        onContactClick = {
+            uriHandler.openUri(viewModel.getDeveloperContactLink())
+        }
     )
 }
 
@@ -48,7 +56,8 @@ fun SettingScreen(
     onBackClick: () -> Unit,
     onLogoutClick: () -> Unit,
     darkMode: Boolean,
-    onDarkModeChange: (Boolean) -> Unit
+    onDarkModeChange: (Boolean) -> Unit,
+    onContactClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -102,6 +111,30 @@ fun SettingScreen(
             }
 
             item {
+                Card(onClick = onContactClick) {
+                    Row(
+                        modifier = Modifier
+                            .padding(vertical = 8.dp, horizontal = 16.dp)
+                            .height(48.dp)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text(
+                                text = "Nous contacter",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                        Icon(
+                            imageVector = Icons.Rounded.ContactSupport,
+                            contentDescription = null,
+                        )
+                    }
+                }
+            }
+
+            item {
                 Card(onClick = onLogoutClick) {
                     Row(
                         modifier = Modifier
@@ -137,7 +170,8 @@ fun SettingScreenPreview() {
             onBackClick = {},
             onLogoutClick = {},
             darkMode = false,
-            onDarkModeChange = {}
+            onDarkModeChange = {},
+            onContactClick = {}
         )
     }
 }

@@ -93,6 +93,7 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
     implementation(libs.firebase.messaging)
+    implementation(libs.firebase.remoteconfig)
 
     implementation(libs.coil.compose)
 

@@ -49,6 +49,7 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage-ktx" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx" }
+firebase-remoteconfig = { group = "com.google.firebase", name = "firebase-config-ktx" }
 
 google-playservices-auth = { group = "com.google.android.gms", name = "play-services-auth",version= "20.6.0" }
 
