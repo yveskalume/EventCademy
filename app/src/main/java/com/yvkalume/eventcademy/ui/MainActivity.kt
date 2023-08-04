@@ -63,11 +63,6 @@ class MainActivity : ComponentActivity() {
     }
 
     private val appUpdateManager by lazy { AppUpdateManagerFactory.create(this) }
-    private val activityUpdateResultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result: ActivityResult ->
-            {
-            }
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -218,16 +213,16 @@ class MainActivity : ComponentActivity() {
                 if (appUpdateInfo.updateAvailability()
                     == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
                 ) {
-                    appUpdateManager.startUpdateFlowForResult(
+                    appUpdateManager.startUpdateFlow(
                         appUpdateInfo,
-                        activityUpdateResultLauncher,
+                        this,
                         AppUpdateOptions.newBuilder(IMMEDIATE).build()
                     )
                 }
             }
     }
 
-    fun checkForUpdates() {
+    private fun checkForUpdates() {
 
 
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
@@ -237,9 +232,9 @@ class MainActivity : ComponentActivity() {
                 && appUpdateInfo.isUpdateTypeAllowed(IMMEDIATE)
             ) {
 
-                appUpdateManager.startUpdateFlowForResult(
+                appUpdateManager.startUpdateFlow(
                     appUpdateInfo,
-                    activityUpdateResultLauncher,
+                    this,
                     AppUpdateOptions.newBuilder(IMMEDIATE).build()
                 )
 
