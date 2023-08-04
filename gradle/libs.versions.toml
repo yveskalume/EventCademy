@@ -1,6 +1,7 @@
 [versions]
 agp = "8.1.0"
 core-splashscreen = "1.0.1"
+datastore-preferences = "1.0.0"
 kotlinx-coroutines-android = "1.7.1"
 material = "1.4.3"
 org-jetbrains-kotlin-android = "1.8.22"
@@ -18,6 +19,7 @@ hilt = "2.46.1"
 
 [libraries]
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-splashscreen" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore-preferences" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }

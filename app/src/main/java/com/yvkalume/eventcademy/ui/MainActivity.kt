@@ -1,5 +1,6 @@
 package com.yvkalume.eventcademy.ui
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -17,11 +18,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -36,8 +36,10 @@ import com.yvkalume.eventcademy.ui.screen.eventdetail.EventDetailRoute
 import com.yvkalume.eventcademy.ui.screen.home.HomeRoute
 import com.yvkalume.eventcademy.ui.screen.setting.SettingRoute
 import com.yvkalume.eventcademy.ui.theme.EventCademyTheme
+import com.yvkalume.eventcademy.util.DataStoreUtil
 import com.yvkalume.eventcademy.util.navigate
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -45,8 +47,6 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var auth: FirebaseAuth
-
-
     private fun getStartDestination(): String {
         Log.e("MainActivity", "getStartDestination: ${auth.currentUser}")
         return if (auth.currentUser == null) {
@@ -59,9 +59,31 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
+
+        val dataStoreUtil = DataStoreUtil(applicationContext)
+
+        val systemTheme =
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                Configuration.UI_MODE_NIGHT_YES -> {
+                    true
+                }
+
+                Configuration.UI_MODE_NIGHT_NO -> {
+                    false
+                }
+
+                else -> {
+                    false
+                }
+            }
+
         setContent {
 
-            var isDarkTheme by remember { mutableStateOf(false) }
+            val isDarkTheme by dataStoreUtil.getTheme(systemTheme)
+                .collectAsStateWithLifecycle(initialValue = systemTheme)
+
+            val coroutineScope = rememberCoroutineScope()
+
 
             EventCademyTheme(darkTheme = isDarkTheme) {
                 Surface(
@@ -139,7 +161,15 @@ class MainActivity : ComponentActivity() {
                             }
 
                             composable(route = Destination.BookmarkScreen.route) {
-                                BookmarkRoute(onEventClick = { navController.navigate(Destination.EventDetailScreen) })
+                                BookmarkRoute(
+                                    onEventClick = { eventUid ->
+                                        navController.navigate(
+                                            Destination.EventDetailScreen.createRoute(
+                                                eventUid = eventUid
+                                            )
+                                        )
+                                    }
+                                )
                             }
                             composable(route = Destination.SettingsScreen.route) {
                                 SettingRoute(
@@ -149,7 +179,13 @@ class MainActivity : ComponentActivity() {
                                         navController.navigate(Destination.AuthScreen)
                                     },
                                     darkMode = isDarkTheme,
-                                    onDarkModeChange = { darkMode -> isDarkTheme = darkMode }
+                                    onDarkModeChange = { darkMode ->
+                                        coroutineScope.launch {
+                                            dataStoreUtil.saveTheme(
+                                                darkMode
+                                            )
+                                        }
+                                    }
                                 )
                             }
                         }
