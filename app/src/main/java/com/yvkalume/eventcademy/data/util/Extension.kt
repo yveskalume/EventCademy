@@ -32,3 +32,9 @@ val Date.DateAndTime: String
 
 val Date.hoursAndMins: String
     get() = SimpleDateFormat("HH:mm", Locale.FRENCH).format(this)
+
+val Date?.isPast: Boolean
+    get() = this?.before(Date()) ?: false
+
+val Date?.isFuture: Boolean
+    get() = this?.after(Date()) ?: false

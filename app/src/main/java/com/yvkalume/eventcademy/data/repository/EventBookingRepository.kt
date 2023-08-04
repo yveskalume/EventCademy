@@ -31,7 +31,23 @@ class EventBookingRepository @Inject constructor(
         awaitClose { listener.remove() }
     }
 
-    suspend fun checkIfUserHasBooked(eventUid: String) = callbackFlow<Boolean> {
+    fun getAllUserEventBookings() = callbackFlow<List<EventBooking>> {
+        val currentUser = firebaseAuth.currentUser
+        val listener = firestore.collection(FirestoreCollections.BOOKINGS)
+            .whereEqualTo(EventBooking::userUid.name, currentUser?.uid)
+            .addSnapshotListener { value, error ->
+                if (error != null || value == null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                value.toObjects(EventBooking::class.java).also { data ->
+                    trySend(data.sortedBy { it.eventDate })
+                }
+            }
+        awaitClose { listener.remove() }
+    }
+
+    suspend fun checkIfUserHasBooked(eventUid: String) = callbackFlow {
         val currentUser = firebaseAuth.currentUser
         val listener = firestore
             .document("${FirestoreCollections.BOOKINGS}/${currentUser?.uid}-$eventUid")

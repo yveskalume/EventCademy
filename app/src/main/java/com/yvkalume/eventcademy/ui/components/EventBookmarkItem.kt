@@ -1,7 +1,6 @@
 package com.yvkalume.eventcademy.ui.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,16 +21,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.yvkalume.eventcademy.R
+import coil.compose.SubcomposeAsyncImage
+import com.yvkalume.eventcademy.data.entity.EventBooking
+import com.yvkalume.eventcademy.data.util.readableDateWithDayName
 import com.yvkalume.eventcademy.util.ThemePreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventBookmarkItem(onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun EventBookmarkItem(
+    eventBooking: EventBooking,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     OutlinedCard(
         modifier = modifier,
         shape = RoundedCornerShape(16.dp),
@@ -45,8 +49,8 @@ fun EventBookmarkItem(onClick: () -> Unit, modifier: Modifier = Modifier) {
             modifier = Modifier.padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
+            SubcomposeAsyncImage(
+                model = eventBooking.eventImageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -55,7 +59,7 @@ fun EventBookmarkItem(onClick: () -> Unit, modifier: Modifier = Modifier) {
                     .clip(RoundedCornerShape(16.dp))
             )
             Text(
-                text = "Lorem ipsum",
+                text = eventBooking.eventName,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(horizontal = 8.dp)
@@ -70,7 +74,7 @@ fun EventBookmarkItem(onClick: () -> Unit, modifier: Modifier = Modifier) {
                     tint = Color.Gray
                 )
                 Text(
-                    text = "Lorem ipsum",
+                    text = eventBooking.eventLocation,
                 )
             }
 
@@ -83,7 +87,7 @@ fun EventBookmarkItem(onClick: () -> Unit, modifier: Modifier = Modifier) {
                     tint = Color.Gray
                 )
                 Text(
-                    text = "Lorem ipsum",
+                    text = eventBooking.eventDate?.readableDateWithDayName ?: "",
                 )
             }
         }
@@ -94,6 +98,6 @@ fun EventBookmarkItem(onClick: () -> Unit, modifier: Modifier = Modifier) {
 @Composable
 fun EventBookmarkItemPreview() {
     ThemePreview {
-        EventBookmarkItem(onClick = {})
+        EventBookmarkItem(eventBooking = EventBooking(), onClick = {})
     }
 }
