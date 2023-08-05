@@ -12,12 +12,19 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
 import androidx.hilt.work.HiltWorker
+import androidx.work.BackoffPolicy
 import androidx.work.CoroutineWorker
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import androidx.work.workDataOf
 import com.yvkalume.eventcademy.R
+import com.yvkalume.eventcademy.data.entity.Event
 import com.yvkalume.eventcademy.ui.MainActivity
+import com.yvkalume.eventcademy.util.getCountDown
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import java.util.concurrent.TimeUnit
 
 @HiltWorker
 class EventNotificationWorker @AssistedInject constructor(
@@ -48,9 +55,6 @@ class EventNotificationWorker @AssistedInject constructor(
             appContext,
             MainActivity::class.java
         )
-
-//        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, eventDetailIntent, PendingIntent.FLAG_IMMUTABLE)
-
 
         val pendingIntent: PendingIntent? = TaskStackBuilder.create(appContext).run {
             addNextIntentWithParentStack(eventDetailIntent)

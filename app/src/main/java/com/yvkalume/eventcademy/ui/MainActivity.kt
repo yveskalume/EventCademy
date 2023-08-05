@@ -1,9 +1,11 @@
 package com.yvkalume.eventcademy.ui
 
 import android.Manifest
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -24,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
@@ -70,7 +73,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         checkForUpdates()
-        askNotificationPermission()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            askNotificationPermission()
+        }
 
         val dataStoreUtil = DataStoreUtil(applicationContext)
 
@@ -254,6 +260,28 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        // get destination from intent (destination may come from FCM)
+        val destination = intent?.getStringExtra("destination")
+        Log.d("MainActivity", "onNewIntent: $destination")
+        if (destination != null) {
+            try {
+                Intent(
+                    Intent.ACTION_VIEW,
+                    destination.toUri(),
+                    this,
+                    MainActivity::class.java
+                ).also {
+                    startActivity(it)
+                    finish()
+                }
+            } catch (e: Exception) {
+                Log.e("MainActivity", "onNewIntent: ", e)
+            }
+        }
     }
 
     private fun checkForUpdates() {
