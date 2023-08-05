@@ -4,6 +4,7 @@ app-update = "2.1.0"
 core-splashscreen = "1.0.1"
 datastore-preferences = "1.0.0"
 kotlinx-coroutines-android = "1.7.1"
+lottie-compose = "6.1.0"
 material = "1.4.3"
 org-jetbrains-kotlin-android = "1.8.22"
 core-ktx = "1.10.1"
@@ -32,6 +33,7 @@ lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtim
 lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle-runtime-ktx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie-compose" }
 material-icon-exented = "androidx.compose.material:material-icons-extended:1.4.3"
 ui = { group = "androidx.compose.ui", name = "ui" }
 ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }

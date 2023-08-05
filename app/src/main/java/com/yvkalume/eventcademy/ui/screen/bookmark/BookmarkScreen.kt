@@ -4,14 +4,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Scaffold
@@ -23,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,7 +30,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yvkalume.eventcademy.data.entity.EventBooking
 import com.yvkalume.eventcademy.data.util.isFuture
 import com.yvkalume.eventcademy.data.util.isPast
+import com.yvkalume.eventcademy.ui.components.EmptyAnimation
 import com.yvkalume.eventcademy.ui.components.EventBookmarkItem
+import com.yvkalume.eventcademy.ui.components.LoadingAnimation
 import com.yvkalume.eventcademy.util.ThemePreview
 
 @Composable
@@ -55,11 +56,18 @@ private fun BookmarkScreen(uiState: BookmarkUiState, onEventClick: (String) -> U
             )
         }
     ) {
-        Box(modifier = Modifier.padding(it)) {
+        Box(
+            modifier = Modifier
+                .padding(it)
+                .fillMaxSize(), contentAlignment = Alignment.Center
+        ) {
             when (uiState) {
-                is BookmarkUiState.Error -> {}
+                is BookmarkUiState.Error -> {
+                    EmptyAnimation(text = "Une erreur est survenue")
+                }
+
                 BookmarkUiState.Loading -> {
-                    CircularProgressIndicator()
+                    LoadingAnimation()
                 }
 
                 is BookmarkUiState.Success -> {
@@ -78,7 +86,6 @@ private fun BookmarkScreen(uiState: BookmarkUiState, onEventClick: (String) -> U
 private fun BookmarkContent(
     eventBookings: List<EventBooking>,
     onEventClick: (eventUid: String) -> Unit,
-    modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
     var showPastEvents by remember {
@@ -95,11 +102,18 @@ private fun BookmarkContent(
         }
     }
 
+    if (events.value.isEmpty()) {
+        EmptyAnimation(
+            text = "Vous n'avez pas encore d'événements",
+            modifier = Modifier.padding(horizontal = 24.dp)
+        )
+    }
+
     LazyColumn(
         state = listState,
-        modifier = modifier,
         contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.fillMaxSize()
     ) {
 
         item {

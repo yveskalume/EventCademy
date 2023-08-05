@@ -102,6 +102,7 @@ dependencies {
     implementation(libs.app.update)
     implementation(libs.app.update.ktx)
 
+    implementation(libs.lottie.compose)
 
 
 }

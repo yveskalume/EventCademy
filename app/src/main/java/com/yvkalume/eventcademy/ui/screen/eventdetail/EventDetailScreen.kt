@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -55,6 +56,8 @@ import com.yvkalume.eventcademy.data.entity.Event
 import com.yvkalume.eventcademy.data.entity.EventBooking
 import com.yvkalume.eventcademy.data.util.hoursAndMins
 import com.yvkalume.eventcademy.data.util.readableDateWithDayName
+import com.yvkalume.eventcademy.ui.components.EmptyAnimation
+import com.yvkalume.eventcademy.ui.components.LoadingAnimation
 import com.yvkalume.eventcademy.ui.theme.Blue200
 import com.yvkalume.eventcademy.util.ThemePreview
 
@@ -179,9 +182,11 @@ private fun EventDetailScreen(
     ) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             when (uiState) {
-                is EventDetailUiState.Error -> {}
+                is EventDetailUiState.Error -> {
+                    EmptyAnimation(text = "Une erreur est survenue")
+                }
                 EventDetailUiState.Loading -> {
-                    CircularProgressIndicator()
+                    LoadingAnimation()
                 }
 
                 is EventDetailUiState.Success -> {
@@ -205,6 +210,7 @@ private fun EventDetailContent(
 ) {
 
     val scrollState = rememberScrollState()
+    val lazyRowState = rememberLazyListState()
 
     Column(
         modifier = modifier.verticalScroll(state = scrollState)
@@ -235,7 +241,8 @@ private fun EventDetailContent(
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            state = lazyRowState
         ) {
             items(items = bookings, key = { it.uid }) { booking ->
                 SubcomposeAsyncImage(

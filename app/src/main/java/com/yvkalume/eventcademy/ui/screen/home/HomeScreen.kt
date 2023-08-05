@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,7 +44,9 @@ import com.yvkalume.eventcademy.data.entity.User
 import com.yvkalume.eventcademy.data.entity.fakeAdvertisementList
 import com.yvkalume.eventcademy.ui.MainActivity
 import com.yvkalume.eventcademy.ui.components.AdvertisementsItem
+import com.yvkalume.eventcademy.ui.components.EmptyAnimation
 import com.yvkalume.eventcademy.ui.components.EventItem
+import com.yvkalume.eventcademy.ui.components.LoadingAnimation
 import com.yvkalume.eventcademy.ui.components.SectionHeader
 import com.yvkalume.eventcademy.util.ThemePreview
 
@@ -124,10 +125,16 @@ private fun HomeScreen(
             contentAlignment = Alignment.Center
         ) {
             when (uiState) {
-                HomeUiState.Empty -> {}
-                is HomeUiState.Error -> {}
+                HomeUiState.Empty -> {
+                    EmptyAnimation(text = "Aucun événement pour le moment")
+                }
+
+                is HomeUiState.Error -> {
+                    EmptyAnimation(text = "Une erreur est survenue")
+                }
+
                 HomeUiState.Loading -> {
-                    CircularProgressIndicator()
+                    LoadingAnimation()
                 }
 
                 is HomeUiState.Success -> {
