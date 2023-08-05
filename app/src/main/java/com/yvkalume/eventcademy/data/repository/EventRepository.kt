@@ -3,9 +3,12 @@ package com.yvkalume.eventcademy.data.repository
 import com.google.firebase.firestore.FirebaseFirestore
 import com.yvkalume.eventcademy.data.entity.Event
 import com.yvkalume.eventcademy.data.util.FirestoreCollections
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.util.Date
 import javax.inject.Inject
 
@@ -25,15 +28,18 @@ class EventRepository @Inject constructor(private val firestore: FirebaseFiresto
                 }
             }
         awaitClose()
-    }
+    }.flowOn(Dispatchers.IO)
+
 
     suspend fun getEventByUid(eventUid: String): Event {
-        val task = firestore.document("${FirestoreCollections.EVENTS}/$eventUid").get()
-        val event = task.await().toObject(Event::class.java)
-        if (event?.published == true) {
-            return event
-        } else {
-            throw NoSuchElementException("Cet évènement est introuvable")
+        return withContext(Dispatchers.IO) {
+            val task = firestore.document("${FirestoreCollections.EVENTS}/$eventUid").get()
+            val event = task.await().toObject(Event::class.java)
+            if (event?.published == true) {
+                return@withContext event
+            } else {
+                throw NoSuchElementException("Cet évènement est introuvable")
+            }
         }
     }
 }

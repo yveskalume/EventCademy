@@ -4,8 +4,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.yvkalume.eventcademy.data.entity.Advertisement
 import com.yvkalume.eventcademy.data.entity.fakeAdvertisementList
 import com.yvkalume.eventcademy.data.util.FirestoreCollections
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -24,7 +26,7 @@ class AdvertisementRepository @Inject constructor(private val firestore: Firebas
                 }
             }
         awaitClose()
-    }
+    }.flowOn(Dispatchers.IO)
 
 //    suspend fun generateFakeAdvertisements() {
 //        val advertisements = fakeAdvertisementList

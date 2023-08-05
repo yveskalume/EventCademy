@@ -5,9 +5,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.yvkalume.eventcademy.data.entity.Event
 import com.yvkalume.eventcademy.data.entity.EventBooking
 import com.yvkalume.eventcademy.data.util.FirestoreCollections
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.util.Date
 import javax.inject.Inject
 
@@ -29,7 +32,8 @@ class EventBookingRepository @Inject constructor(
                 }
             }
         awaitClose { listener.remove() }
-    }
+    }.flowOn(Dispatchers.IO)
+
 
     fun getAllUserEventBookings() = callbackFlow<List<EventBooking>> {
         val currentUser = firebaseAuth.currentUser
@@ -45,7 +49,7 @@ class EventBookingRepository @Inject constructor(
                 }
             }
         awaitClose { listener.remove() }
-    }
+    }.flowOn(Dispatchers.IO)
 
     suspend fun checkIfUserHasBooked(eventUid: String) = callbackFlow {
         val currentUser = firebaseAuth.currentUser
@@ -59,31 +63,35 @@ class EventBookingRepository @Inject constructor(
                 trySend(value.exists())
             }
         awaitClose { listener.remove() }
-    }
+    }.flowOn(Dispatchers.IO)
 
     suspend fun createBooking(event: Event) {
-        val currentUser = firebaseAuth.currentUser ?: return
-        val eventBooking = EventBooking(
-            eventUid = event.uid,
-            eventName = event.name,
-            eventDate = event.startDate,
-            eventImageUrl = event.imageUrl,
-            eventLocation = event.location,
-            userUid = currentUser.uid,
-            userName = currentUser.displayName ?: "",
-            email = currentUser.email ?: "",
-            userPhotoUrl = currentUser.photoUrl?.toString() ?: "",
-            createdAt = Date().toString()
-        )
-        firestore.document("${FirestoreCollections.BOOKINGS}/${currentUser.uid}-${event.uid}")
-            .set(eventBooking)
-            .await()
+        withContext(Dispatchers.IO) {
+            val currentUser = firebaseAuth.currentUser ?: return@withContext
+            val eventBooking = EventBooking(
+                eventUid = event.uid,
+                eventName = event.name,
+                eventDate = event.startDate,
+                eventImageUrl = event.imageUrl,
+                eventLocation = event.location,
+                userUid = currentUser.uid,
+                userName = currentUser.displayName ?: "",
+                email = currentUser.email ?: "",
+                userPhotoUrl = currentUser.photoUrl?.toString() ?: "",
+                createdAt = Date().toString()
+            )
+            firestore.document("${FirestoreCollections.BOOKINGS}/${currentUser.uid}-${event.uid}")
+                .set(eventBooking)
+                .await()
+        }
     }
 
     suspend fun deleteBooking(eventUid: String) {
-        val currentUser = firebaseAuth.currentUser ?: return
-        firestore.document("${FirestoreCollections.BOOKINGS}/${currentUser.uid}-$eventUid")
-            .delete()
-            .await()
+        withContext(Dispatchers.IO) {
+            val currentUser = firebaseAuth.currentUser ?: return@withContext
+            firestore.document("${FirestoreCollections.BOOKINGS}/${currentUser.uid}-$eventUid")
+                .delete()
+                .await()
+        }
     }
 }
