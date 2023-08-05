@@ -72,7 +72,9 @@ fun EventItem(event: Event, onClick: () -> Unit, modifier: Modifier = Modifier) 
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 18.sp,
-                        color = Color.Black
+                        color = Color.Black,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Text(
                         text = event.startDate?.monthName.toString()

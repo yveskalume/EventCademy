@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import com.yvkalume.eventcademy.data.entity.Advertisement
-import com.yvkalume.eventcademy.data.entity.fakeAdvertisementList
 import com.yvkalume.eventcademy.util.ThemePreview
 import kotlinx.coroutines.delay
 
@@ -112,7 +111,7 @@ fun AdvertisementsItem(
 fun AdvertisementsItemPreview() {
     ThemePreview {
         AdvertisementsItem(
-            items = fakeAdvertisementList,
+            items = emptyList(),
             onItemClick = {},
             modifier = Modifier.aspectRatio(1.5f)
         )

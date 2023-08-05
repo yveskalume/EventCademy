@@ -41,7 +41,6 @@ import com.yvkalume.eventcademy.data.entity.Advertisement
 import com.yvkalume.eventcademy.data.entity.AdvertisementType
 import com.yvkalume.eventcademy.data.entity.Event
 import com.yvkalume.eventcademy.data.entity.User
-import com.yvkalume.eventcademy.data.entity.fakeAdvertisementList
 import com.yvkalume.eventcademy.ui.MainActivity
 import com.yvkalume.eventcademy.ui.components.AdvertisementsItem
 import com.yvkalume.eventcademy.ui.components.EmptyAnimation
@@ -172,7 +171,7 @@ private fun HomeScreenContent(
             }
             item(span = { GridItemSpan(2) }, key = "ads") {
                 AdvertisementsItem(
-                    items = fakeAdvertisementList,
+                    items = ads,
                     onItemClick = { advertisement ->
                         if (advertisement.type == AdvertisementType.INTERNAL_EVENT) {
                             onEventClick(advertisement.destination)

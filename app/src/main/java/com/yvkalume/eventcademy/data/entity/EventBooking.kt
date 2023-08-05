@@ -1,7 +1,9 @@
 package com.yvkalume.eventcademy.data.entity
 
+import androidx.annotation.Keep
 import java.util.Date
 
+@Keep
 data class EventBooking(
     // the uid of the event is the userUid-eventUid
     val uid: String = "",
