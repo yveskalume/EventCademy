@@ -53,7 +53,6 @@ class EventDetailViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.emit(EventDetailUiState.Loading)
             try {
-                throw Exception("Test")
                 val event = async { eventRepository.getEventByUid(eventUid) }
                 eventBookingRepository.getAllBookingByEventUid(eventUid).collect { events ->
                     _uiState.emit(EventDetailUiState.Success(event.await(), events))
