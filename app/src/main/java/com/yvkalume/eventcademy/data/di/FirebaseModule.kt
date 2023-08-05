@@ -3,6 +3,7 @@ package com.yvkalume.eventcademy.data.di
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
@@ -44,6 +45,11 @@ object FirebaseModule {
         remoteConfig.fetchAndActivate()
 
         return remoteConfig
+    }
+
+    @Provides
+    fun provideFirebaseMessaging(): FirebaseMessaging {
+        return FirebaseMessaging.getInstance()
     }
 
 }
