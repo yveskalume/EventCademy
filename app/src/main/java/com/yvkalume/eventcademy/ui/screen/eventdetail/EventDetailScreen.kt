@@ -30,7 +30,6 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,14 +52,15 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
+import com.yvkalume.eventcademy.app.worker.scheduleEventNotification
 import com.yvkalume.eventcademy.data.entity.Event
 import com.yvkalume.eventcademy.data.entity.EventBooking
-import com.yvkalume.eventcademy.data.util.hoursAndMins
-import com.yvkalume.eventcademy.data.util.readableDateWithDayName
 import com.yvkalume.eventcademy.ui.components.EmptyAnimation
 import com.yvkalume.eventcademy.ui.components.LoadingAnimation
 import com.yvkalume.eventcademy.ui.theme.Blue200
 import com.yvkalume.eventcademy.util.ThemePreview
+import com.yvkalume.eventcademy.util.hoursAndMins
+import com.yvkalume.eventcademy.util.readableDateWithDayName
 
 @Composable
 fun EventDetailRoute(
@@ -70,6 +71,7 @@ fun EventDetailRoute(
     val uriHandler = LocalUriHandler.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val eventBookingState by viewModel.eventBookingState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.getData(eventUid ?: "")
@@ -81,13 +83,15 @@ fun EventDetailRoute(
         onBackClick = onBackClick,
         onBookmarkClick = {
             if (uiState is EventDetailUiState.Success) {
+                val event = (uiState as EventDetailUiState.Success).event
                 if (eventBookingState == EventBookingState.BOOKED) {
-                    uriHandler.openUri((uiState as EventDetailUiState.Success).event.eventUrl)
+                    uriHandler.openUri(event.eventUrl)
                 } else {
                     viewModel.toggleUserEventBooking(
-                        (uiState as EventDetailUiState.Success).event,
+                        event,
                         eventBookingState
                     )
+                    context.scheduleEventNotification(event = event)
                 }
             }
         }

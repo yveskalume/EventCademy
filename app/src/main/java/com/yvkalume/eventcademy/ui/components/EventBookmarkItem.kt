@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.yvkalume.eventcademy.data.entity.EventBooking
-import com.yvkalume.eventcademy.data.util.readableDateWithDayName
+import com.yvkalume.eventcademy.util.readableDateWithDayName
 import com.yvkalume.eventcademy.util.ThemePreview
 
 @OptIn(ExperimentalMaterial3Api::class)

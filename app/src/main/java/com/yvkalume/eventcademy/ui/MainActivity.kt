@@ -1,9 +1,14 @@
 package com.yvkalume.eventcademy.ui
 
+import android.Manifest
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -26,6 +31,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE
@@ -64,6 +70,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         checkForUpdates()
+        askNotificationPermission()
 
         val dataStoreUtil = DataStoreUtil(applicationContext)
 
@@ -165,7 +172,13 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
 
-                            composable(route = Destination.EventDetailScreen.route) { backStackEntry ->
+                            composable(
+                                route = Destination.EventDetailScreen.route,
+                                deepLinks = listOf(navDeepLink {
+                                    uriPattern = "https://eventcademy.app/event/{eventUid}"
+                                })
+
+                            ) { backStackEntry ->
                                 val eventUid = backStackEntry.arguments?.getString("eventUid")
                                 EventDetailRoute(
                                     eventUid = eventUid,
@@ -206,6 +219,23 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun askNotificationPermission() {
+        val launcher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { granted ->
+            if (granted.not()) {
+                Toast.makeText(
+                    this,
+                    "Vous ne recevrez pas de notification",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
     }
 
     override fun onResume() {

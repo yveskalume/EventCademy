@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yvkalume.eventcademy.data.entity.EventBooking
-import com.yvkalume.eventcademy.data.util.isFuture
-import com.yvkalume.eventcademy.data.util.isPast
+import com.yvkalume.eventcademy.util.isFuture
+import com.yvkalume.eventcademy.util.isPast
 import com.yvkalume.eventcademy.ui.components.EmptyAnimation
 import com.yvkalume.eventcademy.ui.components.EventBookmarkItem
 import com.yvkalume.eventcademy.ui.components.LoadingAnimation

@@ -97,12 +97,16 @@ dependencies {
 
     implementation(libs.coil.compose)
 
+    implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.datastore.preferences)
 
     implementation(libs.app.update)
     implementation(libs.app.update.ktx)
 
     implementation(libs.lottie.compose)
+
+    implementation(libs.androidx.hilt.work)
+    kapt(libs.androidx.hilt.compiler)
 
 
 }

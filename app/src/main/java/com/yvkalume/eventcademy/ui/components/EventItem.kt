@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import com.yvkalume.eventcademy.data.entity.Event
-import com.yvkalume.eventcademy.data.util.dayOfMonth
-import com.yvkalume.eventcademy.data.util.monthName
+import com.yvkalume.eventcademy.util.dayOfMonth
+import com.yvkalume.eventcademy.util.monthName
 import com.yvkalume.eventcademy.util.ThemePreview
 import com.yvkalume.eventcademy.util.capitalize
 

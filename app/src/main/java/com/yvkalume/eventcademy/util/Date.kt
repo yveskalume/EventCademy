@@ -1,6 +1,10 @@
 package com.yvkalume.eventcademy.util
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
+import java.time.Duration
+import java.time.Instant
 import java.util.Date
 import java.util.Locale
 
@@ -27,3 +31,19 @@ val Date?.isPast: Boolean
 
 val Date?.isFuture: Boolean
     get() = this?.after(Date()) ?: false
+
+fun Date.getCountDown(): String {
+    val currentDate = Date()
+    val durationMillis = this.time - currentDate.time
+
+    val days = durationMillis / (24 * 60 * 60 * 1000)
+    val hours = durationMillis % (24 * 60 * 60 * 1000) / (60 * 60 * 1000)
+    val minutes = durationMillis % (60 * 60 * 1000) / (60 * 1000)
+
+    val daysString = if (days > 0) "$days jours, " else ""
+    val hoursString = if (hours > 0) "$hours heures, " else ""
+    val minutesString = "$minutes minutes."
+
+    if (days == 0L && hours == 0L && minutes <= 3L) return "C'est maintenant"
+    return "C'est dans $daysString$hoursString$minutesString"
+}
