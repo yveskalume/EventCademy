@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ContactSupport
 import androidx.compose.material.icons.rounded.DarkMode
+import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Logout
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,9 +26,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.yvkalume.eventcademy.R
 import com.yvkalume.eventcademy.util.ThemePreview
 
 @Composable
@@ -39,6 +42,9 @@ fun SettingRoute(
     onDarkModeChange: (Boolean) -> Unit
 ) {
     val uriHandler = LocalUriHandler.current
+    val privacyLink = stringResource(id = R.string.link_privacy_policy)
+    val conditionLink = stringResource(id = R.string.link_terms_of_use)
+
     SettingScreen(
         onBackClick = onBackClick,
         onLogoutClick = onLogoutClick,
@@ -46,6 +52,12 @@ fun SettingRoute(
         onDarkModeChange = onDarkModeChange,
         onContactClick = {
             uriHandler.openUri(viewModel.getDeveloperContactLink())
+        },
+        onConditionClick = {
+            uriHandler.openUri(conditionLink)
+        },
+        onPrivacyClick = {
+            uriHandler.openUri(privacyLink)
         }
     )
 }
@@ -57,7 +69,9 @@ fun SettingScreen(
     onLogoutClick: () -> Unit,
     darkMode: Boolean,
     onDarkModeChange: (Boolean) -> Unit,
-    onContactClick: () -> Unit
+    onContactClick: () -> Unit,
+    onConditionClick: () -> Unit,
+    onPrivacyClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -135,6 +149,54 @@ fun SettingScreen(
             }
 
             item {
+                Card(onClick = onConditionClick) {
+                    Row(
+                        modifier = Modifier
+                            .padding(vertical = 8.dp, horizontal = 16.dp)
+                            .height(48.dp)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text(
+                                text = "Conditions d'utilisation",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                        Icon(
+                            imageVector = Icons.Rounded.KeyboardArrowRight,
+                            contentDescription = null,
+                        )
+                    }
+                }
+            }
+
+            item {
+                Card(onClick = onPrivacyClick) {
+                    Row(
+                        modifier = Modifier
+                            .padding(vertical = 8.dp, horizontal = 16.dp)
+                            .height(48.dp)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Text(
+                                text = "Politique de confidentialité",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                        Icon(
+                            imageVector = Icons.Rounded.KeyboardArrowRight,
+                            contentDescription = null,
+                        )
+                    }
+                }
+            }
+
+            item {
                 Card(onClick = onLogoutClick) {
                     Row(
                         modifier = Modifier
@@ -171,7 +233,9 @@ fun SettingScreenPreview() {
             onLogoutClick = {},
             darkMode = false,
             onDarkModeChange = {},
-            onContactClick = {}
+            onContactClick = {},
+            onConditionClick = {},
+            onPrivacyClick = {}
         )
     }
 }

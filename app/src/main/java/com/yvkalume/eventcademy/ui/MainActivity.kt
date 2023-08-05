@@ -235,7 +235,7 @@ class MainActivity : ComponentActivity() {
             if (granted.not()) {
                 Toast.makeText(
                     this,
-                    "Vous ne recevrez pas de notification",
+                    "Veuillez autoriser les notifications pour recevoir les notifications de l'application",
                     Toast.LENGTH_SHORT
                 ).show()
             }

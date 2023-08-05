@@ -10,6 +10,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,14 +25,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,6 +48,8 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
 import com.yvkalume.eventcademy.R
 import com.yvkalume.eventcademy.ui.MainActivity
+import com.yvkalume.eventcademy.ui.components.LinkedText
+import com.yvkalume.eventcademy.ui.components.withLink
 import com.yvkalume.eventcademy.util.ThemePreview
 
 @Composable
@@ -60,7 +64,7 @@ fun AuthRoute(viewModel: AuthViewModel = hiltViewModel(), onConnectSuccess: () -
         startAuthFlow = { viewModel.startAuthFlow() })
 }
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalLayoutApi::class)
 @Composable
 fun AuthScreen(
     uiState: AuthUiState,
@@ -69,8 +73,11 @@ fun AuthScreen(
 ) {
     val context = LocalContext.current
     val token = stringResource(id = R.string.default_web_client_id)
+    val uriHandler = LocalUriHandler.current
+    val privacyPolicyLink = stringResource(id = R.string.link_privacy_policy)
+    val termsOfUseLink = stringResource(id = R.string.link_terms_of_use)
 
-   
+
     BackHandler {
         (context as? MainActivity)?.finish()
     }
@@ -154,6 +161,20 @@ fun AuthScreen(
                     }
                 }
 
+                LinkedText(
+                    style = MaterialTheme.typography.labelSmall,
+                    text = buildAnnotatedString {
+                        append("En vous connectant, vous acceptez nos ")
+                        withLink(url = termsOfUseLink) {
+                            append("Conditions générales d'utilisation")
+                        }
+                        append(" et notre ")
+                        withLink(url = privacyPolicyLink) {
+                            append("Politique de confidentialité")
+                        }
+                    },
+                    onClick = { url -> uriHandler.openUri(url) }
+                )
             }
         }
     }
