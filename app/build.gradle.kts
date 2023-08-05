@@ -18,11 +18,11 @@ val keystoreProperties = Properties()
 keystoreProperties.load(keystorePropertiesFile.inputStream())
 
 android {
-    namespace = "com.yvkalume.eventcademy"
+    namespace = "com.yveskalume.eventcademy"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.yvkalume.eventcademy"
+        applicationId = "com.yveskalume.eventcademy"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
