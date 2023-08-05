@@ -1,19 +1,8 @@
-package com.yvkalume.eventcademy.data.util
+package com.yvkalume.eventcademy.util
 
-import com.google.firebase.auth.FirebaseUser
-import com.yvkalume.eventcademy.data.entity.User
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
-fun FirebaseUser.toDomainUser() = User(
-    uid = uid,
-    name = displayName!!,
-    email = email!!,
-    photoUrl = photoUrl.toString(),
-    createdAt = Date(),
-    updatedAt = Date(),
-)
 
 val Date.dayOfMonth: String
     get() = SimpleDateFormat("dd", Locale.FRENCH).format(this)
