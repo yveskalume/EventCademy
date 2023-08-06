@@ -69,6 +69,7 @@ class EventBookingRepository @Inject constructor(
         withContext(Dispatchers.IO) {
             val currentUser = firebaseAuth.currentUser ?: return@withContext
             val eventBooking = EventBooking(
+                uid = "${currentUser.uid}-${event.uid}",
                 eventUid = event.uid,
                 eventName = event.name,
                 eventDate = event.startDate,
@@ -80,7 +81,7 @@ class EventBookingRepository @Inject constructor(
                 userPhotoUrl = currentUser.photoUrl?.toString() ?: "",
                 createdAt = Date().toString()
             )
-            firestore.document("${FirestoreCollections.BOOKINGS}/${currentUser.uid}-${event.uid}")
+            firestore.document("${FirestoreCollections.BOOKINGS}/${eventBooking.uid}")
                 .set(eventBooking)
                 .await()
         }
