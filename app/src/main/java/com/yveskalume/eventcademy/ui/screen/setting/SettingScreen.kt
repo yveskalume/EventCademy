@@ -111,7 +111,7 @@ fun SettingScreen(
                                 contentDescription = null
                             )
                             Text(
-                                text = "Manage notifications",
+                                text = "Mode sombre",
                                 style = MaterialTheme.typography.titleMedium
                             )
                         }
