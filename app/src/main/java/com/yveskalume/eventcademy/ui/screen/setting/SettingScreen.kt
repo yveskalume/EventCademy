@@ -1,5 +1,6 @@
 package com.yveskalume.eventcademy.ui.screen.setting
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -25,13 +26,16 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.yveskalume.eventcademy.R
+import com.yveskalume.eventcademy.ui.theme.Blue200
 import com.yveskalume.eventcademy.util.ThemePreview
+import com.yveskalume.eventcademy.util.sendEmailIntent
 
 @Composable
 fun SettingRoute(
@@ -44,6 +48,7 @@ fun SettingRoute(
     val uriHandler = LocalUriHandler.current
     val privacyLink = stringResource(id = R.string.link_privacy_policy)
     val conditionLink = stringResource(id = R.string.link_terms_of_use)
+    val context = LocalContext.current
 
     SettingScreen(
         onBackClick = onBackClick,
@@ -51,13 +56,16 @@ fun SettingRoute(
         darkMode = darkMode,
         onDarkModeChange = onDarkModeChange,
         onContactClick = {
-            uriHandler.openUri(viewModel.getDeveloperContactLink())
+            context.sendEmailIntent("eventcademy@gmail.com")
         },
         onConditionClick = {
             uriHandler.openUri(conditionLink)
         },
         onPrivacyClick = {
             uriHandler.openUri(privacyLink)
+        },
+        onDevscastLinkClick = {
+            uriHandler.openUri("https://devscast.tech")
         }
     )
 }
@@ -72,6 +80,7 @@ fun SettingScreen(
     onContactClick: () -> Unit,
     onConditionClick: () -> Unit,
     onPrivacyClick: () -> Unit,
+    onDevscastLinkClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -220,6 +229,20 @@ fun SettingScreen(
                     }
                 }
             }
+
+            item {
+                Row {
+                    Text(text = "Produit Par", style = MaterialTheme.typography.labelMedium)
+                    Text(
+                        text = "Devscast",
+                        modifier = Modifier
+                            .padding(start = 3.dp)
+                            .clickable(onClick = onDevscastLinkClick),
+                        color = Blue200,
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
+            }
         }
     }
 }
@@ -235,7 +258,8 @@ fun SettingScreenPreview() {
             onDarkModeChange = {},
             onContactClick = {},
             onConditionClick = {},
-            onPrivacyClick = {}
+            onPrivacyClick = {},
+            onDevscastLinkClick = {}
         )
     }
 }

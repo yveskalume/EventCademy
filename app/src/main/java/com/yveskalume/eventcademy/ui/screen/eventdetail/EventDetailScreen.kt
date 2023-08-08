@@ -59,6 +59,7 @@ import com.yveskalume.eventcademy.ui.components.EmptyAnimation
 import com.yveskalume.eventcademy.ui.components.LoadingAnimation
 import com.yveskalume.eventcademy.ui.theme.Blue200
 import com.yveskalume.eventcademy.util.ThemePreview
+import com.yveskalume.eventcademy.util.addToPhoneCalendar
 import com.yveskalume.eventcademy.util.hoursAndMins
 import com.yveskalume.eventcademy.util.readableDateWithDayName
 
@@ -85,7 +86,7 @@ fun EventDetailRoute(
             if (uiState is EventDetailUiState.Success) {
                 val event = (uiState as EventDetailUiState.Success).event
                 if (eventBookingState == EventBookingState.BOOKED) {
-                    uriHandler.openUri(event.eventUrl)
+                    context.addToPhoneCalendar(event)
                 } else {
                     viewModel.toggleUserEventBooking(
                         event,
@@ -176,7 +177,7 @@ private fun EventDetailScreen(
                                     containerColor = MaterialTheme.colorScheme.background
                                 )
                             ) {
-                                Text(text = "Voir")
+                                Text(text = "Ajouter au calendrier")
                             }
                         }
                     }
