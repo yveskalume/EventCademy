@@ -89,7 +89,7 @@ fun EventItem(event: Event, onClick: () -> Unit, modifier: Modifier = Modifier) 
         }
         Text(text = event.name, style = MaterialTheme.typography.titleMedium)
         Text(
-            text = event.description,
+            text = event.location,
             style = MaterialTheme.typography.bodyMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
