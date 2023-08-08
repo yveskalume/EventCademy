@@ -25,7 +25,7 @@ android {
         applicationId = "com.yveskalume.eventcademy"
         minSdk = 24
         targetSdk = 34
-        versionCode = 3
+        versionCode = 4
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
