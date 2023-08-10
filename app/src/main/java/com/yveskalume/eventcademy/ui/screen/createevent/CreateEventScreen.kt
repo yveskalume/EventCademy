@@ -1,7 +1,7 @@
 package com.yveskalume.eventcademy.ui.screen.createevent
 
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ArrowDropDown
@@ -44,6 +45,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yveskalume.eventcademy.data.entity.EventType
@@ -68,6 +70,9 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
 
     val dateFocusRequester = remember { FocusRequester() }
     val typeFocusRequester = remember { FocusRequester() }
+
+    val startTimeFocus = remember { FocusRequester() }
+    var priceFocus by remember { mutableStateOf(FocusRequester()) }
 
 
     var isDropdownExpanded by remember { mutableStateOf(false) }
@@ -131,10 +136,9 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
             onDateSelected = {
                 eventDate = it
                 showDatePicker = false
-                dateFocusRequester.freeFocus()
+                startTimeFocus.requestFocus()
             }
         )
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -163,20 +167,6 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
                 }
             )
             Row(modifier = Modifier.fillMaxWidth()) {
-                OutlinedTextField(
-                    modifier = Modifier.weight(1f),
-                    value = eventPrice,
-                    onValueChange = { eventPrice = it },
-                    label = { Text(text = "Prix") },
-                    singleLine = true,
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Rounded.AttachMoney,
-                            contentDescription = null
-                        )
-                    }
-                )
-                Spacer(modifier = Modifier.padding(8.dp))
                 Box(
                     modifier = Modifier
                         .weight(1f)
@@ -185,7 +175,7 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
                     DropdownMenu(
                         expanded = isDropdownExpanded,
                         onDismissRequest = {
-                            typeFocusRequester.freeFocus()
+                            priceFocus.requestFocus()
                             isDropdownExpanded = false
                         }
                     ) {
@@ -196,7 +186,7 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
                                 onClick = {
                                     eventType = type
                                     isDropdownExpanded = false
-                                    typeFocusRequester.freeFocus()
+                                    priceFocus.requestFocus()
                                 }
                             )
                         }
@@ -224,6 +214,22 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
                         },
                     )
                 }
+                Spacer(modifier = Modifier.padding(8.dp))
+                OutlinedTextField(
+                    modifier = Modifier.weight(1f).focusRequester(priceFocus),
+                    value = eventPrice,
+                    onValueChange = { eventPrice = it },
+                    label = { Text(text = "Prix") },
+                    singleLine = true,
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Rounded.AttachMoney,
+                            contentDescription = null
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+
             }
 
             OutlinedTextField(
@@ -248,7 +254,7 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
             )
             Row(modifier = Modifier.fillMaxWidth()) {
                 OutlinedTextField(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f).focusRequester(startTimeFocus),
                     value = eventStartTime,
                     onValueChange = { eventStartTime = it },
                     label = { Text(text = "Heure de début") }
