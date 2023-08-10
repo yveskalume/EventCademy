@@ -181,7 +181,7 @@ class MainActivity : ComponentActivity() {
                             composable(
                                 route = Destination.EventDetailScreen.route,
                                 deepLinks = listOf(navDeepLink {
-                                    uriPattern = "https://eventcademy.app/event/{eventUid}"
+                                    uriPattern = "https://eventcademy.app/event/{eventUid}z"
                                 })
 
                             ) { backStackEntry ->
