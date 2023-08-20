@@ -1,24 +1,31 @@
 package com.yveskalume.eventcademy.ui.screen.createevent
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.focusable
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.AttachMoney
 import androidx.compose.material.icons.rounded.DateRange
+import androidx.compose.material.icons.rounded.Image
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -33,6 +40,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,39 +49,36 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.SubcomposeAsyncImage
 import com.yveskalume.eventcademy.data.entity.EventType
 import com.yveskalume.eventcademy.ui.components.SelectDateDialog
+import com.yveskalume.eventcademy.ui.components.SelectTimeDialog
 import com.yveskalume.eventcademy.util.ThemePreview
 import com.yveskalume.eventcademy.util.isValidUrl
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun CreateEventScreen(onBackClick: () -> Unit) {
+
+    val focusManager = LocalFocusManager.current
 
     var eventName by remember { mutableStateOf("") }
     var eventLocation by remember { mutableStateOf("") }
     var eventDate by remember { mutableStateOf("") }
-    var eventStartTime by remember { mutableStateOf("") }
-    var eventEndTime by remember { mutableStateOf("") }
+    var eventStartTime by remember { mutableStateOf("__:__") }
+    var eventEndTime by remember { mutableStateOf("__:__") }
     var eventDescription by remember { mutableStateOf("") }
     var eventPrice by remember { mutableStateOf("") }
     var eventType: EventType? by remember { mutableStateOf(null) }
     var eventLink by remember { mutableStateOf("") }
     var imageUri by remember { mutableStateOf("") }
-
-    val dateFocusRequester = remember { FocusRequester() }
-    val typeFocusRequester = remember { FocusRequester() }
-
-    val startTimeFocus = remember { FocusRequester() }
-    var priceFocus by remember { mutableStateOf(FocusRequester()) }
-
 
     var isDropdownExpanded by remember { mutableStateOf(false) }
     val dropdownIconRotation by animateFloatAsState(
@@ -84,10 +89,29 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
     var isFormValid by remember { mutableStateOf(false) }
 
     var showDatePicker by remember { mutableStateOf(false) }
+    var showStartTimePicker by remember { mutableStateOf(false) }
+    var showEndTimePicker by remember { mutableStateOf(false) }
 
     val datePickerState =
         rememberDatePickerState(initialSelectedDateMillis = System.currentTimeMillis() + 86400000L)
 
+    val startTimeState = rememberTimePickerState(is24Hour = true)
+    val endTimeState = rememberTimePickerState(is24Hour = true)
+
+    val pickMediaLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                imageUri = uri.toString()
+            }
+        }
+
+    fun pickMedia() {
+        pickMediaLauncher.launch(
+            PickVisualMediaRequest(
+                ActivityResultContracts.PickVisualMedia.SingleMimeType("image/*")
+            )
+        )
+    }
 
     LaunchedEffect(
         eventName,
@@ -136,14 +160,39 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
             onDateSelected = {
                 eventDate = it
                 showDatePicker = false
-                startTimeFocus.requestFocus()
+                focusManager.clearFocus()
             }
         )
+
+        SelectTimeDialog(
+            isVisible = showStartTimePicker,
+            state = startTimeState,
+            onCancel = { showStartTimePicker = false },
+            onConfirm = {
+                eventStartTime = it
+                showStartTimePicker = false
+                focusManager.clearFocus()
+            }
+        )
+
+        SelectTimeDialog(
+            isVisible = showEndTimePicker,
+            state = endTimeState,
+            onCancel = { showEndTimePicker = false },
+            onConfirm = {
+                eventEndTime = it
+                showEndTimePicker = false
+                focusManager.clearFocus()
+            }
+        )
+
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
+                .wrapContentHeight()
                 .padding(contentPadding)
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
@@ -175,7 +224,7 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
                     DropdownMenu(
                         expanded = isDropdownExpanded,
                         onDismissRequest = {
-                            priceFocus.requestFocus()
+                            focusManager.clearFocus()
                             isDropdownExpanded = false
                         }
                     ) {
@@ -185,8 +234,8 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
                                 text = { Text(text = type.name) },
                                 onClick = {
                                     eventType = type
+                                    focusManager.clearFocus()
                                     isDropdownExpanded = false
-                                    priceFocus.requestFocus()
                                 }
                             )
                         }
@@ -194,7 +243,6 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
                     OutlinedTextField(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .focusRequester(typeFocusRequester)
                             .onFocusChanged {
                                 if (it.isFocused) {
                                     isDropdownExpanded = true
@@ -216,7 +264,8 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
                 }
                 Spacer(modifier = Modifier.padding(8.dp))
                 OutlinedTextField(
-                    modifier = Modifier.weight(1f).focusRequester(priceFocus),
+                    modifier = Modifier
+                        .weight(1f),
                     value = eventPrice,
                     onValueChange = { eventPrice = it },
                     label = { Text(text = "Prix") },
@@ -235,7 +284,6 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .focusRequester(dateFocusRequester)
                     .onFocusChanged {
                         if (it.isFocused) {
                             showDatePicker = true
@@ -254,14 +302,28 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
             )
             Row(modifier = Modifier.fillMaxWidth()) {
                 OutlinedTextField(
-                    modifier = Modifier.weight(1f).focusRequester(startTimeFocus),
+                    modifier = Modifier
+                        .weight(1f)
+                        .onFocusChanged {
+                            if (it.isFocused) {
+                                showStartTimePicker = true
+                            }
+                        },
+                    readOnly = true,
                     value = eventStartTime,
                     onValueChange = { eventStartTime = it },
                     label = { Text(text = "Heure de début") }
                 )
                 Spacer(modifier = Modifier.padding(8.dp))
                 OutlinedTextField(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .onFocusChanged {
+                            if (it.isFocused) {
+                                showEndTimePicker = true
+                            }
+                        },
+                    readOnly = true,
                     value = eventEndTime,
                     onValueChange = { eventEndTime = it },
                     label = { Text(text = "Heure de fin") }
@@ -283,10 +345,30 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
                 label = { Text(text = "Lien de l'événement (facultatif)") }
             )
 
+            AnimatedContent(targetState = imageUri, label = "") { uri ->
+                if (uri.isNotBlank()) {
+                    SubcomposeAsyncImage(
+                        model = uri,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable(onClick = ::pickMedia),
+                        contentScale = ContentScale.FillWidth
+                    )
+                } else {
+                    IconButton(
+                        onClick = ::pickMedia
+                    ) {
+                        Icon(imageVector = Icons.Rounded.Image, contentDescription = null)
+                    }
+                }
+            }
+
             Button(
                 enabled = isFormValid,
                 onClick = { /*TODO*/ },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary,
