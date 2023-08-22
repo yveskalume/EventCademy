@@ -1,5 +1,4 @@
 import java.util.Properties
-import java.io.FileInputStream
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
@@ -25,8 +24,8 @@ android {
         applicationId = "com.yveskalume.eventcademy"
         minSdk = 24
         targetSdk = 34
-        versionCode = 4
-        versionName = "1.0"
+        versionCode = 5
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
