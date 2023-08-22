@@ -44,7 +44,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -69,7 +68,6 @@ fun EventDetailRoute(
     eventUid: String?,
     onBackClick: () -> Unit
 ) {
-    val uriHandler = LocalUriHandler.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val eventBookingState by viewModel.eventBookingState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -149,35 +147,37 @@ private fun EventDetailScreen(
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.SemiBold
                 )
-                AnimatedContent(targetState = eventBookingState, label = "") { state ->
-                    when (state) {
-                        EventBookingState.LOADING -> {
-                            CircularProgressIndicator()
-                        }
-
-                        EventBookingState.NOT_BOOKED -> {
-                            Button(
-                                shape = RoundedCornerShape(8.dp),
-                                onClick = onBookmarkClick,
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.primary,
-                                    contentColor = Color.White
-                                )
-                            ) {
-                                Text(text = "J'y vais")
+                if (uiState !is EventDetailUiState.Error) {
+                    AnimatedContent(targetState = eventBookingState, label = "") { state ->
+                        when (state) {
+                            EventBookingState.LOADING -> {
+                                CircularProgressIndicator()
                             }
-                        }
 
-                        EventBookingState.BOOKED -> {
-                            OutlinedButton(
-                                shape = RoundedCornerShape(8.dp),
-                                onClick = onBookmarkClick,
-                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
-                                colors = ButtonDefaults.outlinedButtonColors(
-                                    containerColor = MaterialTheme.colorScheme.background
-                                )
-                            ) {
-                                Text(text = "Ajouter au calendrier")
+                            EventBookingState.NOT_BOOKED -> {
+                                Button(
+                                    shape = RoundedCornerShape(8.dp),
+                                    onClick = onBookmarkClick,
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.primary,
+                                        contentColor = Color.White
+                                    )
+                                ) {
+                                    Text(text = "J'y vais")
+                                }
+                            }
+
+                            EventBookingState.BOOKED -> {
+                                OutlinedButton(
+                                    shape = RoundedCornerShape(8.dp),
+                                    onClick = onBookmarkClick,
+                                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                                    colors = ButtonDefaults.outlinedButtonColors(
+                                        containerColor = MaterialTheme.colorScheme.background
+                                    )
+                                ) {
+                                    Text(text = "Ajouter au calendrier")
+                                }
                             }
                         }
                     }
@@ -188,8 +188,9 @@ private fun EventDetailScreen(
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             when (uiState) {
                 is EventDetailUiState.Error -> {
-                    EmptyAnimation(text = "Une erreur est survenue")
+                    EmptyAnimation(text = "Cet evenment n'est pas encore disponible ou a été supprimé")
                 }
+
                 EventDetailUiState.Loading -> {
                     LoadingAnimation()
                 }

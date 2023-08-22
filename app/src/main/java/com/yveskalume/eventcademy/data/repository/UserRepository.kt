@@ -8,6 +8,8 @@ import com.yveskalume.eventcademy.data.entity.User
 import com.yveskalume.eventcademy.data.util.FirestoreCollections
 import com.yveskalume.eventcademy.data.util.toDomainUser
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -32,16 +34,33 @@ class UserRepository @Inject constructor(
         withContext(Dispatchers.IO) {
             val user = firebaseUser?.toDomainUser()
             if (user != null) {
-                firestore.collection(FirestoreCollections.USERS).document(user.uid).set(user).await()
+                firestore.collection(FirestoreCollections.USERS).document(user.uid).set(user)
+                    .await()
             }
         }
     }
 
-    suspend fun getCurrentUser() : User {
-       return withContext(Dispatchers.IO) {
-           val uid = firebaseAuth.uid
-           val task = firestore.document("${FirestoreCollections.USERS}/$uid").get()
-           return@withContext task.await().toObject(User::class.java)!!
-       }
+    suspend fun getCurrentUser(): User {
+        return withContext(Dispatchers.IO) {
+            val uid = firebaseAuth.uid
+            val task = firestore.document("${FirestoreCollections.USERS}/$uid").get()
+            return@withContext task.await().toObject(User::class.java)!!
+        }
+    }
+
+    fun getCurrentUserStream() = callbackFlow {
+        val uid = firebaseAuth.uid
+        val listener = firestore.document("${FirestoreCollections.USERS}/$uid")
+            .addSnapshotListener { value, error ->
+                if (error != null || value == null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                val user = value.toObject(User::class.java)
+                if (user != null) {
+                    trySend(user)
+                }
+            }
+        awaitClose { listener.remove() }
     }
 }

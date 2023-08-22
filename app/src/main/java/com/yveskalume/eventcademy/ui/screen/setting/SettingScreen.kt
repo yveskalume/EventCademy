@@ -13,7 +13,6 @@ import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ContactSupport
 import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.rounded.Logout
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -31,7 +30,6 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.yveskalume.eventcademy.R
 import com.yveskalume.eventcademy.ui.theme.Blue200
 import com.yveskalume.eventcademy.util.ThemePreview
@@ -39,9 +37,7 @@ import com.yveskalume.eventcademy.util.sendEmailIntent
 
 @Composable
 fun SettingRoute(
-    viewModel: SettingViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
-    onLogoutClick: () -> Unit,
     darkMode: Boolean,
     onDarkModeChange: (Boolean) -> Unit
 ) {
@@ -52,7 +48,6 @@ fun SettingRoute(
 
     SettingScreen(
         onBackClick = onBackClick,
-        onLogoutClick = onLogoutClick,
         darkMode = darkMode,
         onDarkModeChange = onDarkModeChange,
         onContactClick = {
@@ -74,7 +69,6 @@ fun SettingRoute(
 @Composable
 fun SettingScreen(
     onBackClick: () -> Unit,
-    onLogoutClick: () -> Unit,
     darkMode: Boolean,
     onDarkModeChange: (Boolean) -> Unit,
     onContactClick: () -> Unit,
@@ -206,31 +200,6 @@ fun SettingScreen(
             }
 
             item {
-                Card(onClick = onLogoutClick) {
-                    Row(
-                        modifier = Modifier
-                            .padding(vertical = 8.dp, horizontal = 16.dp)
-                            .height(48.dp)
-                            .fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Text(
-                                text = "Se déconnecter",
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                        }
-                        Icon(
-                            imageVector = Icons.Rounded.Logout,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.error
-                        )
-                    }
-                }
-            }
-
-            item {
                 Row {
                     Text(text = "Produit Par", style = MaterialTheme.typography.labelMedium)
                     Text(
@@ -253,7 +222,6 @@ fun SettingScreenPreview() {
     ThemePreview {
         SettingScreen(
             onBackClick = {},
-            onLogoutClick = {},
             darkMode = false,
             onDarkModeChange = {},
             onContactClick = {},

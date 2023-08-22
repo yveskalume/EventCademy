@@ -53,9 +53,12 @@ class EventDetailViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.emit(EventDetailUiState.Loading)
             try {
-                val event = async { eventRepository.getEventByUid(eventUid) }
-                eventBookingRepository.getAllBookingByEventUid(eventUid).collect { events ->
-                    _uiState.emit(EventDetailUiState.Success(event.await(), events))
+                val eventDeferred = async {
+                    eventRepository.getEventByUid(eventUid)
+                }
+                val event = eventDeferred.await()
+                eventBookingRepository.getAllBookingByEventUid(eventUid).collect { bookings ->
+                    _uiState.emit(EventDetailUiState.Success(event, bookings))
                 }
             } catch (t: Throwable) {
                 _uiState.emit(EventDetailUiState.Error(t.message ?: "Une erreur est survenue"))

@@ -10,6 +10,7 @@ class SettingViewModel @Inject constructor(
     private val remoteConfig: FirebaseRemoteConfig
 ) : ViewModel() {
 
+    // FIXME: Get the contact from remote config
     fun getDeveloperContactLink(): String {
         return remoteConfig.getString("developer_contact_link")
     }

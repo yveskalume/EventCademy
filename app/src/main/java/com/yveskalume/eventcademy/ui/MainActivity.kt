@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -47,6 +48,7 @@ import com.yveskalume.eventcademy.ui.screen.bookmark.BookmarkRoute
 import com.yveskalume.eventcademy.ui.screen.createevent.CreateEventRoute
 import com.yveskalume.eventcademy.ui.screen.eventdetail.EventDetailRoute
 import com.yveskalume.eventcademy.ui.screen.home.HomeRoute
+import com.yveskalume.eventcademy.ui.screen.profile.ProfileRoute
 import com.yveskalume.eventcademy.ui.screen.setting.SettingRoute
 import com.yveskalume.eventcademy.ui.theme.EventCademyTheme
 import com.yveskalume.eventcademy.util.DataStoreUtil
@@ -144,11 +146,29 @@ class MainActivity : ComponentActivity() {
                                             }
                                         },
                                         label = {
-                                            Text(text = "Vos événements")
+                                            Text(text = "Agenda")
                                         },
                                         icon = {
                                             Icon(
                                                 imageVector = Icons.Rounded.Bookmark,
+                                                contentDescription = null
+                                            )
+                                        }
+                                    )
+
+                                    NavigationBarItem(
+                                        selected = destination.isCurrent(Destination.ProfileScreen),
+                                        onClick = {
+                                            if (!destination.isCurrent(Destination.ProfileScreen)) {
+                                                navController.navigate(Destination.ProfileScreen)
+                                            }
+                                        },
+                                        label = {
+                                            Text(text = "Profil")
+                                        },
+                                        icon = {
+                                            Icon(
+                                                imageVector = Icons.Rounded.Person,
                                                 contentDescription = null
                                             )
                                         }
@@ -207,10 +227,6 @@ class MainActivity : ComponentActivity() {
                             composable(route = Destination.SettingsScreen.route) {
                                 SettingRoute(
                                     onBackClick = { navController.navigateUp() },
-                                    onLogoutClick = {
-                                        auth.signOut()
-                                        navController.navigate(Destination.AuthScreen)
-                                    },
                                     darkMode = isDarkTheme,
                                     onDarkModeChange = { darkMode ->
                                         coroutineScope.launch {
@@ -218,6 +234,25 @@ class MainActivity : ComponentActivity() {
                                                 darkMode
                                             )
                                         }
+                                    }
+                                )
+                            }
+
+                            composable(route = Destination.ProfileScreen.route) {
+                                ProfileRoute(
+                                    onAddEventClick = {
+                                        navController.navigate(Destination.CreateEventScreen)
+                                    },
+                                    onEventClick = { evenUid ->
+                                        navController.navigate(
+                                            Destination.EventDetailScreen.createRoute(
+                                                eventUid = evenUid
+                                            )
+                                        )
+                                    },
+                                    onLogoutClick = {
+                                        auth.signOut()
+                                        navController.navigate(Destination.AuthScreen)
                                     }
                                 )
                             }
