@@ -54,6 +54,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import com.yveskalume.eventcademy.data.entity.Event
 import com.yveskalume.eventcademy.data.entity.User
+import com.yveskalume.eventcademy.data.entity.UserRole
 import com.yveskalume.eventcademy.ui.components.ConfirmationDialog
 import com.yveskalume.eventcademy.ui.components.EmptyAnimation
 import com.yveskalume.eventcademy.ui.components.EventPublishedItem
@@ -141,14 +142,16 @@ private fun ProfileScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = onAddEventClick,
-                containerColor = MaterialTheme.colorScheme.primary,
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Add,
-                    contentDescription = null,
-                )
+            if (uiState is ProfileUiState.Success && uiState.user.role == UserRole.ORGANIZER) {
+                FloatingActionButton(
+                    onClick = onAddEventClick,
+                    containerColor = MaterialTheme.colorScheme.primary,
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.Add,
+                        contentDescription = null,
+                    )
+                }
             }
         }
     ) { contentPadding ->
@@ -207,7 +210,7 @@ fun ProfileContent(
         }
 
         item {
-            Divider(thickness = 2.dp)
+            Divider(thickness = 1.dp)
         }
 
         item {
