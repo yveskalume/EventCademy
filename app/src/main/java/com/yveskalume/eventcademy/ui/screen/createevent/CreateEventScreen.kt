@@ -2,6 +2,7 @@ package com.yveskalume.eventcademy.ui.screen.createevent
 
 import android.icu.text.DateFormat
 import android.icu.text.SimpleDateFormat
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -436,7 +437,7 @@ private fun CreateEventScreen(
                         endDate.set(Calendar.MINUTE, endTimeState.minute)
 
                         val date: DateFormat = SimpleDateFormat("z", Locale.getDefault())
-                        val timeZone: String = date.format(startDate)
+                        val timeZone: String = date.format(startDate.time)
 
                         val event = Event(
                             uid = UUID.randomUUID().toString(),
@@ -456,6 +457,7 @@ private fun CreateEventScreen(
                         )
                         onSubmit(event)
                     } catch (e: Exception) {
+                        Log.e("CreateEventScreen", "CreateEventScreen: ${e.message}")
                         Toast.makeText(
                             context,
                             "Une erreur est survenue",
