@@ -13,6 +13,7 @@ sealed class Destination(val route: String) {
     }
     object BookmarkScreen : Destination("bookmark")
     object SettingsScreen : Destination("settings")
+    object CreateEventScreen : Destination("create-event")
 }
 fun NavDestination?.isCurrent(destination: Destination): Boolean {
     return this?.hierarchy?.any { it.route == destination.route } == true

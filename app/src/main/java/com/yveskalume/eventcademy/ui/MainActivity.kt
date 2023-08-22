@@ -44,6 +44,7 @@ import com.yveskalume.eventcademy.ui.navigation.Destination
 import com.yveskalume.eventcademy.ui.navigation.isCurrent
 import com.yveskalume.eventcademy.ui.screen.auth.AuthRoute
 import com.yveskalume.eventcademy.ui.screen.bookmark.BookmarkRoute
+import com.yveskalume.eventcademy.ui.screen.createevent.CreateEventRoute
 import com.yveskalume.eventcademy.ui.screen.eventdetail.EventDetailRoute
 import com.yveskalume.eventcademy.ui.screen.home.HomeRoute
 import com.yveskalume.eventcademy.ui.screen.setting.SettingRoute
@@ -218,6 +219,12 @@ class MainActivity : ComponentActivity() {
                                             )
                                         }
                                     }
+                                )
+                            }
+
+                            composable(route = Destination.CreateEventScreen.route) {
+                                CreateEventRoute(
+                                    onBackClick = { navController.navigateUp() },
                                 )
                             }
                         }

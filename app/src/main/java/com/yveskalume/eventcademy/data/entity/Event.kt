@@ -18,5 +18,7 @@ data class Event(
     val userUid: String = "",
     val createdAt: Date? = null,
     val updatedAt: Date? = null,
+    val timezone: String = "",
     val published: Boolean = false,
+    val rejected: Boolean = false
 )

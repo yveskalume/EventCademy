@@ -1,9 +1,11 @@
 package com.yveskalume.eventcademy.ui.screen.createevent
 
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
@@ -29,6 +31,7 @@ import androidx.compose.material.icons.rounded.Image
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -52,20 +55,44 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
+import com.yveskalume.eventcademy.data.entity.Event
 import com.yveskalume.eventcademy.data.entity.EventType
 import com.yveskalume.eventcademy.ui.components.SelectDateDialog
 import com.yveskalume.eventcademy.ui.components.SelectTimeDialog
 import com.yveskalume.eventcademy.util.ThemePreview
 import com.yveskalume.eventcademy.util.isValidUrl
+import java.util.Calendar
+import java.util.Date
+import java.util.UUID
+
+@Composable
+fun CreateEventRoute(onBackClick: () -> Unit, viewModel: CreateEventViewModel = hiltViewModel()) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    CreateEventScreen(
+        uiState = uiState,
+        onBackClick = onBackClick,
+        onSubmit = viewModel::createEvent
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
-fun CreateEventScreen(onBackClick: () -> Unit) {
+fun CreateEventScreen(
+    uiState: CreateEventUiState,
+    onBackClick: () -> Unit,
+    onSubmit: (Event) -> Unit
+) {
+
+    val context = LocalContext.current
 
     val focusManager = LocalFocusManager.current
 
@@ -137,6 +164,20 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
                 eventType != null &&
                 (eventLink.isEmpty() || eventLink.isValidUrl()) &&
                 imageUri.isNotBlank()
+    }
+
+    LaunchedEffect(uiState) {
+        when (uiState) {
+            is CreateEventUiState.Success -> {
+                Toast.makeText(context, "Événement créé avec succès", Toast.LENGTH_SHORT).show()
+                onBackClick()
+            }
+            is CreateEventUiState.Error -> {
+                Toast.makeText(context, uiState.message, Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+            }
+        }
     }
 
     Scaffold(
@@ -365,8 +406,47 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
             }
 
             Button(
-                enabled = isFormValid,
-                onClick = { /*TODO*/ },
+                enabled = isFormValid && uiState !is CreateEventUiState.Loading,
+                onClick = {
+
+                    try {
+                        val startDate = Calendar.getInstance()
+                        startDate.time = Date(datePickerState.selectedDateMillis!!)
+                        startDate.set(Calendar.HOUR_OF_DAY, startTimeState.hour)
+                        startDate.set(Calendar.MINUTE, startTimeState.minute)
+
+                        val endDate = Calendar.getInstance()
+                        endDate.time = Date(datePickerState.selectedDateMillis!!)
+                        endDate.set(Calendar.HOUR_OF_DAY, endTimeState.hour)
+                        endDate.set(Calendar.MINUTE, endTimeState.minute)
+
+                        val timeZone = startDate.timeZone.displayName
+
+                        val event = Event(
+                            uid = UUID.randomUUID().toString(),
+                            name = eventName,
+                            description = eventDescription,
+                            location = eventLocation,
+                            price = eventPrice.toDoubleOrNull() ?: 0.0,
+                            startDate = startDate.time,
+                            endDate = endDate.time,
+                            imageUrl = imageUri,
+                            eventUrl = eventLink,
+                            type = eventType ?: EventType.OFFLINE,
+                            userUid = "",
+                            timezone = timeZone,
+                            createdAt = null,
+                            updatedAt = null,
+                        )
+                        onSubmit(event)
+                    } catch (e: Exception) {
+                        Toast.makeText(
+                            context,
+                            "Une erreur est survenue",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
@@ -375,6 +455,9 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
                     contentColor = Color.White
                 )
             ) {
+                AnimatedVisibility(visible = uiState is CreateEventUiState.Loading) {
+                    CircularProgressIndicator()
+                }
                 Text(text = "Soumettre")
             }
         }
@@ -385,6 +468,6 @@ fun CreateEventScreen(onBackClick: () -> Unit) {
 @Composable
 fun CreateEventScreenPreview() {
     ThemePreview {
-        CreateEventScreen(onBackClick = {})
+        CreateEventScreen(uiState = CreateEventUiState.Initial, onBackClick = {}, onSubmit = {})
     }
 }
