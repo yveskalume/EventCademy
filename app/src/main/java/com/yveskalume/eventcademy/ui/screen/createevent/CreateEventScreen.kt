@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -50,6 +51,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.onFocusChanged
@@ -86,7 +88,7 @@ fun CreateEventRoute(onBackClick: () -> Unit, viewModel: CreateEventViewModel = 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
-fun CreateEventScreen(
+private fun CreateEventScreen(
     uiState: CreateEventUiState,
     onBackClick: () -> Unit,
     onSubmit: (Event) -> Unit
@@ -172,9 +174,11 @@ fun CreateEventScreen(
                 Toast.makeText(context, "Événement créé avec succès", Toast.LENGTH_SHORT).show()
                 onBackClick()
             }
+
             is CreateEventUiState.Error -> {
                 Toast.makeText(context, uiState.message, Toast.LENGTH_SHORT).show()
             }
+
             else -> {
             }
         }
@@ -455,10 +459,15 @@ fun CreateEventScreen(
                     contentColor = Color.White
                 )
             ) {
-                AnimatedVisibility(visible = uiState is CreateEventUiState.Loading) {
-                    CircularProgressIndicator()
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    AnimatedVisibility(visible = uiState is CreateEventUiState.Loading) {
+                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                    }
+                    Text(text = "Soumettre")
                 }
-                Text(text = "Soumettre")
             }
         }
     }

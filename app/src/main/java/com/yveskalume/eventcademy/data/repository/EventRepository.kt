@@ -60,6 +60,22 @@ class EventRepository @Inject constructor(
         }
     }
 
+    fun getEventCreatedByCurrentUser() = callbackFlow<List<Event>> {
+        val userUid = firebaseAuth.uid
+        firestore.collection(FirestoreCollections.EVENTS)
+            .whereEqualTo(Event::userUid.name, userUid)
+            .addSnapshotListener { value, error ->
+                if (error != null || value == null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                value.toObjects(Event::class.java).also { data ->
+                    trySend(data.sortedBy { it.createdAt })
+                }
+            }
+        awaitClose()
+    }.flowOn(Dispatchers.IO)
+
     suspend fun createEvent(event: Event) {
         withContext(Dispatchers.IO) {
             val user = firebaseAuth.currentUser
@@ -77,6 +93,13 @@ class EventRepository @Inject constructor(
                     .set(eventToCreate)
                 task.await()
             }
+        }
+    }
+
+    suspend fun deleteEvent(eventUid: String) {
+        withContext(Dispatchers.IO) {
+            firestore.document("${FirestoreCollections.EVENTS}/$eventUid").delete().await()
+            firebaseStorage.reference.child("events/$eventUid").delete().await()
         }
     }
 }

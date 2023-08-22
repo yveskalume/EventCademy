@@ -1,6 +1,7 @@
 package com.yveskalume.eventcademy.data.entity
 
 import androidx.annotation.Keep
+import com.google.firebase.firestore.Exclude
 import java.util.Date
 
 @Keep
@@ -22,3 +23,15 @@ data class Event(
     val published: Boolean = false,
     val rejected: Boolean = false
 )
+
+@get:Exclude
+val Event.statusText: String
+    get() {
+        return if (rejected) {
+            "Rejeté"
+        } else if (published) {
+            "Publié"
+        } else {
+            "En attente"
+        }
+    }
