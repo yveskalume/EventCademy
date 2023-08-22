@@ -57,6 +57,10 @@ class EventDetailViewModel @Inject constructor(
                     eventRepository.getEventByUid(eventUid)
                 }
                 val event = eventDeferred.await()
+                if (event == null) {
+                    _uiState.emit(EventDetailUiState.Error("Cet evenment n'est pas encore disponible ou a été supprimé"))
+                    return@launch
+                }
                 eventBookingRepository.getAllBookingByEventUid(eventUid).collect { bookings ->
                     _uiState.emit(EventDetailUiState.Success(event, bookings))
                 }

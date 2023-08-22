@@ -1,5 +1,7 @@
 package com.yveskalume.eventcademy.ui.screen.createevent
 
+import android.icu.text.DateFormat
+import android.icu.text.SimpleDateFormat
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -73,6 +75,8 @@ import com.yveskalume.eventcademy.util.ThemePreview
 import com.yveskalume.eventcademy.util.isValidUrl
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 import java.util.UUID
 
 @Composable
@@ -414,17 +418,25 @@ private fun CreateEventScreen(
                 onClick = {
 
                     try {
-                        val startDate = Calendar.getInstance()
+                        val startDate = Calendar.getInstance(
+                            TimeZone.getTimeZone("GMT"),
+                            Locale.getDefault()
+                        )
                         startDate.time = Date(datePickerState.selectedDateMillis!!)
                         startDate.set(Calendar.HOUR_OF_DAY, startTimeState.hour)
                         startDate.set(Calendar.MINUTE, startTimeState.minute)
 
-                        val endDate = Calendar.getInstance()
+                        val endDate = Calendar.getInstance(
+                            TimeZone.getTimeZone("GMT"),
+                            Locale.getDefault()
+                        )
+
                         endDate.time = Date(datePickerState.selectedDateMillis!!)
                         endDate.set(Calendar.HOUR_OF_DAY, endTimeState.hour)
                         endDate.set(Calendar.MINUTE, endTimeState.minute)
 
-                        val timeZone = startDate.timeZone.displayName
+                        val date: DateFormat = SimpleDateFormat("z", Locale.getDefault())
+                        val timeZone: String = date.format(startDate)
 
                         val event = Event(
                             uid = UUID.randomUUID().toString(),

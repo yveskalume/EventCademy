@@ -21,6 +21,11 @@ class EventRepository @Inject constructor(
     private val firebaseStorage: FirebaseStorage
 ) {
 
+    /**
+     * Get all the upcoming events
+     * @return a list of events
+     */
+
     fun getAllUpComingEventsStream() = callbackFlow<List<Event>> {
         firestore.collection(FirestoreCollections.EVENTS)
             .whereGreaterThan(Event::endDate.name, Date())
@@ -37,19 +42,34 @@ class EventRepository @Inject constructor(
         awaitClose()
     }.flowOn(Dispatchers.IO)
 
+    /**
+     * Get an event by its uid
+     * @param eventUid the uid of the event
+     * @return the event if it exists and if the user is the owner or if the event is published
+     * otherwise return null
+     * @throws IllegalStateException if the user is not connected
+     */
 
-    suspend fun getEventByUid(eventUid: String): Event {
+    suspend fun getEventByUid(eventUid: String): Event? {
+        val userUid = firebaseAuth.uid
         return withContext(Dispatchers.IO) {
             val task = firestore.document("${FirestoreCollections.EVENTS}/$eventUid").get()
             val event = task.await().toObject(Event::class.java)
+            if (event?.userUid == userUid) {
+                return@withContext event
+            }
             if (event?.published == true) {
                 return@withContext event
             } else {
-                throw NoSuchElementException("Cet évènement est introuvable")
+                return@withContext null
             }
         }
     }
 
+    /**
+     * Get all the events created by the current user
+     * @return a list of events
+     */
     private suspend fun uploadEventImage(event: Event): String {
         return withContext(Dispatchers.IO) {
             val imageUri = Uri.parse(event.imageUrl)
@@ -59,6 +79,12 @@ class EventRepository @Inject constructor(
             imageRef.downloadUrl.await().toString()
         }
     }
+
+    /**
+     * Get all the events created by the current user
+     * @return a flow list of events in ascending order of creation date
+     * @throws IllegalStateException if the user is not connected
+     */
 
     fun getEventCreatedByCurrentUser() = callbackFlow<List<Event>> {
         val userUid = firebaseAuth.uid
@@ -76,6 +102,11 @@ class EventRepository @Inject constructor(
         awaitClose()
     }.flowOn(Dispatchers.IO)
 
+    /**
+     * Create an event
+     * @param event the event to create
+     * @throws IllegalStateException if the user is not connected
+     */
     suspend fun createEvent(event: Event) {
         withContext(Dispatchers.IO) {
             val user = firebaseAuth.currentUser
@@ -95,6 +126,11 @@ class EventRepository @Inject constructor(
             }
         }
     }
+
+    /**
+     * Delete an event
+     * @param eventUid the uid of the event to delete
+     */
 
     suspend fun deleteEvent(eventUid: String) {
         withContext(Dispatchers.IO) {

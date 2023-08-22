@@ -231,6 +231,7 @@ fun ProfileContent(
 
         items(events) { event ->
             EventPublishedItem(
+                modifier = Modifier.padding(horizontal = 16.dp),
                 event = event,
                 onClick = { onEventClick(event.uid) },
                 onDeleteClick = { onEventDeleteClick(event.uid) },

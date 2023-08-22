@@ -188,7 +188,7 @@ private fun EventDetailScreen(
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             when (uiState) {
                 is EventDetailUiState.Error -> {
-                    EmptyAnimation(text = "Cet evenment n'est pas encore disponible ou a été supprimé")
+                    EmptyAnimation(text = uiState.errorMessage)
                 }
 
                 EventDetailUiState.Loading -> {
@@ -295,6 +295,17 @@ private fun EventDescriptionSection(
         Spacer(modifier = Modifier.height(16.dp))
 
         Divider()
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = "Fuseau horaire",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = event.timezone,
+            style = MaterialTheme.typography.bodyLarge
+        )
         Spacer(modifier = Modifier.height(4.dp))
         Row(modifier = Modifier.fillMaxWidth()) {
             Column(
