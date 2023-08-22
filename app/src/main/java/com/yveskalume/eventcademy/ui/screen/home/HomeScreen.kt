@@ -3,34 +3,29 @@ package com.yveskalume.eventcademy.ui.screen.home
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -40,7 +35,6 @@ import com.yveskalume.eventcademy.R
 import com.yveskalume.eventcademy.data.entity.Advertisement
 import com.yveskalume.eventcademy.data.entity.AdvertisementType
 import com.yveskalume.eventcademy.data.entity.Event
-import com.yveskalume.eventcademy.data.entity.User
 import com.yveskalume.eventcademy.ui.MainActivity
 import com.yveskalume.eventcademy.ui.components.AdvertisementsItem
 import com.yveskalume.eventcademy.ui.components.EmptyAnimation
@@ -56,7 +50,6 @@ fun HomeRoute(
     onSettingClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val currentUser by viewModel.currentUser.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     BackHandler {
@@ -64,7 +57,6 @@ fun HomeRoute(
     }
     HomeScreen(
         uiState = uiState,
-        currentUser = currentUser,
         onEventClick = onEventClick,
         onSettingClick = onSettingClick
     )
@@ -74,40 +66,21 @@ fun HomeRoute(
 @Composable
 private fun HomeScreen(
     uiState: HomeUiState,
-    currentUser: User?,
     onEventClick: (String) -> Unit,
     onSettingClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.padding(start = 16.dp, end = 4.dp),
-                navigationIcon = {
+                modifier = Modifier.padding(end = 4.dp),
+                title = {
                     SubcomposeAsyncImage(
-                        model = currentUser?.photoUrl ?: R.drawable.eventcademy_app_icon,
-                        loading = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.eventcademy_app_icon),
-                                contentDescription = null
-                            )
-                        },
+                        model = R.drawable.eventcademy_text_logo,
                         contentDescription = null,
                         modifier = Modifier
-                            .size(46.dp)
-                            .clip(RoundedCornerShape(16.dp))
+                            .width(150.dp),
+                        contentScale = ContentScale.Inside
                     )
-                },
-                title = {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier.padding(start = 8.dp)
-                    ) {
-                        Text(text = "Salut !")
-                        Text(
-                            text = currentUser?.name ?: "",
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                    }
                 },
                 actions = {
                     IconButton(onClick = onSettingClick) {
@@ -201,7 +174,6 @@ fun HomeScreenPreview() {
     ThemePreview {
         HomeScreen(
             uiState = HomeUiState.Loading,
-            currentUser = null,
             onEventClick = {},
             onSettingClick = {})
     }
