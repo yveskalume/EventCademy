@@ -17,7 +17,7 @@ fun ConfirmationDialog(
 ) {
     if (isVisible) {
         AlertDialog(
-            onDismissRequest = onConfirm,
+            onDismissRequest = onCancel,
             title = {
                 Text(text = title)
             },
