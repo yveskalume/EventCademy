@@ -20,6 +20,20 @@ jobs:
       - name: Grand execute permissions to gradlew
         run: chmod +x gradlew
 
+      - name: Configure keystore before run tests
+        env:
+          ANDROID_KEYSTORE_FILE: ${{ secrets.KEYSTORE }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          echo "$ANDROID_KEYSTORE_FILE" > keystore.jks.b64
+          base64 -d -i keystore.jks.b64 > app/keystore.jks
+          echo "storeFile=keystore.jks" >> keystore.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+
       - name: Run unit tests
         run: ./gradlew testDebug
 
