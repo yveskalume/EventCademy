@@ -42,7 +42,7 @@ jobs:
       - name: Run unit tests
         run: ./gradlew testDebug
 
-  deploy-on-playstore:
+  deploy:
     name: Distribute App
     needs: test
     runs-on: ubuntu-latest
@@ -61,6 +61,25 @@ jobs:
         with:
           gradlePath: app/build.gradle.kts
           versionCode: ${{ github.run_number }}
+
+      - name: Configure keystore before bundleRelease
+        env:
+          ANDROID_KEYSTORE_FILE: ${{ secrets.KEYSTORE }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          echo "$ANDROID_KEYSTORE_FILE" > keystore.jks.b64
+          base64 -d -i keystore.jks.b64 > app/keystore.jks
+          echo "storeFile=keystore.jks" >> keystore.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+
+      - name: Decode google-services.json
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICE_JSON }}
+        run: echo $GOOGLE_SERVICES_JSON > app/google-services.json
 
       - name: Assemble Release Bundle
         run: ./gradlew bundleRelease
