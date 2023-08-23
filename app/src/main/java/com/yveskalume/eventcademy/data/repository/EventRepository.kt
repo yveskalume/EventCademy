@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.yveskalume.eventcademy.data.entity.Event
+import com.yveskalume.eventcademy.data.entity.User
 import com.yveskalume.eventcademy.data.util.FirestoreCollections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -136,6 +137,13 @@ class EventRepository @Inject constructor(
         withContext(Dispatchers.IO) {
             firestore.document("${FirestoreCollections.EVENTS}/$eventUid").delete().await()
             firebaseStorage.reference.child("events/$eventUid").delete().await()
+        }
+    }
+
+    suspend fun getUserByUid(userUid: String) : User? {
+        return withContext(Dispatchers.IO) {
+            val task = firestore.document("${FirestoreCollections.USERS}/$userUid").get()
+            task.await().toObject(User::class.java)
         }
     }
 }

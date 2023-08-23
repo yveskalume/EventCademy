@@ -16,6 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EventDetailViewModel @Inject constructor(
+    private val userRepository: EventRepository,
     private val eventRepository: EventRepository,
     private val eventBookingRepository: EventBookingRepository
 ) : ViewModel() {
@@ -61,8 +62,12 @@ class EventDetailViewModel @Inject constructor(
                     _uiState.emit(EventDetailUiState.Error("Cet evenment n'est pas encore disponible ou a été supprimé"))
                     return@launch
                 }
+
+                val userDeferred = async {
+                    userRepository.getUserByUid(event.userUid)
+                }
                 eventBookingRepository.getAllBookingByEventUid(eventUid).collect { bookings ->
-                    _uiState.emit(EventDetailUiState.Success(event, bookings))
+                    _uiState.emit(EventDetailUiState.Success(event, userDeferred.await(), bookings))
                 }
             } catch (t: Throwable) {
                 _uiState.emit(EventDetailUiState.Error(t.message ?: "Une erreur est survenue"))

@@ -2,6 +2,7 @@ package com.yveskalume.eventcademy.ui.screen.eventdetail
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -51,9 +53,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
-import com.yveskalume.eventcademy.app.worker.scheduleEventNotification
 import com.yveskalume.eventcademy.data.entity.Event
 import com.yveskalume.eventcademy.data.entity.EventBooking
+import com.yveskalume.eventcademy.data.entity.User
 import com.yveskalume.eventcademy.ui.components.EmptyAnimation
 import com.yveskalume.eventcademy.ui.components.LoadingAnimation
 import com.yveskalume.eventcademy.ui.theme.Blue200
@@ -90,7 +92,6 @@ fun EventDetailRoute(
                         event,
                         eventBookingState
                     )
-                    context.scheduleEventNotification(event = event)
                 }
             }
         }
@@ -198,6 +199,7 @@ private fun EventDetailScreen(
                 is EventDetailUiState.Success -> {
                     EventDetailContent(
                         event = uiState.event,
+                        organizer = uiState.organizer,
                         bookings = uiState.bookings,
                         modifier = Modifier
                             .fillMaxSize()
@@ -211,6 +213,7 @@ private fun EventDetailScreen(
 @Composable
 private fun EventDetailContent(
     event: Event,
+    organizer: User?,
     bookings: List<EventBooking>,
     modifier: Modifier = Modifier
 ) {
@@ -224,7 +227,9 @@ private fun EventDetailContent(
         SubcomposeAsyncImage(
             model = event.imageUrl,
             contentDescription = null,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .animateContentSize(),
             contentScale = ContentScale.FillWidth
         )
 
@@ -237,27 +242,57 @@ private fun EventDetailContent(
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            text = "Participants",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
+        if (organizer != null) {
+            Text(
+                text = "Organisateur",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
 
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            state = lazyRowState
-        ) {
-            items(items = bookings, key = { it.uid }) { booking ->
+            Row(
+                modifier = Modifier.padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 SubcomposeAsyncImage(
-                    model = booking.userPhotoUrl,
+                    model = organizer.photoUrl,
                     contentDescription = null,
                     modifier = Modifier
                         .size(50.dp)
                         .clip(RoundedCornerShape(16.dp))
                 )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = organizer.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        }
+
+        if (bookings.isNotEmpty()) {
+            Text(
+                text = "Participants",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                state = lazyRowState
+            ) {
+                items(items = bookings, key = { it.uid }) { booking ->
+                    SubcomposeAsyncImage(
+                        model = booking.userPhotoUrl,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                    )
+                }
             }
         }
 
