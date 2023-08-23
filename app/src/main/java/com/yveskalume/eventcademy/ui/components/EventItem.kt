@@ -27,10 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import com.yveskalume.eventcademy.data.entity.Event
-import com.yveskalume.eventcademy.util.dayOfMonth
-import com.yveskalume.eventcademy.util.monthName
 import com.yveskalume.eventcademy.util.ThemePreview
 import com.yveskalume.eventcademy.util.capitalize
+import com.yveskalume.eventcademy.util.dayOfMonth
+import com.yveskalume.eventcademy.util.monthName
 
 @Composable
 fun EventItem(event: Event, onClick: () -> Unit, modifier: Modifier = Modifier) {
@@ -87,7 +87,12 @@ fun EventItem(event: Event, onClick: () -> Unit, modifier: Modifier = Modifier) 
                 }
             }
         }
-        Text(text = event.name, style = MaterialTheme.typography.titleMedium)
+        Text(
+            text = event.name,
+            style = MaterialTheme.typography.titleMedium,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
+        )
         Text(
             text = event.location,
             style = MaterialTheme.typography.bodyMedium,

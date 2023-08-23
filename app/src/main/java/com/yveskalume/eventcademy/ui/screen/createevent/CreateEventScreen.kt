@@ -444,8 +444,8 @@ private fun CreateEventScreen(
                             type = eventType ?: EventType.OFFLINE,
                             userUid = "",
                             timezone = timeZone,
-                            createdAt = null,
-                            updatedAt = null,
+                            createdAt = Date(),
+                            updatedAt = Date(),
                         )
                         onSubmit(event)
                     } catch (e: Exception) {
