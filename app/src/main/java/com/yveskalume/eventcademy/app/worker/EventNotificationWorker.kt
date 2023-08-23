@@ -23,8 +23,7 @@ import dagger.assisted.AssistedInject
 class EventNotificationWorker @AssistedInject constructor(
     @Assisted private val appContext: Context,
     @Assisted workerParams: WorkerParameters
-) :
-    CoroutineWorker(appContext, workerParams) {
+) : CoroutineWorker(appContext, workerParams) {
 
     private val eventUid = inputData.getString("eventUid")
     private val eventName = inputData.getString("eventName")
