@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
-import com.yveskalume.eventcademy.data.entity.EventBooking
+import com.yveskalume.eventcademy.core.domain.model.EventBooking
 import com.yveskalume.eventcademy.util.readableDateWithDayName
 import com.yveskalume.eventcademy.util.ThemePreview
 

@@ -1,6 +1,6 @@
 package com.yveskalume.eventcademy.ui.screen.bookmark
 
-import com.yveskalume.eventcademy.data.entity.EventBooking
+import com.yveskalume.eventcademy.core.domain.model.EventBooking
 
 sealed interface BookmarkUiState {
     object Loading : BookmarkUiState

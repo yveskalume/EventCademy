@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
-import com.yveskalume.eventcademy.data.repository.EventRepository
-import com.yveskalume.eventcademy.data.repository.UserRepository
+import com.yveskalume.eventcademy.core.data.firebase.repository.EventRepositoryImpl
+import com.yveskalume.eventcademy.core.data.firebase.repository.UserRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,8 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    userRepository: UserRepository,
-    private val eventRepository: EventRepository
+    userRepository: UserRepositoryImpl,
+    private val eventRepository: EventRepositoryImpl
 ) : ViewModel() {
 
     private val _isEventDeleting: MutableStateFlow<Boolean> = MutableStateFlow(false)

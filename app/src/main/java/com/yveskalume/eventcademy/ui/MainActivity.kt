@@ -41,6 +41,7 @@ import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.auth.FirebaseAuth
+import com.yveskalume.eventcademy.core.data.preferences.SettingDataStorePreferences
 import com.yveskalume.eventcademy.ui.navigation.Destination
 import com.yveskalume.eventcademy.ui.navigation.isCurrent
 import com.yveskalume.eventcademy.ui.screen.auth.AuthRoute
@@ -51,7 +52,6 @@ import com.yveskalume.eventcademy.ui.screen.home.HomeRoute
 import com.yveskalume.eventcademy.ui.screen.profile.ProfileRoute
 import com.yveskalume.eventcademy.ui.screen.setting.SettingRoute
 import com.yveskalume.eventcademy.ui.theme.EventCademyTheme
-import com.yveskalume.eventcademy.util.DataStoreUtil
 import com.yveskalume.eventcademy.util.navigate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -81,7 +81,7 @@ class MainActivity : ComponentActivity() {
             askNotificationPermission()
         }
 
-        val dataStoreUtil = DataStoreUtil(applicationContext)
+        val dataStoreUtil = SettingDataStorePreferences(applicationContext)
 
         val systemTheme =
             when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {

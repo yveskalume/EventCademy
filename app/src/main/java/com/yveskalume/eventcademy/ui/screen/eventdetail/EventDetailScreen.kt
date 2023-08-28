@@ -53,9 +53,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
-import com.yveskalume.eventcademy.data.entity.Event
-import com.yveskalume.eventcademy.data.entity.EventBooking
-import com.yveskalume.eventcademy.data.entity.User
+import com.yveskalume.eventcademy.core.domain.model.Event
+import com.yveskalume.eventcademy.core.domain.model.EventBooking
+import com.yveskalume.eventcademy.core.domain.model.User
 import com.yveskalume.eventcademy.ui.components.EmptyAnimation
 import com.yveskalume.eventcademy.ui.components.LoadingAnimation
 import com.yveskalume.eventcademy.ui.theme.Blue200

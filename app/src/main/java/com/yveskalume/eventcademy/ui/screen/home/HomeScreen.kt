@@ -32,9 +32,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import com.yveskalume.eventcademy.R
-import com.yveskalume.eventcademy.data.entity.Advertisement
-import com.yveskalume.eventcademy.data.entity.AdvertisementType
-import com.yveskalume.eventcademy.data.entity.Event
+import com.yveskalume.eventcademy.core.domain.model.Advertisement
+import com.yveskalume.eventcademy.core.domain.model.AdvertisementType
+import com.yveskalume.eventcademy.core.domain.model.Event
 import com.yveskalume.eventcademy.ui.MainActivity
 import com.yveskalume.eventcademy.ui.components.AdvertisementsItem
 import com.yveskalume.eventcademy.ui.components.EmptyAnimation

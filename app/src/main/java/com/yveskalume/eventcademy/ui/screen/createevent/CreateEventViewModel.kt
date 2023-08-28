@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
-import com.yveskalume.eventcademy.data.entity.Event
-import com.yveskalume.eventcademy.data.repository.EventRepository
+import com.yveskalume.eventcademy.core.data.firebase.repository.EventRepositoryImpl
+import com.yveskalume.eventcademy.core.domain.model.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateEventViewModel @Inject constructor(
-    private val eventRepository: EventRepository
+    private val eventRepository: EventRepositoryImpl
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<CreateEventUiState> =

@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
-import com.yveskalume.eventcademy.data.entity.Advertisement
+import com.yveskalume.eventcademy.core.domain.model.Advertisement
 import com.yveskalume.eventcademy.util.ThemePreview
 import kotlinx.coroutines.delay
 

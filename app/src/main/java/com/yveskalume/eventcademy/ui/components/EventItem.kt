@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
-import com.yveskalume.eventcademy.data.entity.Event
+import com.yveskalume.eventcademy.core.domain.model.Event
 import com.yveskalume.eventcademy.util.ThemePreview
 import com.yveskalume.eventcademy.util.capitalize
 import com.yveskalume.eventcademy.util.dayOfMonth
@@ -107,7 +107,10 @@ fun EventItem(event: Event, onClick: () -> Unit, modifier: Modifier = Modifier) 
 fun EventHorizontalItemPreview() {
     ThemePreview {
         EventItem(
-            event = Event(name = "Lorem ipsum", description = "Lorem ipsum"),
+            event = Event(
+                name = "Lorem ipsum",
+                description = "Lorem ipsum"
+            ),
             onClick = {},
             modifier = Modifier.width(200.dp)
         )

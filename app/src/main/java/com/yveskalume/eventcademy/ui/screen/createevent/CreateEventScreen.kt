@@ -67,8 +67,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
-import com.yveskalume.eventcademy.data.entity.Event
-import com.yveskalume.eventcademy.data.entity.EventType
+import com.yveskalume.eventcademy.core.domain.model.Event
+import com.yveskalume.eventcademy.core.domain.model.EventType
 import com.yveskalume.eventcademy.ui.components.SelectDateDialog
 import com.yveskalume.eventcademy.ui.components.SelectTimeDialog
 import com.yveskalume.eventcademy.util.ThemePreview

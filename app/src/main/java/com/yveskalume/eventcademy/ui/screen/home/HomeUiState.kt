@@ -1,7 +1,7 @@
 package com.yveskalume.eventcademy.ui.screen.home
 
-import com.yveskalume.eventcademy.data.entity.Advertisement
-import com.yveskalume.eventcademy.data.entity.Event
+import com.yveskalume.eventcademy.core.domain.model.Advertisement
+import com.yveskalume.eventcademy.core.domain.model.Event
 
 sealed interface HomeUiState {
     object Loading : HomeUiState

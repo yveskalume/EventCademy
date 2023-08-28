@@ -3,9 +3,9 @@ package com.yveskalume.eventcademy.ui.screen.eventdetail
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yveskalume.eventcademy.data.entity.Event
-import com.yveskalume.eventcademy.data.repository.EventBookingRepository
-import com.yveskalume.eventcademy.data.repository.EventRepository
+import com.yveskalume.eventcademy.core.data.firebase.repository.EventBookingRepositoryImpl
+import com.yveskalume.eventcademy.core.data.firebase.repository.EventRepositoryImpl
+import com.yveskalume.eventcademy.core.domain.model.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,9 +16,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EventDetailViewModel @Inject constructor(
-    private val userRepository: EventRepository,
-    private val eventRepository: EventRepository,
-    private val eventBookingRepository: EventBookingRepository
+    private val userRepository: EventRepositoryImpl,
+    private val eventRepository: EventRepositoryImpl,
+    private val eventBookingRepository: EventBookingRepositoryImpl
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<EventDetailUiState> =

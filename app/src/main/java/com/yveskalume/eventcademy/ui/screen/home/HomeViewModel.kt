@@ -2,8 +2,8 @@ package com.yveskalume.eventcademy.ui.screen.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yveskalume.eventcademy.data.repository.AdvertisementRepository
-import com.yveskalume.eventcademy.data.repository.EventRepository
+import com.yveskalume.eventcademy.core.data.firebase.repository.AdvertisementRepositoryImpl
+import com.yveskalume.eventcademy.core.data.firebase.repository.EventRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -14,8 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    advertisementRepository: AdvertisementRepository,
-    eventRepository: EventRepository
+    advertisementRepository: AdvertisementRepositoryImpl,
+    eventRepository: EventRepositoryImpl
 ) : ViewModel() {
 
 

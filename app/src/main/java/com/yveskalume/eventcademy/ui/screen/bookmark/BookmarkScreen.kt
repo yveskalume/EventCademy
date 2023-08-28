@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.yveskalume.eventcademy.data.entity.EventBooking
+import com.yveskalume.eventcademy.core.domain.model.EventBooking
 import com.yveskalume.eventcademy.util.isFuture
 import com.yveskalume.eventcademy.util.isPast
 import com.yveskalume.eventcademy.ui.components.EmptyAnimation

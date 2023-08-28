@@ -2,7 +2,7 @@ package com.yveskalume.eventcademy.ui.screen.bookmark
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yveskalume.eventcademy.data.repository.EventBookingRepository
+import com.yveskalume.eventcademy.core.data.firebase.repository.EventBookingRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookmarkViewModel @Inject constructor(
-    private val eventBookingRepository: EventBookingRepository
+    eventBookingRepository: EventBookingRepositoryImpl
 ) : ViewModel() {
 
     val uiState: StateFlow<BookmarkUiState> = eventBookingRepository.getAllUserEventBookings().map {

@@ -52,9 +52,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
-import com.yveskalume.eventcademy.data.entity.Event
-import com.yveskalume.eventcademy.data.entity.User
-import com.yveskalume.eventcademy.data.entity.UserRole
+import com.yveskalume.eventcademy.core.domain.model.Event
+import com.yveskalume.eventcademy.core.domain.model.User
+import com.yveskalume.eventcademy.core.domain.model.UserRole
 import com.yveskalume.eventcademy.ui.components.ConfirmationDialog
 import com.yveskalume.eventcademy.ui.components.EmptyAnimation
 import com.yveskalume.eventcademy.ui.components.EventPublishedItem

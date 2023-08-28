@@ -29,15 +29,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
-import com.yveskalume.eventcademy.data.entity.Event
-import com.yveskalume.eventcademy.data.entity.statusText
+import com.yveskalume.eventcademy.core.domain.model.Event
+import com.yveskalume.eventcademy.core.domain.model.statusText
 import com.yveskalume.eventcademy.ui.theme.Blue200
 import com.yveskalume.eventcademy.ui.theme.EventCademyTheme
 import com.yveskalume.eventcademy.util.readableDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventPublishedItem(event: Event,onClick: () -> Unit,onDeleteClick: () -> Unit, modifier: Modifier = Modifier) {
+fun EventPublishedItem(event: Event, onClick: () -> Unit, onDeleteClick: () -> Unit, modifier: Modifier = Modifier) {
 
     val eventStatusColor by animateColorAsState(
         targetValue = if (event.rejected) {

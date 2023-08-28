@@ -3,7 +3,7 @@ package com.yveskalume.eventcademy.ui.screen.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthCredential
-import com.yveskalume.eventcademy.data.repository.UserRepository
+import com.yveskalume.eventcademy.core.data.firebase.repository.UserRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(private val userRepository: UserRepository) : ViewModel() {
+class AuthViewModel @Inject constructor(private val userRepository: UserRepositoryImpl) : ViewModel() {
 
     private val _uiState: MutableStateFlow<AuthUiState> = MutableStateFlow(AuthUiState.Idle)
     val uiState: StateFlow<AuthUiState>

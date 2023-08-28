@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.yveskalume.domain"
+    namespace = "com.yveskalume.eventcademy.core.domain"
     compileSdk = 33
 
     defaultConfig {
@@ -18,7 +18,6 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
-            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -42,4 +41,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    implementation(platform(libs.firebase.boom))
+    implementation(libs.firebase.auth)
 }

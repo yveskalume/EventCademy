@@ -15,5 +15,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "EventCademy"
 include(":app")
-include(":core:data")
+include(":core:data-firebase")
 include(":core:domain")
+include(":core:data-preferences")

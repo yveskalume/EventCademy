@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.CalendarContract
-import com.yveskalume.eventcademy.data.entity.Event
+import com.yveskalume.eventcademy.core.domain.model.Event
 
 fun Context.addToPhoneCalendar(event: Event) {
     val link = if (event.eventUrl.isNotBlank()) "\n\nLien : ${event.eventUrl}" else ""
@@ -24,7 +24,10 @@ fun Context.addToPhoneCalendar(event: Event) {
 }
 
 fun Context.sendEmailIntent(email: String) {
-    val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-        "mailto", email, null))
+    val emailIntent = Intent(
+        Intent.ACTION_SENDTO, Uri.fromParts(
+            "mailto", email, null
+        )
+    )
     startActivity(Intent.createChooser(emailIntent, "Nous contacter"))
 }
