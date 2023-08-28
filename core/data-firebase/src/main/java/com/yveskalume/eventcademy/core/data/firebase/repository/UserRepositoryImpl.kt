@@ -64,4 +64,11 @@ class UserRepositoryImpl @Inject constructor(
             }
         awaitClose { listener.remove() }
     }
+
+    override suspend fun getUserByUid(userUid: String): User? {
+        return withContext(Dispatchers.IO) {
+            val task = firestore.document("${FirestoreCollections.USERS}/$userUid").get()
+            task.await().toObject(User::class.java)
+        }
+    }
 }
