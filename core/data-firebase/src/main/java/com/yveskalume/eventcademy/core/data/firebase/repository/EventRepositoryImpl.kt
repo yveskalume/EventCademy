@@ -7,7 +7,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.yveskalume.eventcademy.core.data.firebase.util.FirebaseStorageFolders
 import com.yveskalume.eventcademy.core.data.firebase.util.FirestoreCollections
 import com.yveskalume.eventcademy.core.domain.model.Event
-import com.yveskalume.eventcademy.core.domain.model.User
 import com.yveskalume.eventcademy.core.domain.repository.EventRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -142,13 +141,6 @@ class EventRepositoryImpl @Inject constructor(
             firebaseStorage.reference.child("${FirebaseStorageFolders.events}/$eventUid")
                 .delete()
                 .await()
-        }
-    }
-
-    override suspend fun getUserByUid(userUid: String): User? {
-        return withContext(Dispatchers.IO) {
-            val task = firestore.document("${FirestoreCollections.USERS}/$userUid").get()
-            task.await().toObject(User::class.java)
         }
     }
 }
