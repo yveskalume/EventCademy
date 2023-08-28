@@ -15,3 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "EventCademy"
 include(":app")
+include(":core:data")
+include(":core:domain")

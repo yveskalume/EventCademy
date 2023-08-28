@@ -22,6 +22,8 @@ orbit-compose = "0.31.0"
 compose-navigation = "2.6.0"
 hilt = "2.46.1"
 work-runtime-ktx = "2.8.1"
+appcompat = "1.6.1"
+com-google-android-material-material = "1.9.0"
 
 [libraries]
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-splashscreen" }
@@ -68,6 +70,8 @@ firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashly
 google-playservices-auth = { group = "com.google.android.gms", name = "play-services-auth",version= "20.6.0" }
 
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version = "2.4.0" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "com-google-android-material-material" }
 
 
 [plugins]
@@ -78,6 +82,7 @@ com-google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", versio
 com-google-gms-google-services = { id = "com.google.gms.google-services", version = "4.3.15" }
 com-google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "2.9.7" }
 org-jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "1.7.10" }
+com-android-library = { id = "com.android.library", version.ref = "agp" }
 
 [bundles]
 
