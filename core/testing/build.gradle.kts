@@ -38,14 +38,14 @@ dependencies {
     implementation(project(":core:domain"))
 
     implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.junit)
-    implementation(libs.androidx.test.ext.junit)
-    implementation(libs.espresso.core)
+
+    api(libs.junit)
+    api(libs.androidx.test.ext.junit)
+    api(libs.espresso.core)
+    api(libs.kotlinx.coroutines.test)
+    api(libs.kotlin.test)
 
     implementation(platform(libs.firebase.boom))
     implementation(libs.firebase.auth)
 
-    implementation(libs.kotlinx.coroutines.test)
 }
