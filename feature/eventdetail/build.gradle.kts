@@ -45,6 +45,7 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:data-firebase"))
     implementation(project(":core:util"))
+    testImplementation(project(":core:testing"))
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
