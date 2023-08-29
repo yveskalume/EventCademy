@@ -75,6 +75,10 @@ android {
 
 dependencies {
 
+    implementation(project(":core:ui"))
+    implementation(project(":core:data-firebase"))
+    implementation(project(":core:data-preferences"))
+
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.runtime.compose)
@@ -118,7 +122,6 @@ dependencies {
     implementation(libs.coil.compose)
 
     implementation(libs.androidx.work.runtime.ktx)
-    implementation(libs.androidx.datastore.preferences)
 
     implementation(libs.app.update)
     implementation(libs.app.update.ktx)

@@ -1,0 +1,98 @@
+package com.yveskalume.eventcademy.core.testing.data
+
+import com.yveskalume.eventcademy.core.domain.model.Event
+import com.yveskalume.eventcademy.core.domain.model.EventType
+import java.util.Date
+
+val eventTestData = mutableListOf(
+    Event(
+        uid = "1",
+        name = "Event 1",
+        description = "Description 1",
+        location = "Location 1",
+        price = 0.0,
+        startDate = Date(),
+        endDate = Date(),
+        imageUrl = "",
+        eventUrl = "",
+        type = EventType.HYBRID,
+        userUid = "1",
+        createdAt = Date(),
+        updatedAt = Date(),
+        timezone = "",
+        published = true,
+        rejected = false
+    ),
+    Event(
+        uid = "2",
+        name = "Event 2",
+        description = "Description 2",
+        location = "Location 2",
+        price = 0.0,
+        startDate = Date(),
+        endDate = Date(),
+        imageUrl = "",
+        eventUrl = "",
+        type = EventType.HYBRID,
+        userUid = "2",
+        createdAt = Date(),
+        updatedAt = Date(),
+        timezone = "",
+        published = true,
+        rejected = false
+    ),
+    Event(
+        uid = "3",
+        name = "Event 3",
+        description = "Description 3",
+        location = "Location 3",
+        price = 0.0,
+        startDate = Date(),
+        endDate = Date(),
+        imageUrl = "",
+        eventUrl = "",
+        type = EventType.HYBRID,
+        userUid = "3",
+        createdAt = Date(),
+        updatedAt = Date(),
+        timezone = "",
+        published = true,
+        rejected = false
+    ),
+    Event(
+        uid = "4",
+        name = "Event 4",
+        description = "Description 4",
+        location = "Location 4",
+        price = 0.0,
+        startDate = Date(),
+        endDate = Date(),
+        imageUrl = "",
+        eventUrl = "",
+        type = EventType.HYBRID,
+        userUid = "4",
+        createdAt = Date(),
+        updatedAt = Date(),
+        timezone = "",
+        published = true,
+        rejected = false
+    ),
+    Event(
+        uid = "5",
+        name = "Event 5",
+        description = "Description 5",
+        location = "Location 5",
+        price = 0.0,
+        startDate = Date(),
+        endDate = Date(),
+        imageUrl = "",
+        eventUrl = "",
+        type = EventType.HYBRID,
+        userUid = "5",
+        createdAt = Date(),
+        updatedAt = Date(),
+        timezone = "",
+        published = true,
+        rejected = false
+    ),
+)
