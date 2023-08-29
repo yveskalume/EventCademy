@@ -6,7 +6,7 @@ import com.yveskalume.eventcademy.core.domain.repository.EventBookingRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class FakeFailingEventBookingRepository : EventBookingRepository {
+class FailingFakeEventBookingRepository : EventBookingRepository {
     override fun getAllBookingByEventUid(eventUid: String): Flow<List<EventBooking>> {
         return flow {
             throw Exception("An error occurred")

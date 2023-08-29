@@ -6,6 +6,7 @@ import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import com.yveskalume.eventcademy.core.data.firebase.repository.EventRepositoryImpl
 import com.yveskalume.eventcademy.core.domain.model.Event
+import com.yveskalume.eventcademy.core.domain.repository.EventRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateEventViewModel @Inject constructor(
-    private val eventRepository: EventRepositoryImpl
+    private val eventRepository: EventRepository
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<CreateEventUiState> =
@@ -31,7 +32,6 @@ class CreateEventViewModel @Inject constructor(
                 _uiState.emit(CreateEventUiState.Success)
             } catch (e: Exception) {
                 _uiState.emit(CreateEventUiState.Error("Une erreur est survenue"))
-                e.message?.let { Firebase.crashlytics.log(it) }
             }
         }
     }

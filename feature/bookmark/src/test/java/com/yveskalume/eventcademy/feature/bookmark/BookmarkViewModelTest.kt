@@ -3,7 +3,7 @@ package com.yveskalume.eventcademy.feature.bookmark
 import com.yveskalume.eventcademy.core.domain.repository.EventBookingRepository
 import com.yveskalume.eventcademy.core.testing.data.eventBookingTestData
 import com.yveskalume.eventcademy.core.testing.repository.FakeEventBookingRepository
-import com.yveskalume.eventcademy.core.testing.repository.FakeFailingEventBookingRepository
+import com.yveskalume.eventcademy.core.testing.repository.FailingFakeEventBookingRepository
 import com.yveskalume.eventcademy.core.testing.util.MainDispatcherRule
 import com.yveskalume.eventcademy.feature.bookmark.BookmarkUiState.Error
 import com.yveskalume.eventcademy.feature.bookmark.BookmarkUiState.Loading
@@ -29,7 +29,7 @@ class BookmarkViewModelTest {
     private lateinit var viewModel: BookmarkViewModel
 
     private val failingEventBookingRepository: EventBookingRepository =
-        FakeFailingEventBookingRepository()
+        FailingFakeEventBookingRepository()
     private lateinit var failingBookViewModel: BookmarkViewModel
 
     @Before
