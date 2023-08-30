@@ -25,6 +25,9 @@ hilt = "2.46.1"
 work-runtime-ktx = "2.8.1"
 appcompat = "1.6.1"
 com-google-android-material-material = "1.9.0"
+androidx-benchmark = "1.1.1"
+runner = "1.5.2"
+benchmark-junit4 = "1.1.1"
 
 [libraries]
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-splashscreen" }
@@ -75,6 +78,8 @@ google-playservices-auth = { group = "com.google.android.gms", name = "play-serv
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version = "2.4.0" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "com-google-android-material-material" }
+runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
+benchmark-junit4 = { group = "androidx.benchmark", name = "benchmark-junit4", version.ref = "benchmark-junit4" }
 
 
 [plugins]
@@ -86,6 +91,7 @@ com-google-gms-google-services = { id = "com.google.gms.google-services", versio
 com-google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "2.9.7" }
 org-jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "1.7.10" }
 com-android-library = { id = "com.android.library", version.ref = "agp" }
+androidx-benchmark = { id = "androidx.benchmark", version.ref = "androidx-benchmark" }
 
 [bundles]
 
