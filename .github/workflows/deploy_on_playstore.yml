@@ -57,5 +57,9 @@ jobs:
       - name: Run Unit tests
         run: bundle exec fastlane test
 
-      - name: Deploy the app to Beta track 🚀
-        run: bundle exec fastlane beta
+      # Increment the version
+      - name: Increment the version
+        run: bundle exec fastlane version
+
+      - name: Deploy the app to Internal track 🚀
+        run: bundle exec fastlane internal

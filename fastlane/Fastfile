@@ -22,7 +22,7 @@ platform :android do
   end
 
   desc "Submit a new Beta Build to Playstore Beta"
-  lane :beta do
+  lane :internal do
     gradle(
         task: "clean bundle",
         build_type: "release",
@@ -32,5 +32,9 @@ platform :android do
 
     # sh "your_script.sh"
     # You can also use other beta testing services here
+  end
+  lane :version do
+    increment_build_number
+    increment_version_number(bump_type: "patch")
   end
 end
