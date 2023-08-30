@@ -32,9 +32,9 @@ class CreateEventViewModelTest {
     }
 
     @Test
-    fun `state is Initially Loading`() = runTest {
+    fun `state is Initially`() = runTest {
         val uiState = successViewModel.uiState.value
-        assertIs<Loading>(uiState)
+        assertIs<Initial>(uiState)
     }
 
     @Test
