@@ -58,8 +58,8 @@ jobs:
         run: bundle exec fastlane test
 
       # Increment the version
-      - name: Increment the version
-        run: bundle exec fastlane version
+#      - name: Increment the version
+#        run: bundle exec fastlane version
 
       - name: Deploy the app to Internal track 🚀
         run: bundle exec fastlane internal
