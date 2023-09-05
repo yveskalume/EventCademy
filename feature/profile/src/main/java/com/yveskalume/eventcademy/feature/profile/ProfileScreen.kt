@@ -52,6 +52,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
+import com.yveskalume.eventcademy.core.designsystem.components.ConfirmationDialog
+import com.yveskalume.eventcademy.core.designsystem.components.EmptyAnimation
+import com.yveskalume.eventcademy.core.designsystem.components.EventPublishedItem
+import com.yveskalume.eventcademy.core.designsystem.components.LoadingAnimation
+import com.yveskalume.eventcademy.core.designsystem.theme.Blue200
+import com.yveskalume.eventcademy.core.designsystem.theme.PrimaryGreen400
 import com.yveskalume.eventcademy.core.designsystem.theme.ThemePreview
 import com.yveskalume.eventcademy.core.domain.model.Event
 import com.yveskalume.eventcademy.core.domain.model.User
@@ -75,7 +81,7 @@ fun ProfileRoute(
         mutableStateOf(false)
     }
 
-    com.yveskalume.eventcademy.core.designsystem.components.ConfirmationDialog(
+    ConfirmationDialog(
         isVisible = eventToDeleteUid.isNotBlank(),
         title = "Supprimer l'évènement",
         description = "Voulez-vous vraiment supprimer cet évènement ?",
@@ -86,7 +92,7 @@ fun ProfileRoute(
         }
     )
 
-    com.yveskalume.eventcademy.core.designsystem.components.ConfirmationDialog(
+    ConfirmationDialog(
         isVisible = isLogoutConfirmationShown,
         title = "Déconnexion",
         description = "Voulez-vous vraiment vous déconnecter ?",
@@ -164,7 +170,7 @@ private fun ProfileScreen(
             }
             when (uiState) {
                 is ProfileUiState.Loading -> {
-                    com.yveskalume.eventcademy.core.designsystem.components.LoadingAnimation()
+                    LoadingAnimation()
                 }
 
                 is ProfileUiState.Success -> {
@@ -178,7 +184,7 @@ private fun ProfileScreen(
                 }
 
                 is ProfileUiState.Error -> {
-                    com.yveskalume.eventcademy.core.designsystem.components.EmptyAnimation(text = "Une erreur est survenue")
+                    EmptyAnimation(text = "Une erreur est survenue")
                 }
             }
         }
@@ -220,14 +226,14 @@ fun ProfileContent(
 
         if (events.isEmpty()) {
             item {
-                com.yveskalume.eventcademy.core.designsystem.components.EmptyAnimation(
+                EmptyAnimation(
                     text = "Vous n'avez pas encore publié d'évènement",
                 )
             }
         }
 
         items(events) { event ->
-            com.yveskalume.eventcademy.core.designsystem.components.EventPublishedItem(
+            EventPublishedItem(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 event = event,
                 onClick = { onEventClick(event.uid) },
@@ -260,8 +266,8 @@ private fun PhotoSection(user: User, modifier: Modifier = Modifier) {
                         drawCircle(
                             brush = Brush.linearGradient(
                                 listOf(
-                                    com.yveskalume.eventcademy.core.designsystem.theme.PrimaryGreen400,
-                                    com.yveskalume.eventcademy.core.designsystem.theme.Blue200
+                                    PrimaryGreen400,
+                                    Blue200
                                 )
                             ),
                             style = Stroke(4.dp.toPx())

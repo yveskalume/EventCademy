@@ -32,6 +32,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
+import com.yveskalume.eventcademy.core.designsystem.components.AdvertisementsItem
+import com.yveskalume.eventcademy.core.designsystem.components.EmptyAnimation
+import com.yveskalume.eventcademy.core.designsystem.components.EventItem
+import com.yveskalume.eventcademy.core.designsystem.components.LoadingAnimation
+import com.yveskalume.eventcademy.core.designsystem.components.SectionHeader
 import com.yveskalume.eventcademy.core.designsystem.theme.ThemePreview
 import com.yveskalume.eventcademy.core.domain.model.Advertisement
 import com.yveskalume.eventcademy.core.domain.model.AdvertisementType
@@ -93,15 +98,15 @@ private fun HomeScreen(
         ) {
             when (uiState) {
                 HomeUiState.Empty -> {
-                    com.yveskalume.eventcademy.core.designsystem.components.EmptyAnimation(text = "Aucun événement pour le moment")
+                    EmptyAnimation(text = "Aucun événement pour le moment")
                 }
 
                 is HomeUiState.Error -> {
-                    com.yveskalume.eventcademy.core.designsystem.components.EmptyAnimation(text = "Une erreur est survenue")
+                    EmptyAnimation(text = "Une erreur est survenue")
                 }
 
                 HomeUiState.Loading -> {
-                    com.yveskalume.eventcademy.core.designsystem.components.LoadingAnimation()
+                    LoadingAnimation()
                 }
 
                 is HomeUiState.Success -> {
@@ -135,10 +140,10 @@ private fun HomeScreenContent(
     ) {
         if (ads.isNotEmpty()) {
             item(span = { GridItemSpan(2) }) {
-                com.yveskalume.eventcademy.core.designsystem.components.SectionHeader(title = "Annonces")
+                SectionHeader(title = "Annonces")
             }
             item(span = { GridItemSpan(2) }, key = "ads") {
-                com.yveskalume.eventcademy.core.designsystem.components.AdvertisementsItem(
+                AdvertisementsItem(
                     items = ads,
                     onItemClick = { advertisement ->
                         if (advertisement.type == AdvertisementType.INTERNAL_EVENT) {
@@ -153,10 +158,10 @@ private fun HomeScreenContent(
         }
         if (events.isNotEmpty()) {
             item(span = { GridItemSpan(2) }) {
-                com.yveskalume.eventcademy.core.designsystem.components.SectionHeader(title = "Événements à venir")
+                SectionHeader(title = "Événements à venir")
             }
             items(items = events, key = { it.uid }) { event ->
-                com.yveskalume.eventcademy.core.designsystem.components.EventItem(
+                EventItem(
                     event = event,
                     onClick = { onEventClick(event.uid) })
             }

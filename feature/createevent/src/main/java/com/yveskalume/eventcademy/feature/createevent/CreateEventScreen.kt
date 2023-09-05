@@ -67,6 +67,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
+import com.yveskalume.eventcademy.core.designsystem.components.SelectDateDialog
+import com.yveskalume.eventcademy.core.designsystem.components.SelectTimeDialog
 import com.yveskalume.eventcademy.core.designsystem.theme.ThemePreview
 import com.yveskalume.eventcademy.core.domain.model.Event
 import com.yveskalume.eventcademy.core.domain.model.EventType
@@ -200,7 +202,7 @@ private fun CreateEventScreen(
         }
     ) { contentPadding ->
 
-        com.yveskalume.eventcademy.core.designsystem.components.SelectDateDialog(
+        SelectDateDialog(
             isVisible = showDatePicker,
             state = datePickerState,
             onDateSelected = {
@@ -210,7 +212,7 @@ private fun CreateEventScreen(
             }
         )
 
-        com.yveskalume.eventcademy.core.designsystem.components.SelectTimeDialog(
+        SelectTimeDialog(
             isVisible = showStartTimePicker,
             state = startTimeState,
             onCancel = { showStartTimePicker = false },
@@ -221,7 +223,7 @@ private fun CreateEventScreen(
             }
         )
 
-        com.yveskalume.eventcademy.core.designsystem.components.SelectTimeDialog(
+        SelectTimeDialog(
             isVisible = showEndTimePicker,
             state = endTimeState,
             onCancel = { showEndTimePicker = false },

@@ -1,7 +1,6 @@
 package com.yveskalume.eventcademy.feature.eventdetail
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -53,6 +52,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
+import com.yveskalume.eventcademy.core.designsystem.components.EmptyAnimation
+import com.yveskalume.eventcademy.core.designsystem.components.LoadingAnimation
+import com.yveskalume.eventcademy.core.designsystem.theme.Blue200
 import com.yveskalume.eventcademy.core.designsystem.theme.ThemePreview
 import com.yveskalume.eventcademy.core.domain.model.Event
 import com.yveskalume.eventcademy.core.domain.model.EventBooking
@@ -103,7 +105,7 @@ fun EventDetailRoute(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun EventDetailScreen(
     uiState: EventDetailUiState,
@@ -123,11 +125,6 @@ private fun EventDetailScreen(
                     }
                 },
                 actions = {
-//                    IconButton(
-//                        onClick = onBookmarkClick,
-//                    ) {
-//                        Icon(imageVector = Icons.Outlined.Bookmark, contentDescription = null)
-//                    }
                 }
             )
         },
@@ -194,11 +191,11 @@ private fun EventDetailScreen(
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             when (uiState) {
                 is EventDetailUiState.Error -> {
-                    com.yveskalume.eventcademy.core.designsystem.components.EmptyAnimation(text = uiState.errorMessage)
+                    EmptyAnimation(text = uiState.errorMessage)
                 }
 
                 EventDetailUiState.Loading -> {
-                    com.yveskalume.eventcademy.core.designsystem.components.LoadingAnimation()
+                    LoadingAnimation()
                 }
 
                 is EventDetailUiState.Success -> {
@@ -325,7 +322,7 @@ private fun EventDescriptionSection(
             text = event.startDate?.readableDateWithDayName?.uppercase() ?: "",
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.SemiBold,
-            color = com.yveskalume.eventcademy.core.designsystem.theme.Blue200
+            color = Blue200
         )
         Text(
             text = event.location,

@@ -3,6 +3,7 @@ package com.yveskalume.eventcademy.core.ui
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavOptionsBuilder
 
 sealed class Destination(val route: String) {
     object AuthScreen : Destination("auth")
@@ -12,15 +13,24 @@ sealed class Destination(val route: String) {
             return "event-detail/$eventUid"
         }
     }
+
     object BookmarkScreen : Destination("bookmark")
     object SettingsScreen : Destination("settings")
     object CreateEventScreen : Destination("create-event")
     object ProfileScreen : Destination("profile")
 }
+
 fun NavDestination?.isCurrent(destination: Destination): Boolean {
     return this?.hierarchy?.any { it.route == destination.route } == true
 }
 
-fun NavController.navigate(destination: Destination) {
-    navigate(destination.route)
+fun NavController.navigate(
+    destination: Destination,
+    builder: (NavOptionsBuilder.() -> Unit)? = null
+) {
+    if (builder != null) {
+        navigate(destination.route, builder)
+    } else {
+        navigate(destination.route)
+    }
 }

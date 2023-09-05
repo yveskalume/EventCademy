@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yveskalume.eventcademy.core.designsystem.components.EmptyAnimation
+import com.yveskalume.eventcademy.core.designsystem.components.EventBookmarkItem
 import com.yveskalume.eventcademy.core.designsystem.components.LoadingAnimation
 import com.yveskalume.eventcademy.core.designsystem.theme.ThemePreview
 import com.yveskalume.eventcademy.core.domain.model.EventBooking
@@ -131,7 +132,7 @@ private fun BookmarkContent(
         }
 
         items(items = events.value) { booking ->
-            com.yveskalume.eventcademy.core.designsystem.components.EventBookmarkItem(
+            EventBookmarkItem(
                 eventBooking = booking,
                 onClick = { onEventClick(booking.eventUid) },
                 modifier = Modifier.fillMaxWidth()
