@@ -3,6 +3,7 @@ package com.yveskalume.eventcademy.feature.eventdetail
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
@@ -39,6 +41,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -246,7 +251,7 @@ private fun EventDetailContent(
 
         if (organizer != null) {
             Text(
-                text = "Organisateur",
+                text = "Publié par",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(horizontal = 16.dp)
@@ -279,11 +284,14 @@ private fun EventDetailContent(
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
-
+            var shownBookingUid: String? by remember {
+                mutableStateOf(null)
+            }
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
                 state = lazyRowState
             ) {
                 items(items = bookings, key = { it.uid }) { booking ->
@@ -293,7 +301,22 @@ private fun EventDetailContent(
                         modifier = Modifier
                             .size(50.dp)
                             .clip(RoundedCornerShape(16.dp))
+                            .clickable {
+                                shownBookingUid = if (shownBookingUid != booking.uid) {
+                                    booking.uid
+                                } else {
+                                    null
+                                }
+                            }
                     )
+
+                    Row(modifier = Modifier.animateContentSize()) {
+                        if (shownBookingUid == booking.uid) {
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(text = booking.userName)
+                            Spacer(modifier = Modifier.width(4.dp))
+                        }
+                    }
                 }
             }
         }
@@ -324,11 +347,14 @@ private fun EventDescriptionSection(
             fontWeight = FontWeight.SemiBold,
             color = Blue200
         )
-        Text(
-            text = event.location,
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.SemiBold,
-        )
+        SelectionContainer {
+            Text(
+                text = event.location,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.SemiBold,
+            )
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
 
         Divider()
