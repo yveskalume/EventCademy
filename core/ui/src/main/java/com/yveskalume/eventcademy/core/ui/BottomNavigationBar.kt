@@ -5,20 +5,28 @@ import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavDestination
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 
 @Composable
 fun BottomNavigationBar(navController: NavHostController, destination: NavDestination?) {
-    androidx.compose.material3.NavigationBar {
+    NavigationBar {
         NavigationBarItem(
             selected = destination.isCurrent(Destination.HomeScreen),
             onClick = {
                 if (!destination.isCurrent(Destination.HomeScreen)) {
-                    navController.navigate(Destination.HomeScreen)
+                    navController.navigate(Destination.HomeScreen) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
             },
             label = {
@@ -36,7 +44,13 @@ fun BottomNavigationBar(navController: NavHostController, destination: NavDestin
             selected = destination.isCurrent(Destination.BookmarkScreen),
             onClick = {
                 if (!destination.isCurrent(Destination.BookmarkScreen)) {
-                    navController.navigate(Destination.BookmarkScreen)
+                    navController.navigate(Destination.BookmarkScreen) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
             },
             label = {
@@ -54,7 +68,13 @@ fun BottomNavigationBar(navController: NavHostController, destination: NavDestin
             selected = destination.isCurrent(Destination.ProfileScreen),
             onClick = {
                 if (!destination.isCurrent(Destination.ProfileScreen)) {
-                    navController.navigate(Destination.ProfileScreen)
+                    navController.navigate(Destination.ProfileScreen) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
             },
             label = {

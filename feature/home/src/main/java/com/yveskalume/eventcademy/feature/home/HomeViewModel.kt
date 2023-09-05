@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     advertisementRepository: AdvertisementRepository,
-    eventRepository: EventRepository
+    eventRepository: EventRepository,
 ) : ViewModel() {
 
 

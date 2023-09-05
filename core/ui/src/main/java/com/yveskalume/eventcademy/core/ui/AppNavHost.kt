@@ -8,6 +8,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import com.google.firebase.auth.FirebaseAuth
+import com.yveskalume.eventcademy.feature.auth.AuthRoute
+import com.yveskalume.eventcademy.feature.bookmark.BookmarkRoute
+import com.yveskalume.eventcademy.feature.createevent.CreateEventRoute
+import com.yveskalume.eventcademy.feature.eventdetail.EventDetailRoute
+import com.yveskalume.eventcademy.feature.home.HomeRoute
+import com.yveskalume.eventcademy.feature.profile.ProfileRoute
+import com.yveskalume.eventcademy.feature.setting.SettingRoute
 
 @Composable
 fun AppNavHost(
@@ -33,17 +40,15 @@ fun AppNavHost(
         startDestination = getStartDestination()
     ) {
         composable(route = Destination.AuthScreen.route) {
-            com.yveskalume.eventcademy.feature.auth.AuthRoute(
+            AuthRoute(
                 webClientIdToken = webClientIdToken,
                 onConnectSuccess = {
-                    navController.navigate(
-                        Destination.HomeScreen
-                    )
+                    navController.navigate(Destination.HomeScreen)
                 })
         }
 
         composable(route = Destination.HomeScreen.route) {
-            com.yveskalume.eventcademy.feature.home.HomeRoute(
+            HomeRoute(
                 onEventClick = { eventUid ->
                     navController.navigate(
                         Destination.EventDetailScreen.createRoute(
@@ -63,14 +68,14 @@ fun AppNavHost(
 
         ) { backStackEntry ->
             val eventUid = backStackEntry.arguments?.getString("eventUid")
-            com.yveskalume.eventcademy.feature.eventdetail.EventDetailRoute(
+            EventDetailRoute(
                 eventUid = eventUid,
                 onBackClick = navController::navigateUp
             )
         }
 
         composable(route = Destination.BookmarkScreen.route) {
-            com.yveskalume.eventcademy.feature.bookmark.BookmarkRoute(
+            BookmarkRoute(
                 onEventClick = { eventUid ->
                     navController.navigate(
                         Destination.EventDetailScreen.createRoute(
@@ -81,7 +86,7 @@ fun AppNavHost(
             )
         }
         composable(route = Destination.SettingsScreen.route) {
-            com.yveskalume.eventcademy.feature.setting.SettingRoute(
+            SettingRoute(
                 onBackClick = { navController.navigateUp() },
                 darkMode = isDarkTheme,
                 onDarkModeChange = onDarkModeChange
@@ -89,7 +94,7 @@ fun AppNavHost(
         }
 
         composable(route = Destination.ProfileScreen.route) {
-            com.yveskalume.eventcademy.feature.profile.ProfileRoute(
+            ProfileRoute(
                 onAddEventClick = {
                     navController.navigate(Destination.CreateEventScreen)
                 },
@@ -108,7 +113,7 @@ fun AppNavHost(
         }
 
         composable(route = Destination.CreateEventScreen.route) {
-            com.yveskalume.eventcademy.feature.createevent.CreateEventRoute(
+            CreateEventRoute(
                 onBackClick = { navController.navigateUp() },
             )
         }
