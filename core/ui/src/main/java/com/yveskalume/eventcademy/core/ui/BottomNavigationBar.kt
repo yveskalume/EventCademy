@@ -10,7 +10,6 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavDestination
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 
 @Composable
@@ -21,7 +20,7 @@ fun BottomNavigationBar(navController: NavHostController, destination: NavDestin
             onClick = {
                 if (!destination.isCurrent(Destination.HomeScreen)) {
                     navController.navigate(Destination.HomeScreen) {
-                        popUpTo(navController.graph.findStartDestination().id) {
+                        popUpTo(Destination.HomeScreen.route) {
                             saveState = true
                         }
                         launchSingleTop = true
@@ -45,7 +44,7 @@ fun BottomNavigationBar(navController: NavHostController, destination: NavDestin
             onClick = {
                 if (!destination.isCurrent(Destination.BookmarkScreen)) {
                     navController.navigate(Destination.BookmarkScreen) {
-                        popUpTo(navController.graph.findStartDestination().id) {
+                        popUpTo(Destination.HomeScreen.route) {
                             saveState = true
                         }
                         launchSingleTop = true
@@ -69,7 +68,7 @@ fun BottomNavigationBar(navController: NavHostController, destination: NavDestin
             onClick = {
                 if (!destination.isCurrent(Destination.ProfileScreen)) {
                     navController.navigate(Destination.ProfileScreen) {
-                        popUpTo(navController.graph.findStartDestination().id) {
+                        popUpTo(Destination.HomeScreen.route) {
                             saveState = true
                         }
                         launchSingleTop = true

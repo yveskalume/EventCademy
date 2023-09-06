@@ -28,8 +28,14 @@ fun NavController.navigate(
     destination: Destination,
     builder: (NavOptionsBuilder.() -> Unit)? = null
 ) {
+
+    // some times this throw an illegalStateException (should figure out why)
     if (builder != null) {
-        navigate(destination.route, builder)
+        try {
+            navigate(destination.route, builder)
+        } catch (e: Exception) {
+            navigate(destination.route)
+        }
     } else {
         navigate(destination.route)
     }
