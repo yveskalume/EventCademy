@@ -64,6 +64,7 @@ import com.yveskalume.eventcademy.core.designsystem.theme.ThemePreview
 import com.yveskalume.eventcademy.core.domain.model.Event
 import com.yveskalume.eventcademy.core.domain.model.EventBooking
 import com.yveskalume.eventcademy.core.domain.model.User
+import com.yveskalume.eventcademy.core.domain.model.isFuture
 import com.yveskalume.eventcademy.core.util.addToPhoneCalendar
 import com.yveskalume.eventcademy.core.util.hoursAndMins
 import com.yveskalume.eventcademy.core.util.readableDateWithDayName
@@ -163,15 +164,19 @@ private fun EventDetailScreen(
                             }
 
                             EventBookingState.NOT_BOOKED -> {
-                                Button(
-                                    shape = RoundedCornerShape(8.dp),
-                                    onClick = onBookmarkClick,
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = MaterialTheme.colorScheme.primary,
-                                        contentColor = Color.White
-                                    )
-                                ) {
-                                    Text(text = "J'y vais")
+                                if (uiState is EventDetailUiState.Success) {
+                                    val isFutureEvent = uiState.event.isFuture
+                                    Button(
+                                        enabled = isFutureEvent,
+                                        shape = RoundedCornerShape(8.dp),
+                                        onClick = onBookmarkClick,
+                                        colors = ButtonDefaults.buttonColors(
+                                            containerColor = MaterialTheme.colorScheme.primary,
+                                            contentColor = Color.White
+                                        )
+                                    ) {
+                                        Text(text = if (isFutureEvent) "J'y vais" else "Passé")
+                                    }
                                 }
                             }
 

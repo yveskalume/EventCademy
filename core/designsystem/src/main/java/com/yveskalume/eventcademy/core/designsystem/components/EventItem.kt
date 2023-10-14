@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import com.yveskalume.eventcademy.core.designsystem.theme.ThemePreview
+import com.yveskalume.eventcademy.core.designsystem.util.shimmer
 import com.yveskalume.eventcademy.core.util.dayOfMonth
 import com.yveskalume.eventcademy.core.util.monthName
 import com.yveskalume.eventcademy.core.domain.model.Event
@@ -47,6 +48,14 @@ fun EventItem(event: Event, onClick: () -> Unit, modifier: Modifier = Modifier) 
             SubcomposeAsyncImage(
                 model = event.imageUrl,
                 contentDescription = null,
+                loading = {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(0.8f)
+                            .shimmer()
+                    )
+                },
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
