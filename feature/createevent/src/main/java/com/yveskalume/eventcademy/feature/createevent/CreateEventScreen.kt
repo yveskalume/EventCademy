@@ -455,6 +455,7 @@ private fun CreateEventScreen(
                             timezone = timeZone,
                             createdAt = Date(),
                             updatedAt = Date(),
+                            published = true,
                         )
                         onSubmit(event)
                     } catch (e: Exception) {
