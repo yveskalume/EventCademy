@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import com.yveskalume.eventcademy.core.designsystem.theme.ThemePreview
+import com.yveskalume.eventcademy.core.designsystem.util.shimmer
 import com.yveskalume.eventcademy.core.domain.model.Advertisement
 import kotlinx.coroutines.delay
 
@@ -73,8 +75,18 @@ fun AdvertisementsItem(
             SubcomposeAsyncImage(
                 model = adItem.imageUrl,
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
+                loading = {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1.8f)
+                            .shimmer()
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .wrapContentHeight(),
+                contentScale = ContentScale.FillWidth
             )
             Box(
                 modifier = Modifier

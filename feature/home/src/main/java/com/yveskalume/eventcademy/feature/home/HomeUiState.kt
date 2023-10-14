@@ -7,7 +7,8 @@ sealed interface HomeUiState {
     object Loading : HomeUiState
     object Empty : HomeUiState
     data class Success(
-        val events: List<Event>,
+        val upcomingEvents: List<Event>,
+        val pastEvents: List<Event>,
         val advertisements: List<Advertisement>
     ) : HomeUiState
     data class Error(val throwable: Throwable) : HomeUiState
