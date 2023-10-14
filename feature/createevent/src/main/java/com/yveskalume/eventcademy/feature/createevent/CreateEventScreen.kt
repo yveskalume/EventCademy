@@ -107,7 +107,7 @@ private fun CreateEventScreen(
     var eventStartTime by remember { mutableStateOf("__:__") }
     var eventEndTime by remember { mutableStateOf("__:__") }
     var eventDescription by remember { mutableStateOf("") }
-    var eventPrice by remember { mutableStateOf("") }
+    var eventPrice by remember { mutableStateOf("0") }
     var eventType: EventType? by remember { mutableStateOf(null) }
     var eventLink by remember { mutableStateOf("") }
     var imageUri by remember { mutableStateOf("") }
@@ -430,6 +430,15 @@ private fun CreateEventScreen(
 
                         val timeZone: String =
                             SimpleDateFormat("z", Locale.getDefault()).format(startDate.time)
+
+                        if (endDate.before(startDate)) {
+                            Toast.makeText(
+                                context,
+                                "L'heure du début doit être antérieure à l'heure de la fin",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            return@Button
+                        }
 
                         val event = Event(
                             uid = UUID.randomUUID().toString(),

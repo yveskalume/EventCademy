@@ -45,7 +45,9 @@ fun SelectTimeDialog(
                     Spacer(modifier = Modifier.height(24.dp))
                     TextButton(
                         onClick = {
-                            onConfirm("${state.hour}:${state.minute}")
+                            val minutes = if (state.minute < 10) "0${state.minute}" else state.minute
+                            val hours = if (state.hour < 10) "0${state.hour}" else state.hour
+                            onConfirm("$hours:$minutes")
                         },
                         modifier = Modifier.align(Alignment.End)
                     ) {
