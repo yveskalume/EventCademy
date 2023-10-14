@@ -1,12 +1,13 @@
 package com.yveskalume.eventcademy.core.data.firebase.repository
 
+import android.util.Log
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import com.yveskalume.eventcademy.core.domain.model.User
 import com.yveskalume.eventcademy.core.data.firebase.util.FirestoreCollections
 import com.yveskalume.eventcademy.core.data.firebase.util.toDomainUser
+import com.yveskalume.eventcademy.core.domain.model.User
 import com.yveskalume.eventcademy.core.domain.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -22,11 +23,22 @@ class UserRepositoryImpl @Inject constructor(
 
     private suspend fun saveUserToFirestore(firebaseUser: FirebaseUser?) {
         withContext(Dispatchers.IO) {
-            val user = firebaseUser?.toDomainUser()
+            var user = firebaseUser?.toDomainUser()
+            try {
+                // get the role of the user if he's already in firestore
+                val role = getUserByUid(user?.uid!!)?.role
+                if (role != null) {
+                    user = user.copy(role = role)
+                }
+            } catch (e: Exception) {
+                // user does not exits in firestore
+                Log.e("SaveUserToFirestore",e.toString())
+            }
             if (user != null) {
                 firestore.collection(FirestoreCollections.USERS).document(user.uid).set(user)
                     .await()
             }
+
         }
     }
 
