@@ -29,13 +29,16 @@ jobs:
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICE_JSON }}
         run: echo $GOOGLE_SERVICES_JSON > app/google-services.json
 
-      - name: Create key.properties
+      - name: Configure Keystore
         env:
+          ANDROID_KEYSTORE_FILE: ${{ secrets.KEYSTORE }}
           KEYSTORE_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEYSTORE_KEY_PASSWORD: ${{ secrets.PLAY_STORE_KEY_PATH_PASSWORD }}
           KEYSTORE_STORE_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
+          echo "$ANDROID_KEYSTORE_FILE" | base64 -d > app/keystore.jks
           echo "storeFile=keystore.jks" >> key.properties
+          echo "storeFile=keystore.jks" > key.properties
           echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
           echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
           echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
