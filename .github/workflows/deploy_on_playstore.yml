@@ -51,5 +51,6 @@ jobs:
           packageName: com.yveskalume.eventcademy
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
           track: production
+          inAppUpdatePriority: 5
           whatsNewDirectory: whatsnew/
           status: completed
