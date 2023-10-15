@@ -95,7 +95,7 @@ private fun BookmarkContent(
     val events = remember(eventBookings, showPastEvents) {
         derivedStateOf {
             if (showPastEvents) {
-                eventBookings.filter { it.eventDate.isPast }
+                eventBookings.filter { it.eventDate.isPast }.sortedByDescending { it.eventDate }
             } else {
                 eventBookings.filter { it.eventDate.isFuture }
             }

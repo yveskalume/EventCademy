@@ -24,8 +24,8 @@ android {
         applicationId = "com.yveskalume.eventcademy"
         minSdk = 24
         targetSdk = 34
-        versionCode = 7
-        versionName = "1.3"
+        versionCode = 8
+        versionName = "1.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -64,7 +64,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.8"
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     packaging {
         resources {

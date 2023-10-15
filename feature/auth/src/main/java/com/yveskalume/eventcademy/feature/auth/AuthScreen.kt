@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.Image
@@ -24,7 +25,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,11 +43,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
+import com.yveskalume.eventcademy.core.designsystem.components.LinkedText
 import com.yveskalume.eventcademy.core.designsystem.components.withLink
 import com.yveskalume.eventcademy.core.designsystem.theme.ThemePreview
 import com.yveskalume.eventcademy.core.designsystem.R.drawable as Drawables
@@ -84,6 +90,11 @@ fun AuthScreen(
     val privacyPolicyLink = stringResource(id = R.string.link_privacy_policy)
     val termsOfUseLink = stringResource(id = R.string.link_terms_of_use)
 
+    val oneTapClient = remember {
+        Identity.getSignInClient(context)
+    }
+
+
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
@@ -96,6 +107,43 @@ fun AuthScreen(
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             }
         }
+
+    val oneTapLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
+            try {
+                val signInCredential = oneTapClient.getSignInCredentialFromIntent(it.data)
+                val credential = GoogleAuthProvider
+                    .getCredential(signInCredential.googleIdToken!!, null)
+                onConnectWithGoogle(credential)
+            } catch (e: ApiException) {
+                Log.e("AuthScreen", "signInResult:failed", e)
+            }
+        }
+
+    LaunchedEffect(Unit) {
+        val signInRequest = BeginSignInRequest.builder()
+            .setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    .setServerClientId(webClientIdToken)
+                    .setFilterByAuthorizedAccounts(true)
+                    .build()
+            )
+            .build()
+
+        oneTapClient.beginSignIn(signInRequest)
+            .addOnSuccessListener(context as Activity) { result ->
+                val intentSenderRequest =
+                    IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
+
+                try {
+                    oneTapLauncher.launch(intentSenderRequest)
+                } catch (e: Exception) {
+                    // Attempting to launch an unregistered ActivityResultLauncher
+                    /*this catch avoid the app to crash after sign out (when the user is redirected to this screen again)*/
+                }
+            }
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -151,6 +199,8 @@ fun AuthScreen(
                                         .requestEmail()
                                         .build()
                                 val googleSignInClient = GoogleSignIn.getClient(context, gso)
+                                googleSignInClient.revokeAccess()
+
                                 launcher.launch(googleSignInClient.signInIntent)
                             }
                         )
@@ -163,7 +213,7 @@ fun AuthScreen(
                     }
                 }
 
-                com.yveskalume.eventcademy.core.designsystem.components.LinkedText(
+                LinkedText(
                     style = MaterialTheme.typography.labelSmall,
                     text = buildAnnotatedString {
                         append("En vous connectant, vous acceptez nos ")

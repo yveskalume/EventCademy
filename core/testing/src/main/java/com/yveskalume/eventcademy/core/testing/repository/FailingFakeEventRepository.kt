@@ -6,7 +6,19 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class FailingFakeEventRepository : EventRepository {
+    override fun getAllEventsStream(): Flow<List<Event>> {
+        return flow {
+            throw Exception("An error occurred")
+        }
+    }
+
     override fun getAllUpComingEventsStream(): Flow<List<Event>> {
+        return flow {
+            throw Exception("An error occurred")
+        }
+    }
+
+    override fun getAllPastEventsStream(): Flow<List<Event>> {
         return flow {
             throw Exception("An error occurred")
         }

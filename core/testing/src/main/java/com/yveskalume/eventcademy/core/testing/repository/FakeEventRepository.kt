@@ -7,7 +7,19 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class FakeEventRepository : EventRepository {
+    override fun getAllEventsStream(): Flow<List<Event>> {
+        return flow {
+            emit(eventTestData)
+        }
+    }
+
     override fun getAllUpComingEventsStream(): Flow<List<Event>> {
+        return flow {
+            emit(eventTestData)
+        }
+    }
+
+    override fun getAllPastEventsStream(): Flow<List<Event>> {
         return flow {
             emit(eventTestData)
         }

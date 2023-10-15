@@ -22,6 +22,20 @@ class EventRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseStorage: FirebaseStorage
 ) : EventRepository {
+    override fun getAllEventsStream() = callbackFlow<List<Event>> {
+        val listener = firestore.collection(FirestoreCollections.EVENTS)
+            .whereEqualTo(Event::published.name, true)
+            .addSnapshotListener { value, error ->
+                if (error != null || value == null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                value.toObjects(Event::class.java).also { data ->
+                    trySend(data.sortedBy { it.startDate })
+                }
+            }
+        awaitClose { listener.remove() }
+    }.flowOn(Dispatchers.IO)
 
     /**
      * Get all the upcoming events
@@ -31,6 +45,22 @@ class EventRepositoryImpl @Inject constructor(
     override fun getAllUpComingEventsStream() = callbackFlow<List<Event>> {
         val listener = firestore.collection(FirestoreCollections.EVENTS)
             .whereGreaterThan(Event::endDate.name, Date())
+            .whereEqualTo(Event::published.name, true)
+            .addSnapshotListener { value, error ->
+                if (error != null || value == null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                value.toObjects(Event::class.java).also { data ->
+                    trySend(data.sortedBy { it.startDate })
+                }
+            }
+        awaitClose { listener.remove() }
+    }.flowOn(Dispatchers.IO)
+
+    override fun getAllPastEventsStream() = callbackFlow<List<Event>> {
+        val listener = firestore.collection(FirestoreCollections.EVENTS)
+            .whereLessThanOrEqualTo(Event::endDate.name, Date())
             .whereEqualTo(Event::published.name, true)
             .addSnapshotListener { value, error ->
                 if (error != null || value == null) {
@@ -99,7 +129,7 @@ class EventRepositoryImpl @Inject constructor(
                     return@addSnapshotListener
                 }
                 value.toObjects(Event::class.java).also { data ->
-                    trySend(data.sortedBy { it.createdAt })
+                    trySend(data.sortedByDescending { it.startDate })
                 }
             }
         awaitClose { listener.remove() }

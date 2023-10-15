@@ -1,6 +1,5 @@
 package com.yveskalume.eventcademy.feature.setting
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -57,9 +56,6 @@ fun SettingRoute(
         onPrivacyClick = {
             uriHandler.openUri(privacyLink)
         },
-        onDevscastLinkClick = {
-            uriHandler.openUri("https://devscast.tech")
-        }
     )
 }
 
@@ -72,7 +68,6 @@ fun SettingScreen(
     onContactClick: () -> Unit,
     onConditionClick: () -> Unit,
     onPrivacyClick: () -> Unit,
-    onDevscastLinkClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -196,20 +191,6 @@ fun SettingScreen(
                     }
                 }
             }
-
-            item {
-                Row {
-                    Text(text = "Produit Par", style = MaterialTheme.typography.labelMedium)
-                    Text(
-                        text = "Devscast",
-                        modifier = Modifier
-                            .padding(start = 3.dp)
-                            .clickable(onClick = onDevscastLinkClick),
-                        color = com.yveskalume.eventcademy.core.designsystem.theme.Blue200,
-                        style = MaterialTheme.typography.labelMedium
-                    )
-                }
-            }
         }
     }
 }
@@ -225,7 +206,6 @@ fun SettingScreenPreview() {
             onContactClick = {},
             onConditionClick = {},
             onPrivacyClick = {},
-            onDevscastLinkClick = {}
         )
     }
 }

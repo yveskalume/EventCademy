@@ -33,3 +33,6 @@ val Event.statusText: String
             "En attente"
         }
     }
+
+val Event.isFuture: Boolean
+    get() = Date().before(endDate)

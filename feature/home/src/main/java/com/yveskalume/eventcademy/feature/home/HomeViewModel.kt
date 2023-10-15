@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,11 +21,13 @@ class HomeViewModel @Inject constructor(
 
 
     val uiState: StateFlow<HomeUiState> = combine(
-        eventRepository.getAllUpComingEventsStream(),
+        eventRepository.getAllEventsStream(),
         advertisementRepository.getAllAdvertisementsStream()
     ) { events, advertisements ->
         HomeUiState.Success(
-            events = events,
+            upcomingEvents = events.filter { Date().before(it.endDate) },
+            pastEvents = events.filter { Date().after(it.endDate) }
+                .sortedByDescending { it.startDate },
             advertisements = advertisements
         )
     }.catch<HomeUiState> {

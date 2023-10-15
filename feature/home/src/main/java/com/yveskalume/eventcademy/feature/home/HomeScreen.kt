@@ -5,8 +5,8 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -35,6 +35,7 @@ import coil.compose.SubcomposeAsyncImage
 import com.yveskalume.eventcademy.core.designsystem.components.AdvertisementsItem
 import com.yveskalume.eventcademy.core.designsystem.components.EmptyAnimation
 import com.yveskalume.eventcademy.core.designsystem.components.EventItem
+import com.yveskalume.eventcademy.core.designsystem.components.EventLargeItem
 import com.yveskalume.eventcademy.core.designsystem.components.LoadingAnimation
 import com.yveskalume.eventcademy.core.designsystem.components.SectionHeader
 import com.yveskalume.eventcademy.core.designsystem.theme.ThemePreview
@@ -113,7 +114,8 @@ private fun HomeScreen(
                     HomeScreenContent(
                         modifier = Modifier.fillMaxSize(),
                         ads = uiState.advertisements,
-                        events = uiState.events,
+                        upcomingEvents = uiState.upcomingEvents,
+                        pastEvents = uiState.pastEvents,
                         onEventClick = onEventClick
                     )
                 }
@@ -125,7 +127,8 @@ private fun HomeScreen(
 @Composable
 private fun HomeScreenContent(
     ads: List<Advertisement>,
-    events: List<Event>,
+    upcomingEvents: List<Event>,
+    pastEvents: List<Event>,
     onEventClick: (eventUid: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -152,18 +155,35 @@ private fun HomeScreenContent(
                             uriHandler.openUri(advertisement.destination)
                         }
                     },
-                    modifier = Modifier.aspectRatio(1.2f)
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }
-        if (events.isNotEmpty()) {
+
+        if (upcomingEvents.isNotEmpty()) {
             item(span = { GridItemSpan(2) }) {
                 SectionHeader(title = "Événements à venir")
             }
-            items(items = events, key = { it.uid }) { event ->
+            items(
+                span = { GridItemSpan(2) },
+                items = upcomingEvents,
+                key = { it.uid }
+            ) { event ->
+                EventLargeItem(
+                    event = event,
+                    onClick = { onEventClick(event.uid) }
+                )
+            }
+        }
+        if (pastEvents.isNotEmpty()) {
+            item(span = { GridItemSpan(2) }) {
+                SectionHeader(title = "Événements passés")
+            }
+            items(items = pastEvents, key = { it.uid }) { event ->
                 EventItem(
                     event = event,
-                    onClick = { onEventClick(event.uid) })
+                    onClick = { onEventClick(event.uid) }
+                )
             }
         }
     }
