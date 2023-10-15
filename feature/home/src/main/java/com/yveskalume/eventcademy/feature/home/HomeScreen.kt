@@ -182,7 +182,8 @@ private fun HomeScreenContent(
             items(items = pastEvents, key = { it.uid }) { event ->
                 EventItem(
                     event = event,
-                    onClick = { onEventClick(event.uid) })
+                    onClick = { onEventClick(event.uid) }
+                )
             }
         }
     }

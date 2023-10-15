@@ -129,7 +129,7 @@ class EventRepositoryImpl @Inject constructor(
                     return@addSnapshotListener
                 }
                 value.toObjects(Event::class.java).also { data ->
-                    trySend(data.sortedByDescending { it.createdAt })
+                    trySend(data.sortedByDescending { it.startDate })
                 }
             }
         awaitClose { listener.remove() }

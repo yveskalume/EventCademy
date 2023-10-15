@@ -26,7 +26,8 @@ class HomeViewModel @Inject constructor(
     ) { events, advertisements ->
         HomeUiState.Success(
             upcomingEvents = events.filter { Date().before(it.endDate) },
-            pastEvents = events.filter { Date().after(it.endDate) },
+            pastEvents = events.filter { Date().after(it.endDate) }
+                .sortedByDescending { it.startDate },
             advertisements = advertisements
         )
     }.catch<HomeUiState> {
