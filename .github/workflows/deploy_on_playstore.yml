@@ -37,7 +37,6 @@ jobs:
           KEYSTORE_STORE_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           echo "$ANDROID_KEYSTORE_FILE" | base64 -d > app/keystore.jks
-          echo "storeFile=keystore.jks" >> key.properties
           echo "storeFile=keystore.jks" > key.properties
           echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
           echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
@@ -65,7 +64,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_API_AUTH }}
           packageName: com.yveskalume.eventcademy
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
-          track: production
+          track: beta
           inAppUpdatePriority: 5
           whatsNewDirectory: whatsnew/
           status: completed
