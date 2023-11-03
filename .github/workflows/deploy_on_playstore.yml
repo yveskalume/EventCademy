@@ -33,7 +33,7 @@ jobs:
         env:
           ANDROID_KEYSTORE_FILE: ${{ secrets.KEYSTORE }}
           KEYSTORE_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEYSTORE_KEY_PASSWORD: ${{ secrets.PLAY_STORE_KEY_PATH_PASSWORD }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEYSTORE_STORE_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           echo "$ANDROID_KEYSTORE_FILE" | base64 -d > app/keystore.jks
