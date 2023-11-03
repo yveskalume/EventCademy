@@ -24,8 +24,18 @@ jobs:
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICE_JSON }}
         run: echo $GOOGLE_SERVICES_JSON > app/google-services.json
 
-      - name: Run Unit tests
-        run: ./gradlew test
+      - name: Configure Keystore
+        env:
+          ANDROID_KEYSTORE_FILE: ${{ secrets.KEYSTORE }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          echo "$ANDROID_KEYSTORE_FILE" | base64 -d > app/keystore.jks
+          echo "storeFile=keystore.jks" > key.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties        
 
       - name: Cache Gradle and wrapper
         uses: actions/cache@v2
@@ -42,3 +52,7 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
+
+      - name: Run Unit tests
+        run: ./gradlew test
+
