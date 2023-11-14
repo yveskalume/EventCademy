@@ -55,7 +55,7 @@ fun EventBookedDialog(onConfirmClick: () -> Unit, onDismissRequest: () -> Unit) 
                     )
 
                     Text(
-                        text = "Visitez le lien de l'événement pour toutes les infos et réservez votre place dans le cas échéant.",
+                        text = "Visitez le lien de l'événement pour plus d'infos et réservez votre place dans le cas échéant.",
                         textAlign = TextAlign.Center,
                     )
 
