@@ -52,6 +52,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -61,6 +62,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.SubcomposeAsyncImage
+import com.yveskalume.eventcademy.core.designsystem.R
 import com.yveskalume.eventcademy.core.designsystem.components.EmptyAnimation
 import com.yveskalume.eventcademy.core.designsystem.components.LoadingAnimation
 import com.yveskalume.eventcademy.core.designsystem.theme.Blue200
@@ -127,6 +129,7 @@ fun EventDetailRoute(
         uiState = uiState,
         eventBookingState = eventBookingState,
         onBackClick = onBackClick,
+        onOpenLinkClick = { url -> uriHandler.openUri(url) },
         onBookmarkClick = {
             if (uiState is EventDetailUiState.Success) {
                 val event = (uiState as EventDetailUiState.Success).event
@@ -157,7 +160,8 @@ private fun EventDetailScreen(
     uiState: EventDetailUiState,
     eventBookingState: EventBookingState,
     onBackClick: () -> Unit,
-    onBookmarkClick: () -> Unit
+    onBookmarkClick: () -> Unit,
+    onOpenLinkClick: (String) -> Unit
 ) {
     BottomSheetScaffold(
         topBar = {
@@ -196,6 +200,18 @@ private fun EventDetailScreen(
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.SemiBold
                 )
+
+                (uiState as? EventDetailUiState.Success)?.let { state ->
+                    if (state.event.eventUrl.isNotBlank()) {
+                        IconButton(onClick = { onOpenLinkClick(state.event.eventUrl) }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.captive_portal),
+                                contentDescription = null
+                            )
+                        }
+                    }
+                }
+
                 if (uiState !is EventDetailUiState.Error) {
                     AnimatedContent(targetState = eventBookingState, label = "") { state ->
                         when (state) {
@@ -466,6 +482,8 @@ fun EventDetailScreenPreview() {
             eventBookingState = EventBookingState.LOADING,
             uiState = EventDetailUiState.Loading,
             onBackClick = {},
-            onBookmarkClick = {})
+            onBookmarkClick = {},
+            onOpenLinkClick = {}
+        )
     }
 }
