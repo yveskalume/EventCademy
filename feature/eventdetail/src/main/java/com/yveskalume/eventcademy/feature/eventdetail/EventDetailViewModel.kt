@@ -9,9 +9,12 @@ import com.yveskalume.eventcademy.core.domain.repository.EventRepository
 import com.yveskalume.eventcademy.core.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,6 +32,9 @@ class EventDetailViewModel @Inject constructor(
     private val _eventBookingState: MutableStateFlow<EventBookingState> =
         MutableStateFlow(EventBookingState.LOADING)
     val eventBookingState: StateFlow<EventBookingState> = _eventBookingState.asStateFlow()
+
+    private val _uiEffect: Channel<EventDetailUiEffect> = Channel()
+    val uiEffect: Flow<EventDetailUiEffect> = _uiEffect.receiveAsFlow()
 
     fun getData(eventUid: String) {
         getEvent(eventUid)
@@ -83,6 +89,7 @@ class EventDetailViewModel @Inject constructor(
                     eventBookingRepository.deleteBooking(event.uid)
                 } else {
                     eventBookingRepository.createBooking(event)
+                    _uiEffect.trySend(EventDetailUiEffect.ShowCongratulations)
                 }
             } catch (t: Throwable) {
                 _uiState.emit(EventDetailUiState.Error(t.message ?: "Une erreur est survenue"))

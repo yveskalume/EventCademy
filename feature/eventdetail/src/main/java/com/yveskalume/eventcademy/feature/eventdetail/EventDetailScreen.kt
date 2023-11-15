@@ -50,12 +50,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.SubcomposeAsyncImage
 import com.yveskalume.eventcademy.core.designsystem.components.EmptyAnimation
 import com.yveskalume.eventcademy.core.designsystem.components.LoadingAnimation
@@ -68,6 +72,7 @@ import com.yveskalume.eventcademy.core.domain.model.isFuture
 import com.yveskalume.eventcademy.core.util.addToPhoneCalendar
 import com.yveskalume.eventcademy.core.util.hoursAndMins
 import com.yveskalume.eventcademy.core.util.readableDateWithDayName
+import com.yveskalume.eventcademy.feature.eventdetail.components.EventBookedDialog
 
 @Composable
 fun EventDetailRoute(
@@ -78,6 +83,41 @@ fun EventDetailRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val eventBookingState by viewModel.eventBookingState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+
+    var isDialogShown by remember {
+        mutableStateOf(false)
+    }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    val uriHandler = LocalUriHandler.current
+
+    LaunchedEffect(lifecycleOwner.lifecycle) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.uiEffect.collect { effect ->
+                when (effect) {
+                    EventDetailUiEffect.ShowCongratulations -> {
+                        isDialogShown = true
+                    }
+                }
+            }
+        }
+    }
+
+    if (isDialogShown) {
+        EventBookedDialog(
+            onConfirmClick = {
+                isDialogShown = false
+                with(uiState as? EventDetailUiState.Success) {
+                    this?.let {
+                        uriHandler.openUri(event.eventUrl)
+                    }
+                }
+
+            },
+            onDismissRequest = { isDialogShown = false }
+        )
+    }
 
     LaunchedEffect(Unit) {
         viewModel.getData(eventUid ?: "")
