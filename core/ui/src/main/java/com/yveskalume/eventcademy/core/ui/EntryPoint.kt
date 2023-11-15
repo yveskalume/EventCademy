@@ -3,6 +3,9 @@ package com.yveskalume.eventcademy.core.ui
 import android.content.res.Configuration
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -57,7 +60,11 @@ fun ComponentActivity.installUi(webClientIdToken: String) {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = {
-                        if (shouldShowBottomNavigation(destination)) {
+                        AnimatedVisibility(
+                            visible = shouldShowBottomNavigation(destination),
+                            enter = slideInVertically { it / 2 },
+                            exit = slideOutVertically { it / 2},
+                        ) {
                             BottomNavigationBar(
                                 navController = navController,
                                 destination = destination
