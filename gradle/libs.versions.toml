@@ -91,7 +91,7 @@ com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" 
 com-google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 com-google-gms-google-services = { id = "com.google.gms.google-services", version = "4.3.15" }
 com-google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "2.9.7" }
-org-jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "1.7.10" }
+org-jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "1.9.21" }
 com-android-library = { id = "com.android.library", version.ref = "agp" }
 androidx-benchmark = { id = "androidx.benchmark", version.ref = "androidx-benchmark" }
 
