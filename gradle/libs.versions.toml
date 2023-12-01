@@ -75,7 +75,7 @@ firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashly
 
 google-playservices-auth = { group = "com.google.android.gms", name = "play-services-auth", version = "20.7.0" }
 
-coil-compose = { group = "io.coil-kt", name = "coil-compose", version = "2.4.0" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version = "2.5.0" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "com-google-android-material-material" }
 runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
