@@ -1,6 +1,7 @@
 package com.yveskalume.eventcademy.feature.eventdetail
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yveskalume.eventcademy.core.domain.model.Event
@@ -20,10 +21,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EventDetailViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val userRepository: UserRepository,
     private val eventRepository: EventRepository,
     private val eventBookingRepository: EventBookingRepository
 ) : ViewModel() {
+
+    private val eventUid = savedStateHandle.get<String>("eventUid")
 
     private val _uiState: MutableStateFlow<EventDetailUiState> =
         MutableStateFlow(EventDetailUiState.Loading)
@@ -36,9 +40,15 @@ class EventDetailViewModel @Inject constructor(
     private val _uiEffect: Channel<EventDetailUiEffect> = Channel()
     val uiEffect: Flow<EventDetailUiEffect> = _uiEffect.receiveAsFlow()
 
-    fun getData(eventUid: String) {
-        getEvent(eventUid)
-        checkIfUserHasBooked(eventUid)
+    init {
+        getData()
+    }
+
+    private fun getData() {
+        if (eventUid != null) {
+            getEvent(eventUid)
+            checkIfUserHasBooked(eventUid)
+        }
     }
 
     private fun checkIfUserHasBooked(eventUid: String) {
