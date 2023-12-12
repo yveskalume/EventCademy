@@ -79,7 +79,6 @@ import com.yveskalume.eventcademy.feature.eventdetail.components.EventBookedDial
 @Composable
 fun EventDetailRoute(
     viewModel: EventDetailViewModel = hiltViewModel(),
-    eventUid: String?,
     onBackClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -119,10 +118,6 @@ fun EventDetailRoute(
             },
             onDismissRequest = { isDialogShown = false }
         )
-    }
-
-    LaunchedEffect(Unit) {
-        viewModel.getData(eventUid ?: "")
     }
 
     EventDetailScreen(

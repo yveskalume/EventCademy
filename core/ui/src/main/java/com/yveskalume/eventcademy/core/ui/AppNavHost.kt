@@ -66,10 +66,8 @@ fun AppNavHost(
                 uriPattern = "https://eventcademy.app/event/{eventUid}z"
             })
 
-        ) { backStackEntry ->
-            val eventUid = backStackEntry.arguments?.getString("eventUid")
+        ) {
             EventDetailRoute(
-                eventUid = eventUid,
                 onBackClick = navController::navigateUp
             )
         }
