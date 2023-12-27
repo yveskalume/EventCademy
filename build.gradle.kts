@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.serialization) apply false
     alias(libs.plugins.com.android.library) apply false
     alias(libs.plugins.androidx.benchmark) apply false
+    alias(libs.plugins.androidTest) apply false
 
 }
 true // Needed to make the Suppress annotation work for the plugins block
