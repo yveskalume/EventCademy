@@ -28,6 +28,8 @@ com-google-android-material-material = "1.10.0"
 androidx-benchmark = "1.1.1"
 runner = "1.5.2"
 benchmark-junit4 = "1.2.0"
+uiautomator = "2.2.0"
+benchmark-macro-junit4 = "1.2.0-beta01"
 
 [libraries]
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-splashscreen" }
@@ -82,6 +84,8 @@ runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 benchmark-junit4 = { group = "androidx.benchmark", name = "benchmark-junit4", version.ref = "benchmark-junit4" }
 
 konfetti-compose = "nl.dionsegijn:konfetti-compose:2.0.3"
+uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
+benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmark-macro-junit4" }
 
 
 [plugins]
@@ -94,6 +98,7 @@ com-google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", vers
 org-jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "1.7.10" }
 com-android-library = { id = "com.android.library", version.ref = "agp" }
 androidx-benchmark = { id = "androidx.benchmark", version.ref = "androidx-benchmark" }
+androidTest = { id = "com.android.test", version.ref = "agp" }
 
 [bundles]
 

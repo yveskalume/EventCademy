@@ -1,53 +1,53 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.com.android.library)
-    alias(libs.plugins.androidx.benchmark)
+    alias(libs.plugins.androidTest)
     alias(libs.plugins.org.jetbrains.kotlin.android)
 }
 
 android {
     namespace = "com.yveskalume.eventcademy.benchmark"
-    compileSdk = 33
+    compileSdk = 34
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "1.8"
     }
 
     defaultConfig {
         minSdk = 24
+        targetSdk = 34
 
-        testInstrumentationRunner = "androidx.benchmark.junit4.AndroidBenchmarkRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    testBuildType = "release"
     buildTypes {
-        debug {
-            // Since isDebuggable can"t be modified by gradle for library modules,
-            // it must be done in a manifest - see src/androidTest/AndroidManifest.xml
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "benchmark-proguard-rules.pro"
-            )
-        }
-        release {
-            isDefault = true
+        // This benchmark buildType is used for benchmarking, and should function like your
+        // release build (for example, with minification on). It"s signed with a debug key
+        // for easy local/CI testing.
+        create("benchmark") {
+            isDebuggable = true
+            signingConfig = getByName("debug").signingConfig
+            matchingFallbacks += listOf("release")
         }
     }
+
+    targetProjectPath = ":app"
+    experimentalProperties["android.experimental.self-instrumenting"] = true
 }
 
 dependencies {
-    androidTestImplementation(libs.runner)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.junit)
-    androidTestImplementation(libs.benchmark.junit4)
-    // Add your dependencies here. Note that you cannot benchmark code
-    // in an app module this way - you will need to move any code you
-    // want to benchmark to a library module:
-    // https://developer.android.com/studio/projects/android-library#Convert
+    implementation(libs.androidx.test.ext.junit)
+    implementation(libs.espresso.core)
+    implementation(libs.uiautomator)
+    implementation(libs.benchmark.macro.junit4)
+}
 
+androidComponents {
+    beforeVariants(selector().all()) {
+        it.enable = it.buildType == "benchmark"
+    }
 }
