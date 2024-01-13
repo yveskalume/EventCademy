@@ -71,21 +71,13 @@ class EventDetailViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.emit(EventDetailUiState.Loading)
             try {
-                val eventDeferred = async {
-                    eventRepository.getEventByUid(eventUid)
-                }
-                val event = eventDeferred.await()
-                if (event == null) {
-                    _uiState.emit(EventDetailUiState.Error("Cet evenment n'est pas encore disponible ou a été supprimé"))
-                    return@launch
-                }
 
-                val userDeferred = async {
-                    userRepository.getUserByUid(event.userUid)
-                }
-                eventBookingRepository.getAllBookingByEventUid(eventUid).collect { bookings ->
-                    _uiState.emit(EventDetailUiState.Success(event, userDeferred.await(), bookings))
-                }
+//                val userDeferred = async {
+//                    userRepository.getUserByUid(event.userUid)
+//                }
+//                eventBookingRepository.getAllBookingByEventUid(eventUid).collect { bookings ->
+//                    _uiState.emit(EventDetailUiState.Success(event, userDeferred.await(), bookings))
+//                }
             } catch (t: Throwable) {
                 _uiState.emit(EventDetailUiState.Error(t.message ?: "Une erreur est survenue"))
             }

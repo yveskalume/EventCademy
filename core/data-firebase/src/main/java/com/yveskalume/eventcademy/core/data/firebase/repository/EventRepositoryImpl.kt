@@ -10,7 +10,9 @@ import com.yveskalume.eventcademy.core.domain.model.Event
 import com.yveskalume.eventcademy.core.domain.repository.EventRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -22,20 +24,9 @@ class EventRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseStorage: FirebaseStorage
 ) : EventRepository {
-    override fun getAllEventsStream() = callbackFlow<List<Event>> {
-        val listener = firestore.collection(FirestoreCollections.EVENTS)
-            .whereEqualTo(Event::published.name, true)
-            .addSnapshotListener { value, error ->
-                if (error != null || value == null) {
-                    close(error)
-                    return@addSnapshotListener
-                }
-                value.toObjects(Event::class.java).also { data ->
-                    trySend(data.sortedBy { it.startDate })
-                }
-            }
-        awaitClose { listener.remove() }
-    }.flowOn(Dispatchers.IO)
+    override fun getAllEventsStream(): Flow<List<Event>> = flow {
+
+    }
 
     /**
      * Get all the upcoming events
@@ -83,19 +74,7 @@ class EventRepositoryImpl @Inject constructor(
      */
 
     override suspend fun getEventByUid(eventUid: String): Event? {
-        val userUid = firebaseAuth.uid
-        return withContext(Dispatchers.IO) {
-            val task = firestore.document("${FirestoreCollections.EVENTS}/$eventUid").get()
-            val event = task.await().toObject(Event::class.java)
-            if (event?.userUid == userUid) {
-                return@withContext event
-            }
-            if (event?.published == true) {
-                return@withContext event
-            } else {
-                return@withContext null
-            }
-        }
+        return null
     }
 
     /**
