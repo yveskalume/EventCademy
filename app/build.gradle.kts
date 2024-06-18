@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.com.google.gms.google.services)
     alias(libs.plugins.com.google.firebase.crashlytics)
     alias(libs.plugins.org.jetbrains.kotlin.serialization)
+    alias(libs.plugins.compose.compiler)
 }
 
 val keystorePropertiesFile = rootProject.file("key.properties")
@@ -67,9 +68,6 @@ android {
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     packaging {
         resources {

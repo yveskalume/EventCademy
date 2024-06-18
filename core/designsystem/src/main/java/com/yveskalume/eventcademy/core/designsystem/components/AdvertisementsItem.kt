@@ -53,7 +53,7 @@ fun AdvertisementsItem(
         while (true) {
             val nextPage =
                 if (pagerState.currentPage == items.lastIndex) {
-                    pagerState.initialPage
+                    0
                 } else {
                     pagerState.currentPage + 1
                 }

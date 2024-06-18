@@ -31,10 +31,8 @@ fun SelectDateDialog(
             onDismissRequest = { },
             content = {
                 DatePicker(
-                    state = state,
-                    dateValidator = {
-                        it > System.currentTimeMillis()
-                    })
+                    state = state
+                )
             },
             confirmButton = {
                 Button(

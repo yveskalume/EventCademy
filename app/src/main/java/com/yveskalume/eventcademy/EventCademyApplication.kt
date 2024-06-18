@@ -21,11 +21,10 @@ class EventCademyApplication : Application(), Configuration.Provider {
         createNotificationChannel()
     }
 
-    override fun getWorkManagerConfiguration(): Configuration {
-        return Configuration.Builder()
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
             .setWorkerFactory(workerFactory)
             .build()
-    }
 
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because

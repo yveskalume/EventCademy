@@ -11,12 +11,18 @@ plugins {
     alias(libs.plugins.com.android.library) apply false
     alias(libs.plugins.androidx.benchmark) apply false
     alias(libs.plugins.androidTest) apply false
+    alias(libs.plugins.compose.compiler) apply false
 
 }
 
 subprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         kotlinOptions {
+            freeCompilerArgs += listOf(
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
+                        "$rootDir/compose_compiler_config.conf"
+            )
             if (project.findProperty("composeCompilerReports") == "true") {
                 freeCompilerArgs += listOf(
                     "-P",

@@ -10,11 +10,16 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -40,14 +45,19 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SelectableDates
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -58,9 +68,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -125,7 +139,10 @@ private fun CreateEventScreen(
     var showEndTimePicker by remember { mutableStateOf(false) }
 
     val datePickerState =
-        rememberDatePickerState(initialSelectedDateMillis = System.currentTimeMillis() + 86400000L)
+        rememberDatePickerState(
+            initialSelectedDateMillis = System.currentTimeMillis() + 86400000L,
+            selectableDates = onlyFutureSelectableDates
+        )
 
     val startTimeState = rememberTimePickerState(is24Hour = true)
     val endTimeState = rememberTimePickerState(is24Hour = true)
@@ -496,3 +513,60 @@ fun CreateEventScreenPreview() {
         CreateEventScreen(uiState = CreateEventUiState.Initial, onBackClick = {}, onSubmit = {})
     }
 }
+
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun Button(
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    shape: Shape = ButtonDefaults.shape,
+    containerColor: Color,
+    contentColor: Color,
+    border: BorderStroke? = null,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    content: @Composable RowScope.() -> Unit
+) {
+
+    Surface(
+        modifier = modifier
+            .semantics { role = Role.Button }
+            .combinedClickable(enabled = true, onClick = onClick, onLongClick = onLongClick),
+        shape = shape,
+        color = containerColor,
+        contentColor = contentColor,
+        border = border,
+    ) {
+        CompositionLocalProvider(LocalContentColor provides contentColor) {
+            ProvideTextStyle(value = MaterialTheme.typography.labelLarge) {
+                Row(
+                    Modifier
+                        .defaultMinSize(
+                            minWidth = ButtonDefaults.MinWidth,
+                            minHeight = ButtonDefaults.MinHeight
+                        )
+                        .padding(contentPadding),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    content = content
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+private val onlyFutureSelectableDates = object : SelectableDates {
+
+    override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+        return Calendar.getInstance().timeInMillis < utcTimeMillis
+    }
+
+    override fun isSelectableYear(year: Int): Boolean {
+        return year >= Calendar.getInstance().get(Calendar.YEAR)
+    }
+
+}
+
+
