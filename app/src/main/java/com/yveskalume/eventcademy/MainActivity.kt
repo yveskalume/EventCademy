@@ -71,10 +71,10 @@ class MainActivity : ComponentActivity() {
             }
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         // get destination from intent (destination may come from FCM)
-        val destination = intent?.getStringExtra("destination")
+        val destination = intent.getStringExtra("destination")
         Log.d("MainActivity", "onNewIntent: $destination")
         if (destination != null) {
             try {
