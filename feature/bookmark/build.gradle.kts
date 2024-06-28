@@ -2,13 +2,13 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
-    kotlin("kapt")
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.com.google.devtools.ksp)
 }
 
 android {
     namespace = "com.yveskalume.eventcademy.feature.bookmark"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
@@ -44,10 +44,11 @@ dependencies {
     implementation(project(":core:data-firebase"))
     implementation(project(":core:util"))
     testImplementation(project(":core:testing"))
+    androidTestImplementation(project(":core:testing"))
 
     implementation(libs.core.ktx)
 
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation)
 }
