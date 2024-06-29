@@ -64,13 +64,13 @@ fun EventCademyTheme(
     }
 
 
-    CompositionLocalProvider(
-        androidx.lifecycle.compose.LocalLifecycleOwner provides androidx.compose.ui.platform.LocalLifecycleOwner.current,
-    ) {
+//    CompositionLocalProvider(
+//        androidx.lifecycle.compose.LocalLifecycleOwner provides androidx.compose.ui.platform.LocalLifecycleOwner.current,
+//    ) {
         MaterialTheme(
             colorScheme = colorScheme,
             typography = Typography,
             content = content
         )
-    }
+//    }
 }

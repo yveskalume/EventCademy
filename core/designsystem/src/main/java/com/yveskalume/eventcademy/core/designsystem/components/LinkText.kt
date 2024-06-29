@@ -92,7 +92,7 @@ fun LinkedText(
                 layoutResult?.getOffsetForPosition(pos)?.let { offset ->
                     annotations.firstOrNull { it.start <= offset && it.end >= offset }
                         ?.item
-                        ?.let { url -> onClick(url) }
+                        ?.let { url -> onClick(url.toString()) }
                 }
             }
         )
@@ -100,7 +100,7 @@ fun LinkedText(
     val actionSemantics = Modifier.semantics {
         onClickLink { index ->
             annotations.getOrNull(index)?.let {
-                onClick(it.item)
+                onClick(it.item.toString())
             }
             true
         }

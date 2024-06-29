@@ -51,7 +51,7 @@ activity-compose = { group = "androidx.activity", name = "activity-compose", ver
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie-compose" }
 material-icon-exented = "androidx.compose.material:material-icons-extended:1.6.8"
-ui = { group = "androidx.compose.ui", name = "ui" }
+ui = { group = "androidx.compose.ui", name = "ui", version = "1.7.0-beta04" }
 ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
