@@ -44,7 +44,6 @@ dependencies {
     implementation(project(":core:data-firebase"))
     implementation(project(":core:util"))
     testImplementation(project(":core:testing"))
-    androidTestImplementation(project(":core:testing"))
 
     implementation(libs.core.ktx)
 
