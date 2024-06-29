@@ -2,13 +2,13 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
-    kotlin("kapt")
+    alias(libs.plugins.com.google.devtools.ksp)
     alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "com.yveskalume.eventcademy.feature.createevent"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
@@ -50,6 +50,6 @@ dependencies {
     implementation(libs.material)
 
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation)
 }

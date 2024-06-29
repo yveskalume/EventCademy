@@ -4,7 +4,6 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
-    kotlin("kapt")
     alias(libs.plugins.com.google.devtools.ksp)
     alias(libs.plugins.com.google.dagger.hilt.android)
     alias(libs.plugins.com.google.gms.google.services)
@@ -25,8 +24,8 @@ android {
         applicationId = "com.yveskalume.eventcademy"
         minSdk = 24
         targetSdk = 34
-        versionCode = 11
-        versionName = "1.6"
+        versionCode = 12
+        versionName = "1.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -108,7 +107,9 @@ dependencies {
     implementation(libs.material.icon.exented)
 
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.work)
+    ksp(libs.androidx.hilt.compiler)
     implementation(libs.hilt.navigation)
 
     implementation(libs.google.playservices.auth)
@@ -131,8 +132,6 @@ dependencies {
 
     implementation(libs.lottie.compose)
 
-    implementation(libs.androidx.hilt.work)
-    kapt(libs.androidx.hilt.compiler)
 
     implementation(libs.kotlinx.serialization.json)
 
