@@ -6,4 +6,4 @@
 .externalNativeBuild
 .cxx
 key.properties
-key.properties
+local.properties
