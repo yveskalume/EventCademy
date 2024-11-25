@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.yveskalume.eventcademy.core.ui"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24

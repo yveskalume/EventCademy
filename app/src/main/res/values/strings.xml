@@ -4,5 +4,6 @@
     <string name="default_notification_channel_id">default_channel</string>
     <string name="default_notification_channel_name">Default</string>
     <string name="default_notification_channel_description">Default Channel</string>
+    <string name="default_web_client_id">521452128677-l53v8d62snf4vg19kmktedubu5r9javu.apps.googleusercontent.com</string>
 
 </resources>

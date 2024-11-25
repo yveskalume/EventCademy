@@ -2,7 +2,6 @@ package com.yveskalume.eventcademy.core.designsystem.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
@@ -146,7 +145,7 @@ object LinkedTextDefaults {
         backgroundColor: Color = Color.Unspecified,
         disabledBackgroundColor: Color = backgroundColor,
         pressedBackgroundColor: Color = textColor.copy(
-            alpha = LocalRippleTheme.current.rippleAlpha().pressedAlpha
+            alpha = 0.2f
         )
     ): LinkColors = DefaultLinkColors(
         textColor = textColor,

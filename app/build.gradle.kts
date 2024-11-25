@@ -18,12 +18,12 @@ keystoreProperties.load(keystorePropertiesFile.inputStream())
 
 android {
     namespace = "com.yveskalume.eventcademy"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.yveskalume.eventcademy"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 12
         versionName = "1.7"
 
