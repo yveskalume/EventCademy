@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.yveskalume.eventcademy.core.data.firebase"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24

@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.yveskalume.eventcademy.feature.bookmark"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24
