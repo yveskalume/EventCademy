@@ -1,12 +1,12 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.com.google.devtools.ksp)
 }
 
 android {
-    namespace = "com.yveskalume.eventcademy.core.ui"
+    namespace = "com.yveskalume.eventcademy.feature.forumhome"
     compileSdk = 35
 
     defaultConfig {
@@ -26,37 +26,29 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "17"
-    }
-    buildFeatures {
-        compose = true
+        jvmTarget = "11"
     }
 }
 
 dependencies {
-    implementation(project(":core:designsystem"))
-    implementation(project(":core:data-preferences"))
 
-    implementation(project(":feature:auth"))
-    implementation(project(":feature:bookmark"))
-    implementation(project(":feature:createevent"))
-    implementation(project(":feature:eventdetail"))
-    implementation(project(":feature:home"))
-    implementation(project(":feature:profile"))
-    implementation(project(":feature:setting"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:data-firebase"))
+    implementation(project(":core:util"))
+    testImplementation(project(":core:testing"))
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(project(":feature:forumhome"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    implementation(libs.navigation.compose)
-    implementation(libs.firebase.auth)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.navigation)
 }

@@ -2,6 +2,7 @@ package com.yveskalume.eventcademy.core.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Bookmark
+import androidx.compose.material.icons.rounded.Feed
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Icon
@@ -19,7 +20,7 @@ fun BottomNavigationBar(navController: NavHostController, destination: NavDestin
             selected = destination.isCurrent(Destination.HomeScreen),
             onClick = {
                 if (!destination.isCurrent(Destination.HomeScreen)) {
-                    navController.navigate(Destination.HomeScreen) {
+                    navController.navigate(Destination.HomeScreen.route) {
                         popUpTo(Destination.HomeScreen.route) {
                             saveState = true
                         }
@@ -39,11 +40,36 @@ fun BottomNavigationBar(navController: NavHostController, destination: NavDestin
             }
         )
 
+
+        NavigationBarItem(
+            selected = destination.isCurrent(Destination.BlogHomeScreen),
+            onClick = {
+                if (!destination.isCurrent(Destination.BlogHomeScreen)) {
+                    navController.navigate(Destination.BlogHomeScreen.route) {
+                        popUpTo(Destination.HomeScreen.route) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            },
+            label = {
+                Text(text = "Blog")
+            },
+            icon = {
+                Icon(
+                    imageVector = Icons.Rounded.Feed,
+                    contentDescription = null
+                )
+            }
+        )
+
         NavigationBarItem(
             selected = destination.isCurrent(Destination.BookmarkScreen),
             onClick = {
                 if (!destination.isCurrent(Destination.BookmarkScreen)) {
-                    navController.navigate(Destination.BookmarkScreen) {
+                    navController.navigate(Destination.BookmarkScreen.route) {
                         popUpTo(Destination.HomeScreen.route) {
                             saveState = true
                         }
@@ -67,7 +93,7 @@ fun BottomNavigationBar(navController: NavHostController, destination: NavDestin
             selected = destination.isCurrent(Destination.ProfileScreen),
             onClick = {
                 if (!destination.isCurrent(Destination.ProfileScreen)) {
-                    navController.navigate(Destination.ProfileScreen) {
+                    navController.navigate(Destination.ProfileScreen.route) {
                         popUpTo(Destination.HomeScreen.route) {
                             saveState = true
                         }

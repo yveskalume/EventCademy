@@ -18,6 +18,7 @@ sealed class Destination(val route: String) {
     object SettingsScreen : Destination("settings")
     object CreateEventScreen : Destination("create-event")
     object ProfileScreen : Destination("profile")
+    object BlogHomeScreen: Destination("Blog")
 }
 
 fun NavDestination?.isCurrent(destination: Destination): Boolean {
