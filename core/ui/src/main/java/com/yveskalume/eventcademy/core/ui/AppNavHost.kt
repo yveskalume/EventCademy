@@ -10,6 +10,7 @@ import androidx.navigation.navDeepLink
 import com.google.firebase.auth.FirebaseAuth
 import com.yveskalume.eventcademy.feature.auth.AuthRoute
 import com.yveskalume.eventcademy.feature.bookmark.BookmarkRoute
+import com.yveskalume.eventcademy.feature.createBlogPost.CreatePostRoute
 import com.yveskalume.eventcademy.feature.createevent.CreateEventRoute
 import com.yveskalume.eventcademy.feature.eventdetail.EventDetailRoute
 import com.yveskalume.eventcademy.feature.forumhome.BlogHomeRoute
@@ -118,7 +119,17 @@ fun AppNavHost(
         }
 
         composable(route = Destination.BlogHomeScreen.route){
-            BlogHomeRoute()
+            BlogHomeRoute(
+                onCreatePostClick = {
+                    navController.navigate(Destination.CreatePostScreen.route)
+                }
+            )
+        }
+
+        composable(route = Destination.CreatePostScreen.route){
+            CreatePostRoute(
+                onBackClick = {navController.navigateUp()}
+            )
         }
     }
 }

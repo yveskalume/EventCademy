@@ -32,12 +32,15 @@ import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.yveskalume.eventcademy.core.designsystem.util.shimmer
 import com.yveskalume.eventcademy.core.domain.model.Event
+import com.yveskalume.eventcademy.core.domain.model.Post
 import com.yveskalume.eventcademy.core.util.readableDateWithDayName
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostItem(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    post: Post,
+    onPostClicked: (String) -> Unit = {}
 ) {
     OutlinedCard(
         modifier = modifier,
@@ -46,14 +49,14 @@ fun PostItem(
             0.1.dp,
             Color.Gray
         ),
-        onClick = {  }
+        onClick = { onPostClicked }
     ) {
         Column(
             modifier = Modifier.padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             SubcomposeAsyncImage(
-                model = "",
+                model = post.imageUrl,
                 contentDescription = null,
                 loading = {
                     Box(
@@ -69,7 +72,7 @@ fun PostItem(
                     .clip(RoundedCornerShape(16.dp))
             )
             Text(
-                text = "DevFest Lubumbashi 2024",
+                text = post.name,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(horizontal = 8.dp),
@@ -78,7 +81,7 @@ fun PostItem(
             )
 
             OutlinedButton(
-                onClick = {},
+                onClick = { onPostClicked },
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.padding(start = 10.dp)
             ) {
@@ -93,6 +96,6 @@ fun PostItem(
 @Composable
 @Preview(showBackground = true)
 fun PostItemPreview() {
-    PostItem()
+    //PostItem()
 }
 
