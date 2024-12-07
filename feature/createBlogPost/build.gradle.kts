@@ -40,6 +40,8 @@ dependencies {
     implementation(project(":core:data-firebase"))
     implementation(project(":core:util"))
     implementation(project(":feature:createevent"))
+    implementation(project(":feature:forumhome"))
+    implementation(project(":feature:home"))
     testImplementation(project(":core:testing"))
 
     implementation(libs.core.ktx)

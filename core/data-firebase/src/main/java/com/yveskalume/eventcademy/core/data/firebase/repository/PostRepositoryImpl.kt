@@ -31,11 +31,12 @@ class PostRepositoryImpl @Inject constructor(
                 throw IllegalStateException("Vous devez être connecté pour créer un Post")
             } else {
                 val imageUrl = uploadPostImage(post)
+
                 val postToCreate = post.copy(
                     userUid = user.uid,
                     createdAt = Date(),
                     updatedAt = Date(),
-                    imageUrl = imageUrl
+                    imageUrls = imageUrl
                 )
 
                 val task = firestore.document("${FirestoreCollections.POSTS}/${postToCreate.uid}")
@@ -45,14 +46,20 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun uploadPostImage(post: Post): String{
+    private suspend fun uploadPostImage(post: Post): List<String>{
         return withContext(Dispatchers.IO){
-            val imageUri = Uri.parse(post.imageUrl)
-            val imageRef = firebaseStorage
-                .reference.child("${FirebaseStorageFolders.posts}/${post.uid}")
-            val uploadTask = imageRef.putFile(imageUri)
-            uploadTask.await()
-            imageRef.downloadUrl.await().toString()
+            val urls = mutableListOf<String>()
+            for ((index, imageUri) in post.imageUrls.withIndex()){
+                val imageUrl = Uri.parse(imageUri)
+                val imageRef = firebaseStorage
+                    .reference.child("${FirebaseStorageFolders.posts}/${post.uid}/image_$index")
+
+                val uploadTask = imageRef.putFile(imageUrl)
+                uploadTask.await()
+                urls.add(imageRef.downloadUrl.await().toString())
+            }
+
+            return@withContext urls
         }
     }
 

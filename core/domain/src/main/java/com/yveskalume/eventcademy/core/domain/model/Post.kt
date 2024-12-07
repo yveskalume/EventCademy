@@ -4,10 +4,9 @@ import java.util.Date
 
 data class Post(
     val uid: String = "",
-    val name: String = "",
-    val description: String = "",
-    val imageUrl: String = "",
-    val eventUrl: String = "",
+    val postContent: String = "",
+    val eventName: String? = null,
+    val imageUrls: List<String> = emptyList(),
     val userUid: String = "",
     val createdAt: Date? = null,
     val updatedAt: Date? = null,

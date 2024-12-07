@@ -5,11 +5,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.InsertComment
 import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material3.Button
@@ -21,6 +26,7 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -48,15 +54,14 @@ fun PostItem(
         border = BorderStroke(
             0.1.dp,
             Color.Gray
-        ),
-        onClick = { onPostClicked }
+        )
     ) {
         Column(
             modifier = Modifier.padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             SubcomposeAsyncImage(
-                model = post.imageUrl,
+                model = post.imageUrls[0],
                 contentDescription = null,
                 loading = {
                     Box(
@@ -69,33 +74,74 @@ fun PostItem(
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(200.dp)
                     .clip(RoundedCornerShape(16.dp))
             )
             Text(
-                text = post.name,
+                text = if (post.eventName != null) post.eventName.toString() else post.postContent,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(horizontal = 8.dp),
-                maxLines = 3,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
 
-            OutlinedButton(
-                onClick = { onPostClicked },
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier.padding(start = 10.dp)
-            ) {
-                Text(
-                    text = "Lire plus"
-                )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ){
+                Row {
+                    OutlinedButton(
+                        onClick = {  },
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier.padding(start = 10.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ){
+                            Icon(
+                                imageVector = Icons.Default.FavoriteBorder,
+                                contentDescription = null
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "12"
+                            )
+                        }
+                    }
+
+                    OutlinedButton(
+                        onClick = {  },
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier.padding(start = 10.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ){
+                            Icon(
+                                imageVector = Icons.Default.InsertComment,
+                                contentDescription = null
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "12"
+                            )
+                        }
+                    }
+                }
+                OutlinedButton(
+                    onClick = { onPostClicked },
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier.padding(start = 10.dp)
+                ) {
+                    Text(
+                        text = "Lire plus"
+                    )
+                }
             }
         }
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun PostItemPreview() {
-    //PostItem()
 }
 
