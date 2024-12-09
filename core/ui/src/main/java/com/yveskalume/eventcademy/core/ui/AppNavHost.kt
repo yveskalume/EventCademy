@@ -15,6 +15,7 @@ import com.yveskalume.eventcademy.feature.createevent.CreateEventRoute
 import com.yveskalume.eventcademy.feature.eventdetail.EventDetailRoute
 import com.yveskalume.eventcademy.feature.forumhome.BlogHomeRoute
 import com.yveskalume.eventcademy.feature.home.HomeRoute
+import com.yveskalume.eventcademy.feature.postdetail.PostDetailsRoute
 import com.yveskalume.eventcademy.feature.profile.ProfileRoute
 import com.yveskalume.eventcademy.feature.setting.SettingRoute
 
@@ -122,6 +123,13 @@ fun AppNavHost(
             BlogHomeRoute(
                 onCreatePostClick = {
                     navController.navigate(Destination.CreatePostScreen.route)
+                },
+                onPostClicked = {postUid->
+                    navController.navigate(
+                        Destination.PostDetailsScreen.createRoute(
+                            postUid = postUid
+                        )
+                    )
                 }
             )
         }
@@ -129,6 +137,17 @@ fun AppNavHost(
         composable(route = Destination.CreatePostScreen.route){
             CreatePostRoute(
                 onBackClick = {navController.navigateUp()}
+            )
+        }
+
+        composable(
+            route = Destination.PostDetailsScreen.route,
+            deepLinks = listOf(navDeepLink {
+                uriPattern = "https://eventcademy.app/post/{postUid}z"
+            })
+        ){
+            PostDetailsRoute(
+                onBackClick = navController::navigateUp
             )
         }
     }

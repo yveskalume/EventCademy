@@ -95,4 +95,5 @@ private fun shouldShowBottomNavigation(destination: NavDestination?): Boolean {
     return !destination.isCurrent(Destination.AuthScreen)
             && !destination.isCurrent(Destination.EventDetailScreen)
             && !destination.isCurrent(Destination.SettingsScreen)
+            && !destination.isCurrent(Destination.PostDetailsScreen)
 }

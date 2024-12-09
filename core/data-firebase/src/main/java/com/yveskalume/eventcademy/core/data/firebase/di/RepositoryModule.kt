@@ -6,11 +6,13 @@ import com.google.firebase.storage.FirebaseStorage
 import com.yveskalume.eventcademy.core.data.firebase.repository.AdvertisementRepositoryImpl
 import com.yveskalume.eventcademy.core.data.firebase.repository.EventBookingRepositoryImpl
 import com.yveskalume.eventcademy.core.data.firebase.repository.EventRepositoryImpl
+import com.yveskalume.eventcademy.core.data.firebase.repository.PostLikesRepositoryImpl
 import com.yveskalume.eventcademy.core.data.firebase.repository.UserRepositoryImpl
 import com.yveskalume.eventcademy.core.data.firebase.repository.PostRepositoryImpl
 import com.yveskalume.eventcademy.core.domain.repository.AdvertisementRepository
 import com.yveskalume.eventcademy.core.domain.repository.EventBookingRepository
 import com.yveskalume.eventcademy.core.domain.repository.EventRepository
+import com.yveskalume.eventcademy.core.domain.repository.PostLikesRepository
 import com.yveskalume.eventcademy.core.domain.repository.PostRepository
 import com.yveskalume.eventcademy.core.domain.repository.UserRepository
 import dagger.Module
@@ -63,4 +65,11 @@ object RepositoryModule {
         return PostRepositoryImpl(fireStore, firebaseAuth, firebaseStorage)
     }
 
+    @Provides
+    fun providePostLikesRepository(
+        fireStore: FirebaseFirestore,
+        firebaseAuth: FirebaseAuth,
+    ): PostLikesRepository{
+        return PostLikesRepositoryImpl(fireStore, firebaseAuth)
+    }
 }

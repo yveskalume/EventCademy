@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.material)
     implementation(project(":feature:forumhome"))
     implementation(project(":feature:createBlogPost"))
+    implementation(project(":feature:postdetail"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

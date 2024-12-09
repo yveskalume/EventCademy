@@ -10,4 +10,18 @@ data class Post(
     val userUid: String = "",
     val createdAt: Date? = null,
     val updatedAt: Date? = null,
+    val published: Boolean = false,
+    val rejected: Boolean = false
 )
+
+val Post.statutText: String
+    get() {
+        return if (rejected){
+            "Non publié"
+        } else if (published){
+            "Publié"
+        } else{
+            "En attente"
+        }
+    }
+

@@ -24,6 +24,12 @@ class PostRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseStorage: FirebaseStorage
 ): PostRepository {
+
+    /**
+     * Create a post
+     * @param post the post to create
+     * @throws IllegalStateException if the user is not connected
+     */
     override suspend fun createPost(post: Post) {
         withContext(Dispatchers.IO){
             val user = firebaseAuth.currentUser
@@ -46,6 +52,12 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
+
+    /**
+     * Get all the post created by the current user
+     * @return a list of posts
+     */
+
     private suspend fun uploadPostImage(post: Post): List<String>{
         return withContext(Dispatchers.IO){
             val urls = mutableListOf<String>()
@@ -63,14 +75,6 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deletePost(postUid: String) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getPostByUid(postUid: String): Post? {
-        TODO("Not yet implemented")
-    }
-
     override fun getAllPosts()= callbackFlow<List<Post>> {
         val listener = firestore.collection(FirestoreCollections.POSTS)
             .addSnapshotListener { value, error ->
@@ -84,4 +88,26 @@ class PostRepositoryImpl @Inject constructor(
             }
         awaitClose { listener.remove() }
     }.flowOn(Dispatchers.IO)
+
+
+    /**
+     * Delete a post
+     * @param postUid the uid of the post to delete
+     */
+    override suspend fun deletePost(postUid: String) {
+        withContext(Dispatchers.IO){
+            firestore.document("${FirestoreCollections.POSTS}/$postUid").delete().await()
+            firebaseStorage.reference.child("${FirebaseStorageFolders.posts}/$postUid")
+                .delete()
+                .await()
+        }
+    }
+
+    override suspend fun getPostByUid(postUid: String): Post? {
+        return withContext(Dispatchers.IO){
+            val task = firestore.document("${FirestoreCollections.POSTS}/$postUid").get()
+            val post = task.await().toObject(Post::class.java)
+            return@withContext post
+        }
+    }
 }

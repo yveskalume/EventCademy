@@ -6,4 +6,5 @@ object FirestoreCollections {
     const val BOOKINGS = "bookings"
     const val ADVERTISEMENT = "advertisement"
     const val POSTS = "posts"
+    const val LIKES = "likes"
 }
