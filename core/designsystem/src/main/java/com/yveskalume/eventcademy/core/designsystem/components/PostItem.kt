@@ -66,9 +66,9 @@ fun PostItem(
                     .clip(RoundedCornerShape(16.dp))
             )
             Text(
-                text = if (post.eventName != null) post.eventName.toString() else post.postContent,
+                text = post.postContent,
                 style = MaterialTheme.typography.titleMedium,
-                fontSize = 18.sp,
+                fontSize = 15.sp,
                 modifier = Modifier.padding(horizontal = 8.dp),
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -54,10 +55,7 @@ fun EventSelector(
                 IconButton(onClick = onIconClicked) {
                     Icon(imageVector = Icons.Outlined.KeyboardArrowDown, contentDescription = null)
                 }
-            },
-            textStyle = TextStyle(
-                color = Color.Black
-            )
+            }
         )
 
         DropdownMenu(expanded = showSelector, onDismissRequest = onIconClicked) {
@@ -71,6 +69,7 @@ fun EventSelector(
                         onEventClicked()
                     }
                 )
+                Divider()
             }
         }
     }
