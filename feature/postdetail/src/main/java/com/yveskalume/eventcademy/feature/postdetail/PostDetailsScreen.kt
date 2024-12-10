@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.InsertComment
 import androidx.compose.material3.BottomSheetScaffold
@@ -228,9 +229,9 @@ fun PostDetailsContent(
                     horizontalArrangement = Arrangement.Center
                 ){
                     Icon(
-                        imageVector = Icons.Rounded.FavoriteBorder,
+                        imageVector = if (likeState == PostLikesState.LIKED) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
                         contentDescription = null,
-                        tint = if (likeState == PostLikesState.LIKED) Color.Red else MaterialTheme.colorScheme.primary
+                        tint = if (likeState == PostLikesState.LIKED) Color.Red else Color.White
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(

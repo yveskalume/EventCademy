@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,6 +29,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yveskalume.eventcademy.core.designsystem.components.LoadingAnimation
 import com.yveskalume.eventcademy.core.designsystem.components.PostItem
 import com.yveskalume.eventcademy.core.domain.model.Post
+import com.yveskalume.eventcademy.feature.postdetail.PostDetailsUiState
+import com.yveskalume.eventcademy.feature.postdetail.PostDetailsViewModel
+import com.yveskalume.eventcademy.feature.postdetail.PostLikesState
 
 
 @Composable
@@ -39,18 +43,18 @@ fun BlogHomeRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     BlogHomeScreen(
+        uiState = uiState,
         onCreatePostClick = onCreatePostClick,
         onPostClicked = onPostClicked,
-        uiState = uiState
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BlogHomeScreen(
-    onCreatePostClick: () -> Unit = {},
     uiState: BlogHomeUiState,
-    onPostClicked: (String)-> Unit = {}
+    onPostClicked: (String)-> Unit = {},
+    onCreatePostClick: () -> Unit = {},
 ){
     Column(
         modifier = Modifier
@@ -113,7 +117,7 @@ fun BlogHomeScreen(
 fun BlogHomeContent(
     modifier: Modifier = Modifier,
     posts: List<Post> = emptyList(),
-    onPostClicked: (String) -> Unit = {}
+    onPostClicked: (String) -> Unit = {},
 ){
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
@@ -126,7 +130,7 @@ fun BlogHomeContent(
                 post = post,
                 onPostClicked = {
                     onPostClicked(post.uid)
-                }
+                },
             )
         }
     }
