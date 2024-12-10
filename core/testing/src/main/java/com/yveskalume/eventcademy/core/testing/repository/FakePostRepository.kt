@@ -2,7 +2,6 @@ package com.yveskalume.eventcademy.core.testing.repository
 
 import com.yveskalume.eventcademy.core.domain.model.Post
 import com.yveskalume.eventcademy.core.domain.repository.PostRepository
-import com.yveskalume.eventcademy.core.testing.data.eventTestData
 import com.yveskalume.eventcademy.core.testing.data.postTestData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
