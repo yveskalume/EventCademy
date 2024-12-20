@@ -10,9 +10,12 @@ import androidx.navigation.navDeepLink
 import com.google.firebase.auth.FirebaseAuth
 import com.yveskalume.eventcademy.feature.auth.AuthRoute
 import com.yveskalume.eventcademy.feature.bookmark.BookmarkRoute
+import com.yveskalume.eventcademy.feature.createBlogPost.CreatePostRoute
 import com.yveskalume.eventcademy.feature.createevent.CreateEventRoute
 import com.yveskalume.eventcademy.feature.eventdetail.EventDetailRoute
+import com.yveskalume.eventcademy.feature.forumhome.BlogHomeRoute
 import com.yveskalume.eventcademy.feature.home.HomeRoute
+import com.yveskalume.eventcademy.feature.postdetail.PostDetailsRoute
 import com.yveskalume.eventcademy.feature.profile.ProfileRoute
 import com.yveskalume.eventcademy.feature.setting.SettingRoute
 
@@ -43,7 +46,7 @@ fun AppNavHost(
             AuthRoute(
                 webClientIdToken = webClientIdToken,
                 onConnectSuccess = {
-                    navController.navigate(Destination.HomeScreen)
+                    navController.navigate(Destination.HomeScreen.route)
                 })
         }
 
@@ -56,7 +59,7 @@ fun AppNavHost(
                         )
                     )
                 },
-                onSettingClick = { navController.navigate(Destination.SettingsScreen) }
+                onSettingClick = { navController.navigate(Destination.SettingsScreen.route) }
             )
         }
 
@@ -94,7 +97,7 @@ fun AppNavHost(
         composable(route = Destination.ProfileScreen.route) {
             ProfileRoute(
                 onAddEventClick = {
-                    navController.navigate(Destination.CreateEventScreen)
+                    navController.navigate(Destination.CreateEventScreen.route)
                 },
                 onEventClick = { evenUid ->
                     navController.navigate(
@@ -105,7 +108,7 @@ fun AppNavHost(
                 },
                 onLogoutClick = {
                     auth.signOut()
-                    navController.navigate(Destination.AuthScreen)
+                    navController.navigate(Destination.AuthScreen.route)
                 }
             )
         }
@@ -113,6 +116,38 @@ fun AppNavHost(
         composable(route = Destination.CreateEventScreen.route) {
             CreateEventRoute(
                 onBackClick = { navController.navigateUp() },
+            )
+        }
+
+        composable(route = Destination.BlogHomeScreen.route){
+            BlogHomeRoute(
+                onCreatePostClick = {
+                    navController.navigate(Destination.CreatePostScreen.route)
+                },
+                onPostClicked = {postUid->
+                    navController.navigate(
+                        Destination.PostDetailsScreen.createRoute(
+                            postUid = postUid
+                        )
+                    )
+                }
+            )
+        }
+
+        composable(route = Destination.CreatePostScreen.route){
+            CreatePostRoute(
+                onBackClick = {navController.navigateUp()}
+            )
+        }
+
+        composable(
+            route = Destination.PostDetailsScreen.route,
+            deepLinks = listOf(navDeepLink {
+                uriPattern = "https://eventcademy.app/post/{postUid}z"
+            })
+        ){
+            PostDetailsRoute(
+                onBackClick = navController::navigateUp
             )
         }
     }

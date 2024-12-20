@@ -6,5 +6,6 @@ import androidx.annotation.Keep
 enum class UserRole {
     ADMIN,
     ORGANIZER,
-    USER
+    USER,
+    AUTHOR
 }

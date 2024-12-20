@@ -261,6 +261,7 @@ private fun CreateEventScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
+
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = eventName,
