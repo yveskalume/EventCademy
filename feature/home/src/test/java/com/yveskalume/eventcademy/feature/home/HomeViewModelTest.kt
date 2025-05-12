@@ -8,6 +8,7 @@ import com.yveskalume.eventcademy.core.testing.repository.FakeAdvertisementRepos
 import com.yveskalume.eventcademy.core.testing.repository.FakeEventRepository
 import com.yveskalume.eventcademy.core.testing.util.MainDispatcherRule
 import com.yveskalume.eventcademy.feature.home.HomeUiState.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -17,6 +18,7 @@ import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertIs
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModelTest {
 
     @get:Rule

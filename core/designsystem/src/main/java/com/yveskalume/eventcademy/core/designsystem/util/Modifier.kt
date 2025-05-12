@@ -36,5 +36,5 @@ fun Modifier.shimmer(): Modifier = composed {
         end = Offset(translateAnimation + 100f, translateAnimation + 100f),
         tileMode = TileMode.Mirror,
     )
-    return@composed this.then(background(brush))
+    return@composed this.background(brush)
 }
