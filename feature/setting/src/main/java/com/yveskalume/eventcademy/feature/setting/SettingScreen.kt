@@ -8,8 +8,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.ContactSupport
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.ContactSupport
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material3.Card
@@ -75,7 +76,7 @@ fun SettingScreen(
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
-                            imageVector = Icons.Rounded.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                             contentDescription = null
                         )
                     }
@@ -137,7 +138,7 @@ fun SettingScreen(
                             )
                         }
                         Icon(
-                            imageVector = Icons.Rounded.ContactSupport,
+                            imageVector = Icons.AutoMirrored.Rounded.ContactSupport,
                             contentDescription = null,
                         )
                     }
@@ -161,7 +162,7 @@ fun SettingScreen(
                             )
                         }
                         Icon(
-                            imageVector = Icons.Rounded.KeyboardArrowRight,
+                            imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
                             contentDescription = null,
                         )
                     }
@@ -185,7 +186,7 @@ fun SettingScreen(
                             )
                         }
                         Icon(
-                            imageVector = Icons.Rounded.KeyboardArrowRight,
+                            imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
                             contentDescription = null,
                         )
                     }

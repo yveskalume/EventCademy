@@ -20,7 +20,6 @@ import androidx.compose.ui.semantics.SemanticsPropertyKey
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
@@ -121,16 +120,6 @@ fun LinkedText(
     )
 }
 
-fun AnnotatedString.getLinkAnnotations(start: Int, end: Int): List<AnnotatedString.Range<String>> =
-    getStringAnnotations(LinkTag, start, end)
-
-fun AnnotatedString.Builder.addLink(
-    url: String,
-    start: Int,
-    end: Int
-) = addStringAnnotation(LinkTag, url, start, end)
-
-@OptIn(ExperimentalTextApi::class)
 fun <R : Any> AnnotatedString.Builder.withLink(
     url: String,
     block: AnnotatedString.Builder.() -> R

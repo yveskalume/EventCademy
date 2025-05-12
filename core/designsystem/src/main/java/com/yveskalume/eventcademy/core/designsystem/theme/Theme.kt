@@ -38,6 +38,7 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+@Suppress("DEPRECATION")
 @Composable
 fun EventCademyTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

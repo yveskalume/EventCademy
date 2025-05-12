@@ -1,6 +1,7 @@
 package com.yveskalume.eventcademy.core.ui
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.Feed
 import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.material.icons.rounded.Feed
 import androidx.compose.material.icons.rounded.Home
@@ -59,7 +60,7 @@ fun BottomNavigationBar(navController: NavHostController, destination: NavDestin
             },
             icon = {
                 Icon(
-                    imageVector = Icons.Rounded.Feed,
+                    imageVector = Icons.AutoMirrored.Rounded.Feed,
                     contentDescription = null
                 )
             }

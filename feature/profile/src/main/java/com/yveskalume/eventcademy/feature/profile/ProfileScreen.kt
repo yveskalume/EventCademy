@@ -20,11 +20,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.Logout
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Logout
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -133,7 +134,7 @@ private fun ProfileScreen(
                 actions = {
                     IconButton(onClick = onLogoutClick) {
                         Icon(
-                            imageVector = Icons.Rounded.Logout,
+                            imageVector = Icons.AutoMirrored.Rounded.Logout,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.error
                         )
@@ -210,7 +211,7 @@ fun ProfileContent(
         }
 
         item {
-            Divider(thickness = 1.dp)
+            HorizontalDivider(thickness = 1.dp)
         }
 
         item {

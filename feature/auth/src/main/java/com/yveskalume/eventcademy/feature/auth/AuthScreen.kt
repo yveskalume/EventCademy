@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.yveskalume.eventcademy.feature.auth
 
 import android.app.Activity
