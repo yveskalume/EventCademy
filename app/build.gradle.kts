@@ -22,7 +22,7 @@ android {
 
     defaultConfig {
         applicationId = "com.yveskalume.eventcademy"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 12
         versionName = "1.7"
@@ -62,11 +62,11 @@ android {
         disable.add("NullSafeMutableLiveData")
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
     buildFeatures {
         compose = true
