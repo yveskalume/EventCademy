@@ -1,6 +1,5 @@
 package com.yveskalume.eventcademy.core.designsystem.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -36,7 +35,6 @@ import com.yveskalume.eventcademy.core.designsystem.util.shimmer
 import com.yveskalume.eventcademy.core.domain.model.Advertisement
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AdvertisementsItem(
     items: List<Advertisement>,
