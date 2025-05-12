@@ -34,7 +34,7 @@ android {
     }
     lint {
         disable.add("NullSafeMutableLiveData")
-      }
+    }
 
     buildFeatures {
         compose = true

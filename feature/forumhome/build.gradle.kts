@@ -25,6 +25,9 @@ android {
             )
         }
     }
+    lint {
+        disable.add("NullSafeMutableLiveData")
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
